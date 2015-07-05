@@ -1,64 +1,18 @@
 
 
-// TODO: maybe allow defaultFn to be a nonfn
+// TODO: dist file that has all classes.
 var DefaultDict = function(defaultFn) {
-  this.createDefaultValue_ = defaultFn;
-  this.dict_ = {};
+  Dict.call(this);
+  this.default_ = defaultFn;
 };
+DefaultDict.prototype.constructor = Dict;
+DefaultDict.prototype = Object.create(Dict.prototype);
 
-DefaultDict.prototype.contains = function(key) {
-  return this.dict_.hasOwnProperty(key);
+
+DefaultDict.prototype.get = function(key /*, defaultValue */) {
+  // If .get(k, v), use super method.
+  if (arguments.length === 2) {
+    return this.constructor.prototype.get.call(this, key, arguments[1]);
+  }
+  return this.contains(key) ? this.dict_[key] : this.set(key, this.default_());
 };
-
-// Todo: maybe have 2nd arg for optional default value
-DefaultDict.prototype.get = function(key) {
-  if (this.contains(key)) return this.dict_[key];
-  return this.set(key, this.createDefaultValue_());
-};
-
-DefaultDict.prototype.set = function(key, value) {
-  return this.dict_[key] = value;
-};
-
-DefaultDict.prototype.keys = function() {
-  return Object.keys(this.dict_);
-};
-
-DefaultDict.prototype.items = function() {
-  var pairs = [];
-  this.keys().forEach(function(key) {
-    pairs.push([key, this.dict_[key]]);
-  }, this);
-  return pairs;
-};
-
-DefaultDict.prototype.values = function() {
-  var values = [];
-  this.keys().forEach(function(key) {
-    values.push(this.dict_[key]);
-  }, this);
-  return values;
-};
-
-DefaultDict.prototype.modify = function(key, fn) {
-  var value = this.get(key);
-  return this.set(key, fn(value));
-};
-
-DefaultDict.prototype.modifySome = function(keys, fn) {
-  keys.forEach(function(key) {
-    this.modify(key, fn);
-  }, this);
-};
-
-DefaultDict.prototype.modifyAll = function(fn) {
-  this.modifySome(this.keys(), fn);
-};
-
-
-var counter = new DefaultDict(Number);
-var letters = 'aaabbc'.split('');
-counter.modifySome(letters, function(v) {
-  return v + 1;
-});
-console.log(counter.items().join('\n'));
