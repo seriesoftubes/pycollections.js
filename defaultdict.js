@@ -2,7 +2,7 @@
 
 // TODO: dist file that has all classes.
 var DefaultDict = function(defaultFn, opt_keyValues) {
-  if (!defaultFn) throw Error('Must supply a default function.');
+  if (typeof(defaultFn) !== 'function') throw Error('Must supply a default function.');
   Dict.call(this, opt_keyValues);
   this.default_ = defaultFn
 };
