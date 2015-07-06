@@ -18,4 +18,14 @@ describe('Initialized empty defaultdict', function() {
     });
   });
 
+  it('Returns custom supplied default value when a key is missing and get is called with a second arg', function() {
+    var dd = new DefaultDict(String);
+    var missingKeys = [1, 2, 3];
+    var forcedDefault = {'this': 'isRight'};
+    missingKeys.forEach(function(key) {
+      expect(dd.contains(key)).toBe(false);
+      expect(dd.get(key, forcedDefault)).toBe(forcedDefault);
+    });
+  });
+
 });
