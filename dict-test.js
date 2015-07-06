@@ -342,6 +342,31 @@ describe('Dict after initialization with non-empty object as the arg', function(
 });
 
 
+describe('Dict after initialization with empty Dict as the arg', function() {
+  var dict;
+
+  beforeEach(function() {
+    dict = new Dict(new Dict({}));
+  });
+
+  it('Has length of 0', function() {
+    expect(dict.length()).toBe(0);
+  });
+
+  it('Has no items', function() {
+    expect(dict.items()).toEqual([]);
+  });
+
+  it('Has no keys', function() {
+    expect(dict.keys()).toEqual([]);
+  });
+
+  it('Has no values', function() {
+    expect(dict.values()).toEqual([]);
+  });
+});
+
+
 describe('Dict after initialization with non-empty Dict as the arg', function() {
   var dict;
 
