@@ -1,9 +1,24 @@
 
-
-var Dict = function() {
+var Dict = function(opt_keyValues) {
   this.dict_ = {};
+  arguments.length && this.update(opt_keyValues);
 };
 
+Dict.prototype.update = function(keyValues) {
+  if (keyValues instanceof Dict) {
+    keyValues.iteritems(this.set);
+  }
+  else if (keyValues instanceof Array) {
+    keyValues.forEach(function(keyValue) {
+      this.set(keyValue[0], keyValue[1]);
+    }, this);
+  }
+  else if (typeof keyValues === 'object') {
+    Object.keys(keyValues).forEach(function(key) {
+      this.set(key, keyValues[key]);
+    }, this);
+  }
+};
 
 Dict.prototype.length = function() {
   return this.keys().length;
@@ -13,8 +28,8 @@ Dict.prototype.contains = function(key) {
   return this.dict_.hasOwnProperty(key);
 };
 
-Dict.prototype.get = function(key, defaultValue) {
-  return this.contains(key) ? this.dict_[key] : defaultValue;
+Dict.prototype.get = function(key, opt_defaultValue) {
+  return this.contains(key) ? this.dict_[key] : opt_defaultValue;
 };
 
 Dict.prototype.set = function(key, value) {
@@ -31,6 +46,12 @@ Dict.prototype.items = function() {
     pairs.push([key, this.dict_[key]]);
   }, this);
   return pairs;
+};
+
+Dict.prototype.iteritems = function(cb) {
+  this.keys().forEach(function(key) {
+    cb(key, this.dict_[key]);
+  }, this);
 };
 
 Dict.prototype.values = function() {
