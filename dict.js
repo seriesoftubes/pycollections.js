@@ -5,6 +5,10 @@ var Dict = function() {
 };
 
 
+Dict.prototype.length = function() {
+  return this.keys().length;
+};
+
 Dict.prototype.contains = function(key) {
   return this.dict_.hasOwnProperty(key);
 };
