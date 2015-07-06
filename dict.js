@@ -20,6 +20,14 @@ Dict.prototype.update = function(keyValues) {
   }
 };
 
+Dict.fromKeys = function(keys, valueForAllKeys) {
+  var keyValues = [];
+  keys.forEach(function(key) {
+    keyValues.push([key, valueForAllKeys]);
+  });
+  return new Dict(keyValues);
+};
+
 Dict.prototype.length = function() {
   return this.keys().length;
 };

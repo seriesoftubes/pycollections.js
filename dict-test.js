@@ -340,3 +340,19 @@ describe('Dict after initialization with non-empty object as the arg', function(
     expect(dict.get('b', defaultValue)).toEqual([1, 2, 3]);
   });
 });
+
+describe('From keys initialization', function() {
+  it('Should set all supplied keys to the same value.', function() {
+    var theValue = {1: 2, 3: {4: 5}};
+    var keys = ['a', 'b', 'c'];
+    var dict = Dict.fromKeys(keys, theValue);
+    expect(dict.keys()).toEqual(keys);
+    dict.values().forEach(function(value) {
+      expect(value).toBe(theValue);
+    });
+    dict.iteritems(function(key, value) {
+      expect(keys).toContain(key);
+      expect(value).toBe(theValue);
+    });
+  });
+});
