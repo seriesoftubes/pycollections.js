@@ -32,12 +32,12 @@ Dict.prototype.length = function() {
   return this.keys().length;
 };
 
-Dict.prototype.contains = function(key) {
+Dict.prototype.hasKey = function(key) {
   return this.dict_.hasOwnProperty(key);
 };
 
 Dict.prototype.get = function(key, opt_defaultValue) {
-  return this.contains(key) ? this.dict_[key] : opt_defaultValue;
+  return this.hasKey(key) ? this.dict_[key] : opt_defaultValue;
 };
 
 Dict.prototype.set = function(key, value) {

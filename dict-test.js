@@ -31,7 +31,7 @@ describe('Dict after initialization with no args', function() {
 
   it('Does not contain anything', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.contains(key)).toBe(false);
+      expect(dict.hasKey(key)).toBe(false);
     });
   });
 
@@ -82,7 +82,7 @@ describe('Dict after initialization with empty array as the arg', function() {
 
   it('Does not contain anything', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.contains(key)).toBe(false);
+      expect(dict.hasKey(key)).toBe(false);
     });
   });
 
@@ -146,10 +146,10 @@ describe('Dict after initialization with non-empty array as the arg', function()
 
   it('contains only a and b', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.contains(key)).toBe(false);
+      expect(dict.hasKey(key)).toBe(false);
     });
-    expect(dict.contains('a')).toBe(true);
-    expect(dict.contains('b')).toBe(true);
+    expect(dict.hasKey('a')).toBe(true);
+    expect(dict.hasKey('b')).toBe(true);
   });
 
   it('Returns undefined from get() with non-present key and no defaultValue', function() {
@@ -218,10 +218,10 @@ describe('Dict after initialization with non-empty non-unique array as the arg',
 
   it('contains only a and b', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.contains(key)).toBe(false);
+      expect(dict.hasKey(key)).toBe(false);
     });
-    expect(dict.contains('a')).toBe(true);
-    expect(dict.contains('b')).toBe(true);
+    expect(dict.hasKey('a')).toBe(true);
+    expect(dict.hasKey('b')).toBe(true);
   });
 
   it('Returns undefined from get() with non-present key and no defaultValue', function() {
@@ -315,10 +315,10 @@ describe('Dict after initialization with non-empty object as the arg', function(
 
   it('contains only a and b', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.contains(key)).toBe(false);
+      expect(dict.hasKey(key)).toBe(false);
     });
-    expect(dict.contains('a')).toBe(true);
-    expect(dict.contains('b')).toBe(true);
+    expect(dict.hasKey('a')).toBe(true);
+    expect(dict.hasKey('b')).toBe(true);
   });
 
   it('Returns undefined from get() with non-present key and no defaultValue', function() {
@@ -412,10 +412,10 @@ describe('Dict after initialization with non-empty Dict as the arg', function() 
 
   it('contains only a and b', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.contains(key)).toBe(false);
+      expect(dict.hasKey(key)).toBe(false);
     });
-    expect(dict.contains('a')).toBe(true);
-    expect(dict.contains('b')).toBe(true);
+    expect(dict.hasKey('a')).toBe(true);
+    expect(dict.hasKey('b')).toBe(true);
   });
 
   it('Returns undefined from get() with non-present key and no defaultValue', function() {

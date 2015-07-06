@@ -13,7 +13,7 @@ describe('Initialized empty defaultdict', function() {
 
     var missingKeys = [1, 2, 3];
     missingKeys.forEach(function(key) {
-      expect(dd.contains(key)).toBe(false);
+      expect(dd.hasKey(key)).toBe(false);
       expect(dd.get(key)).toBe(defaultFnValue);
     });
   });
@@ -23,7 +23,7 @@ describe('Initialized empty defaultdict', function() {
     var missingKeys = [1, 2, 3];
     var forcedDefault = {'this': 'isRight'};
     missingKeys.forEach(function(key) {
-      expect(dd.contains(key)).toBe(false);
+      expect(dd.hasKey(key)).toBe(false);
       expect(dd.get(key, forcedDefault)).toBe(forcedDefault);
     });
   });
