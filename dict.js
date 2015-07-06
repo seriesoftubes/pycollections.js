@@ -6,7 +6,7 @@ var Dict = function(opt_keyValues) {
 
 Dict.prototype.update = function(keyValues) {
   if (keyValues instanceof Dict) {
-    keyValues.iteritems(this.set);
+    keyValues.iteritems(this.set.bind(this));
   }
   else if (keyValues instanceof Array) {
     keyValues.forEach(function(keyValue) {
