@@ -1,9 +1,10 @@
 
 
 // TODO: dist file that has all classes.
-var DefaultDict = function(defaultFn) {
-  Dict.call(this);
-  this.default_ = defaultFn;
+var DefaultDict = function(defaultFn, opt_keyValues) {
+  if (!defaultFn) throw Error('Must supply a default function.');
+  Dict.call(this, opt_keyValues);
+  this.default_ = defaultFn
 };
 DefaultDict.prototype.constructor = Dict;
 DefaultDict.prototype = Object.create(Dict.prototype);
