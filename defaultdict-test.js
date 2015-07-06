@@ -28,4 +28,15 @@ describe('Initialized empty defaultdict', function() {
     });
   });
 
+  it('Does cool stuff', function() {
+    var letters = 'abccc'.split('');
+    var dd = new DefaultDict(Number);
+    dd.modifySome(letters, function(v) {
+      return v + 1;
+    });
+    expect(dd.get('a')).toBe(1);
+    expect(dd.get('b')).toBe(1);
+    expect(dd.get('c')).toBe(3);
+  });
+
 });
