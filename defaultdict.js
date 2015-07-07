@@ -15,5 +15,6 @@ DefaultDict.prototype.get = function(key /*, defaultValue */) {
   if (arguments.length === 2) {
     return this.constructor.prototype.get.apply(this, arguments);
   }
+  Dict.checkKeyIsHashable_(key);
   return this.hasKey(key) ? this.dict_[key] : this.set(key, this.default_());
 };

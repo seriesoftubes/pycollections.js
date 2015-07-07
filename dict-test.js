@@ -25,8 +25,7 @@ describe('Dict after initialization with no args', function() {
   var possibleKeys = [
       0, 1,
       '', 'a',
-      false, true,
-      {}, {1: 'A'}
+      false, true
   ];
 
   it('Does not contain anything', function() {
@@ -76,8 +75,7 @@ describe('Dict after initialization with empty array as the arg', function() {
   var possibleKeys = [
       0, 1,
       '', 'a',
-      false, true,
-      {}, {1: 'A'}
+      false, true
   ];
 
   it('Does not contain anything', function() {
@@ -141,7 +139,6 @@ describe('Dict after initialization with non-empty array as the arg', function()
       0, 1,
       '', 'z',
       false, true,
-      {}, {1: 'A'}
   ];
 
   it('contains only a and b', function() {
@@ -212,8 +209,7 @@ describe('Dict after initialization with non-empty non-unique array as the arg',
   var possibleKeys = [
       0, 1,
       '', 'z',
-      false, true,
-      {}, {1: 'A'}
+      false, true
   ];
 
   it('contains only a and b', function() {
@@ -309,8 +305,7 @@ describe('Dict after initialization with non-empty object as the arg', function(
   var possibleKeys = [
       0, 1,
       '', 'z',
-      false, true,
-      {}, {1: 'A'}
+      false, true
   ];
 
   it('contains only a and b', function() {
@@ -406,8 +401,7 @@ describe('Dict after initialization with non-empty Dict as the arg', function() 
   var possibleKeys = [
       0, 1,
       '', 'z',
-      false, true,
-      {}, {1: 'A'}
+      false, true
   ];
 
   it('contains only a and b', function() {
@@ -451,6 +445,49 @@ describe('From keys initialization', function() {
     dict.iteritems(function(key, value) {
       expect(keys).toContain(key);
       expect(value).toBe(theValue);
+    });
+  });
+});
+
+
+describe('Setting a value', function() {
+  var dict;
+
+  beforeEach(function() {
+    dict = new Dict();
+  });
+
+  it('Should set a string type key to a value and get it.', function() {
+    var key = 'yea';
+    var value = {1: 2};
+    dict.set(key, value);
+    expect(dict.dict_[key]).toBe(value);
+    expect(dict.get(key)).toBe(value);
+  });
+
+  it('Should set a number type key and its corresponding string key to the same value and get it.', function() {
+    var numericKeyValue = {1: 2};
+    dict.set(1, numericKeyValue);
+    expect(dict.dict_[1]).toBe(numericKeyValue);
+    expect(dict.get(1)).toBe(numericKeyValue);
+    expect(dict.dict_['1']).toBe(numericKeyValue);
+    expect(dict.get('1')).toBe(numericKeyValue);
+
+    var stringKeyValue = {3: 4};
+    dict.set('1', stringKeyValue);
+    expect(dict.dict_[1]).toBe(stringKeyValue);
+    expect(dict.get(1)).toBe(stringKeyValue);
+    expect(dict.dict_['1']).toBe(stringKeyValue);
+    expect(dict.get('1')).toBe(stringKeyValue);
+  });
+
+  it('Should not allow setting a key of type object or array.', function() {
+    var badKeys = [
+      [1, 2],
+      {3: 'asdf'}
+    ];
+    badKeys.forEach(function(key) {
+      expect(dict.set.bind(dict, key)).toThrow();
     });
   });
 });

@@ -6,6 +6,10 @@ describe('Initialized empty defaultdict', function() {
     expect(function() { new DefaultDict(Number); }).not.toThrow();
   });
 
+  it('Is a subclass of Dict.', function() {
+    expect(new DefaultDict(Number) instanceof Dict).toBe(true);
+  });
+
   it('Returns its default value when a key is missing', function() {
     var defaultFn = String;
     var defaultFnValue = defaultFn();
