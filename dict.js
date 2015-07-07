@@ -71,10 +71,13 @@ Dict.prototype.hasKey = function(key) {
 
 Dict.prototype.get = function(key, opt_defaultValue) {
   Dict.checkKeyIsHashable_(key);
-  return this.hasKey(key) ? this.dict_[key] : opt_defaultValue;
+  var hasKey = this.hasKey(key);
+  if (arguments.length === 1 && !hasKey) throw Error('Missing key: ' + key);
+  return hasKey ? this.dict_[key] : opt_defaultValue;
 };
 
 // TODO: support non-string keys like true, 1.23.
+// maybe have internal dict_ for boolean, string, and number
 Dict.prototype.set = function(key, value) {
   Dict.checkKeyIsHashable_(key);
   return this.dict_[key] = value;

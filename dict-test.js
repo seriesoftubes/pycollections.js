@@ -34,9 +34,9 @@ describe('Dict after initialization with no args', function() {
     });
   });
 
-  it('Returns undefined from get() with any key and no defaultValue', function() {
+  it('Throws an error from get() with any key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get(key)).toBe(undefined);
+      expect(dict.get.bind(dict, key)).toThrow();
     });
   });
 
@@ -84,9 +84,9 @@ describe('Dict after initialization with empty array as the arg', function() {
     });
   });
 
-  it('Returns undefined from get() with any key and no defaultValue', function() {
+  it('Throws an error from get() with any key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get(key)).toBe(undefined);
+      expect(dict.get.bind(dict, key)).toThrow();
     });
   });
 
@@ -149,9 +149,9 @@ describe('Dict after initialization with non-empty array as the arg', function()
     expect(dict.hasKey('b')).toBe(true);
   });
 
-  it('Returns undefined from get() with non-present key and no defaultValue', function() {
+  it('Throws error from get() with non-present key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get(key)).toBe(undefined);
+      expect(dict.get.bind(dict, key)).toThrow();
     });
   });
 
@@ -220,9 +220,9 @@ describe('Dict after initialization with non-empty non-unique array as the arg',
     expect(dict.hasKey('b')).toBe(true);
   });
 
-  it('Returns undefined from get() with non-present key and no defaultValue', function() {
+  it('Throws error from get() with non-present key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get(key)).toBe(undefined);
+      expect(dict.get.bind(dict, key)).toThrow();
     });
   });
 
@@ -316,9 +316,9 @@ describe('Dict after initialization with non-empty object as the arg', function(
     expect(dict.hasKey('b')).toBe(true);
   });
 
-  it('Returns undefined from get() with non-present key and no defaultValue', function() {
+  it('Throws an error from get() with non-present key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get(key)).toBe(undefined);
+      expect(dict.get.bind(dict, key)).toThrow();
     });
   });
 
@@ -412,9 +412,9 @@ describe('Dict after initialization with non-empty Dict as the arg', function() 
     expect(dict.hasKey('b')).toBe(true);
   });
 
-  it('Returns undefined from get() with non-present key and no defaultValue', function() {
+  it('Throws an error from get() with non-present key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get(key)).toBe(undefined);
+      expect(dict.get.bind(dict, key)).toThrow();
     });
   });
 
@@ -490,4 +490,28 @@ describe('Setting a value', function() {
       expect(dict.set.bind(dict, key)).toThrow();
     });
   });
+});
+
+describe('Dict.clear', function() {
+  it('should not affect keys, values, or items of an empty dict.', function() {
+
+  });
+
+  it('should remove all items from a dict but not references to those items.', function() {
+
+  });
+});
+
+describe('Dict.copy', function() {
+  it('should create an exact copy of, but not a reference to, an empty dict.', function() {
+
+  });
+
+  it('should create an exact copy of, but not a reference to, a non-empty dict.', function() {
+
+  });
+});
+
+describe('Dict.pop', function() {
+
 });
