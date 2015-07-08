@@ -22,9 +22,8 @@ Dict.prototype.update = function(keyValues) {
 };
 
 Dict.fromKeys = function(keys, valueForAllKeys) {
-  var keyValues = [];
-  keys.forEach(function(key) {
-    keyValues.push([key, valueForAllKeys]);
+  var keyValues = keys.map(function(key) {
+    return [key, valueForAllKeys];
   });
   return new Dict(keyValues);
 };
@@ -42,6 +41,7 @@ Dict.prototype.copy = function() {
 };
 
 Dict.prototype.del = function(key) {
+  if (!this.hasKey(key)) throw Error('Missing key: ' + key);
   delete this.dict_[key];
 };
 
@@ -88,11 +88,9 @@ Dict.prototype.keys = function() {
 };
 
 Dict.prototype.items = function() {
-  var pairs = [];
-  this.keys().forEach(function(key) {
-    pairs.push([key, this.dict_[key]]);
+  return this.keys().map(function(key) {
+    return [key, this.dict_[key]];
   }, this);
-  return pairs;
 };
 
 Dict.prototype.iteritems = function(cb) {
@@ -102,11 +100,9 @@ Dict.prototype.iteritems = function(cb) {
 };
 
 Dict.prototype.values = function() {
-  var values = [];
-  this.keys().forEach(function(key) {
-    values.push(this.dict_[key]);
+  return this.keys().map(function(key) {
+    return this.dict_[key];
   }, this);
-  return values;
 };
 
 Dict.prototype.modify = function(key, fn) {
