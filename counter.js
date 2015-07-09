@@ -102,3 +102,19 @@ Counter.prototype.subtract = function(keyValues) {
     throw Error('Must subtract Dict, Array, or Object.');
   }
 };
+
+Counter.prototype.mostCommon = function(opt_n) {
+  var items = this.items();
+  items.sort(function(a, b) {
+    return b[1] - a[1];
+  });
+  return arguments.length ? items.slice(0, opt_n) : items;
+};
+
+Counter.prototype.leastCommon = function(opt_n) {
+  var items = this.items();
+  items.sort(function(a, b) {
+    return a[1] - b[1];
+  });
+  return arguments.length ? items.slice(0, opt_n) : items;
+};

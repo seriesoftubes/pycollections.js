@@ -178,3 +178,99 @@ describe('Counter.subtract', function() {
     expect(counter.elements()).toEqual([]);
   });
 });
+
+
+describe('Counter.mostCommon', function() {
+  it('Given no arg, should return all key-value pairs, with the most common ordered first.', function() {
+    var counter = new Counter('aacabb'.split(''));
+    expect(counter.get('a')).toBe(3);
+    expect(counter.get('b')).toBe(2);
+    expect(counter.get('c')).toBe(1);
+
+    var result = counter.mostCommon();
+    expect(result.length).toBe(3);
+    expect(result[0]).toEqual(['a', 3]);
+    expect(result[1]).toEqual(['b', 2]);
+    expect(result[2]).toEqual(['c', 1]);
+  });
+
+  it('Given an opt_n, should return opt_n key-value pairs, with the most common ordered first.', function() {
+    var counter = new Counter('aacabb'.split(''));
+    expect(counter.get('a')).toBe(3);
+    expect(counter.get('b')).toBe(2);
+    expect(counter.get('c')).toBe(1);
+
+    var result0 = counter.mostCommon(0);
+    expect(result0.length).toBe(0);
+    expect(result0).toEqual([]);
+
+    var result1 = counter.mostCommon(1);
+    expect(result1.length).toBe(1);
+    expect(result1[0]).toEqual(['a', 3]);
+
+    var result2 = counter.mostCommon(2);
+    expect(result2.length).toBe(2);
+    expect(result2[0]).toEqual(['a', 3]);
+    expect(result2[1]).toEqual(['b', 2]);
+
+    var result3 = counter.mostCommon(3);
+    expect(result3.length).toBe(3);
+    expect(result3[0]).toEqual(['a', 3]);
+    expect(result3[1]).toEqual(['b', 2]);
+    expect(result3[2]).toEqual(['c', 1]);
+
+    var result4 = counter.mostCommon(4);
+    expect(result4.length).toBe(3);
+    expect(result4[0]).toEqual(['a', 3]);
+    expect(result4[1]).toEqual(['b', 2]);
+    expect(result4[2]).toEqual(['c', 1]);
+  });
+});
+
+
+describe('Counter.leastCommon', function() {
+  it('Given no arg, should return all key-value pairs, with the least common ordered first.', function() {
+    var counter = new Counter('aacabb'.split(''));
+    expect(counter.get('a')).toBe(3);
+    expect(counter.get('b')).toBe(2);
+    expect(counter.get('c')).toBe(1);
+
+    var result = counter.leastCommon();
+    expect(result.length).toBe(3);
+    expect(result[0]).toEqual(['c', 1]);
+    expect(result[1]).toEqual(['b', 2]);
+    expect(result[2]).toEqual(['a', 3]);
+  });
+
+  it('Given an opt_n, should return opt_n key-value pairs, with the least common ordered first.', function() {
+    var counter = new Counter('aacabb'.split(''));
+    expect(counter.get('a')).toBe(3);
+    expect(counter.get('b')).toBe(2);
+    expect(counter.get('c')).toBe(1);
+
+    var result0 = counter.leastCommon(0);
+    expect(result0.length).toBe(0);
+    expect(result0).toEqual([]);
+
+    var result1 = counter.leastCommon(1);
+    expect(result1.length).toBe(1);
+    expect(result1[0]).toEqual(['c', 1]);
+
+    var result2 = counter.leastCommon(2);
+    expect(result2.length).toBe(2);
+    expect(result2[0]).toEqual(['c', 1]);
+    expect(result2[1]).toEqual(['b', 2]);
+
+    var result3 = counter.leastCommon(3);
+    expect(result3.length).toBe(3);
+    expect(result3[0]).toEqual(['c', 1]);
+    expect(result3[1]).toEqual(['b', 2]);
+    expect(result3[2]).toEqual(['a', 3]);
+
+    var result4 = counter.leastCommon(4);
+    expect(result4.length).toBe(3);
+    expect(result4[0]).toEqual(['c', 1]);
+    expect(result4[1]).toEqual(['b', 2]);
+    expect(result4[2]).toEqual(['a', 3]);
+  });
+});
