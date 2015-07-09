@@ -60,8 +60,8 @@ describe('Counter.update', function() {
     var numberNine = 9;
     var keyNine = 'nine';
 
-    var obj = {}
-    obj[keyEight] = numberEight
+    var obj = {};
+    obj[keyEight] = numberEight;
     obj[keyNine] = numberNine;
     var dict = new Dict(obj);
     var defaultDict = new DefaultDict(Number, dict);
@@ -99,7 +99,7 @@ describe('Counter.update', function() {
   it('Should fail given array with <100% hashable elements.', function() {
     var elements = ['a', 'a', 'b', {'not': 'hashable'}];
     var counter = new Counter();
-    expect(counter.update.bind(counter, elements)).toThrow()
+    expect(counter.update.bind(counter, elements)).toThrow();
   });
 });
 
@@ -119,5 +119,62 @@ describe('Counter.elements', function() {
 
     counter.update(['a']);
     expect(counter.elements()).toEqual(['a', 'a']);
+
+    counter.clear();
+    expect(counter.elements()).toEqual([]);
+
+    // Special behavior: when a key's value (count) is negative,
+    // it doesn't output any elements for that key.
+    var counter = new Counter({'a': -2});
+    expect(counter.elements()).toEqual([]);
+  });
+});
+
+
+describe('Counter.subtract', function() {
+  it('Should fail given a non-Dict/Object/Array arg', function() {
+    var counter = new Counter();
+    expect(counter.subtract.bind(counter)).toThrow();
+    [0, 1, false, true, '', 'a'].forEach(function(badArg) {
+      expect(counter.subtract.bind(counter, badArg)).toThrow();
+    });
+  });
+
+  it('Should do nothing given an empty Dict/Object/Array', function() {
+    var emptyContainers = [{}, new Dict(), new DefaultDict(String), new Counter()];
+    emptyContainers.forEach(function(emptyContainer) {
+      var counter = new Counter({'a': 1});
+      expect(counter.elements()).toEqual(['a']);
+
+      counter.subtract(emptyContainer);
+      expect(counter.elements()).toEqual(['a']);
+    });
+  });
+
+  it('Should decrement values given a non-empty Dict', function() {
+    var counter = new Counter({'a': 1});
+    expect(counter.elements()).toEqual(['a']);
+
+    counter.subtract(new Dict({'a': 2}));
+    expect(counter.get('a')).toBe(-1);
+    expect(counter.elements()).toEqual([]);
+  });
+
+  it('Should decrement values given a non-empty Object', function() {
+    var counter = new Counter({'a': 1});
+    expect(counter.elements()).toEqual(['a']);
+
+    counter.subtract({'a': 2});
+    expect(counter.get('a')).toBe(-1);
+    expect(counter.elements()).toEqual([]);
+  });
+
+  it('Should decrement values given a non-empty Array', function() {
+    var counter = new Counter({'a': 1});
+    expect(counter.elements()).toEqual(['a']);
+
+    counter.subtract(['a', 'a']);
+    expect(counter.get('a')).toBe(-1);
+    expect(counter.elements()).toEqual([]);
   });
 });

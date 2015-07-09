@@ -68,6 +68,15 @@ Counter.prototype.elements = function() {
   return elements;
 };
 
+Counter.prototype.iterelements = function(callback) {
+  var self = this;
+  this.iteritems(function(key, numberOfElementsWithKey) {
+    for (var i = 0; i < numberOfElementsWithKey; i++) {
+      callback(key, i, numberOfElementsWithKey, self);
+    }
+  });
+};
+
 Counter.prototype.subtract = function(keyValues) {
   var modify = this.modify.bind(this);
   if (keyValues instanceof Dict) {
