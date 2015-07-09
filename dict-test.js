@@ -493,25 +493,142 @@ describe('Setting a value', function() {
 });
 
 describe('Dict.clear', function() {
-  it('should not affect keys, values, or items of an empty dict.', function() {
+  var dict;
 
+  beforeEach(function() {
+    dict = new Dict();
+  });
+
+  it('should not affect keys, values, or items of an empty dict.', function() {
+    var oldValues = dict.values();
+    var oldKeys = dict.keys();
+    var oldItems = dict.items();
+
+    dict.clear();
+
+    var newValues = dict.values();
+    var newKeys = dict.keys();
+    var newItems = dict.items();
+
+    expect(newValues).toEqual(oldValues);
+    expect(newKeys).toEqual(oldKeys);
+    expect(newItems).toEqual(oldItems);
   });
 
   it('should remove all items from a dict but not references to those items.', function() {
+    dict.set('key', 123);
+    var oldValues = dict.values();
+    var oldKeys = dict.keys();
+    var oldItems = dict.items();
 
+    expect(oldValues).toEqual([123]);
+    expect(oldKeys).toEqual(['key']);
+    expect(oldItems).toEqual([['key', 123]]);
+
+    expect(dict.length()).toBe(1);
+
+    dict.clear();
+
+    expect(dict.length()).toBe(0);
+
+    var newValues = dict.values();
+    var newKeys = dict.keys();
+    var newItems = dict.items();
+
+    expect(newValues).toEqual([]);
+    expect(newKeys).toEqual([]);
+    expect(newItems).toEqual([]);
+
+    expect(oldValues).toEqual([123]);
+    expect(oldKeys).toEqual(['key']);
+    expect(oldItems).toEqual([['key', 123]]);
   });
 });
 
 describe('Dict.copy', function() {
-  it('should create an exact copy of, but not a reference to, an empty dict.', function() {
+  var original;
 
+  beforeEach(function() {
+    original = new Dict();
+  });
+
+  it('should create an exact copy of, but not a reference to, an empty dict.', function() {
+    var copied = original.copy();
+
+    expect(copied).not.toBe(original);
+
+    expect(copied.values()).toEqual(original.values());
+    expect(copied.keys()).toEqual(original.keys());
+    expect(copied.items()).toEqual(original.items());
+
+    // setting a key on either copy should not affect the other.
+    var keyToSet = 'key';
+    copied.set(keyToSet, 123);
+    expect(original.get.bind(original, keyToSet)).toThrow();
+    expect(original.get(keyToSet, 'default')).toBe('default');
+
+    var anotherKeyToSet = 'yea';
+    original.set(anotherKeyToSet, 987);
+    expect(copied.get.bind(copied, anotherKeyToSet)).toThrow();
+    expect(copied.get(anotherKeyToSet, 'default')).toBe('default');
   });
 
   it('should create an exact copy of, but not a reference to, a non-empty dict.', function() {
+    original.set('previouslySetKey', 'previouslySetValue');
+
+    var copied = original.copy();
+
+    expect(copied).not.toBe(original);
+
+    expect(copied.values()).toEqual(original.values());
+    expect(copied.keys()).toEqual(original.keys());
+    expect(copied.items()).toEqual(original.items());
+
+    // setting a key on either copy should not affect the other.
+    var keyToSet = 'key';
+    copied.set(keyToSet, 123);
+    expect(original.get.bind(original, keyToSet)).toThrow();
+    expect(original.get(keyToSet, 'default')).toBe('default');
+
+    var anotherKeyToSet = 'yea';
+    original.set(anotherKeyToSet, 987);
+    expect(copied.get.bind(copied, anotherKeyToSet)).toThrow();
+    expect(copied.get(anotherKeyToSet, 'default')).toBe('default');
 
   });
 });
 
+
+describe('Dict.del', function() {
+  var dict;
+  var existingKey = 'key';
+
+  beforeEach(function() {
+    dict = new Dict();
+    dict.set(existingKey, 123);
+  });
+
+  it('Should remove an existing key successfully', function() {
+    var getExistingKey = dict.get.bind(dict, existingKey);
+    expect(dict.length()).toBe(1);
+    expect(getExistingKey).not.toThrow();
+
+    dict.del(existingKey);
+
+    expect(dict.length()).toBe(0);
+    expect(getExistingKey).toThrow();
+  });
+
+  it('Should raise an error removing a non-existing key', function() {
+    expect(dict.del.bind(dict, 'non existing key')).toThrow();
+  });
+
+});
+
 describe('Dict.pop', function() {
+
+});
+
+describe('Dict.popitem', function() {
 
 });
