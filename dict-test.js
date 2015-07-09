@@ -362,6 +362,7 @@ describe('Dict after initialization with empty Dict as the arg', function() {
 });
 
 
+// TODO: ensure instantiation fails with improper arg
 describe('Dict after initialization with non-empty Dict as the arg', function() {
   var dict;
 

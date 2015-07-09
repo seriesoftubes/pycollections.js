@@ -8,16 +8,16 @@ Dict.prototype.update = function(keyValues) {
   var setKey = this.set.bind(this);
   if (keyValues instanceof Dict) {
     keyValues.iteritems(setKey);
-  }
-  else if (keyValues instanceof Array) {
+  } else if (keyValues instanceof Array) {
     keyValues.forEach(function(keyValue) {
       setKey(keyValue[0], keyValue[1]);
     });
-  }
-  else if (typeof keyValues === 'object') {
+  } else if (typeof keyValues === 'object') {
     Object.keys(keyValues).forEach(function(key) {
       setKey(key, keyValues[key]);
     });
+  } else {
+    throw Error('Cannot update dict from type: ' + typeof(keyValues));
   }
 };
 
@@ -81,7 +81,7 @@ Dict.prototype.get = function(key, opt_defaultValue) {
 // maybe have internal dict_ for boolean, string, and number
 Dict.prototype.set = function(key, value) {
   Dict.checkKeyIsHashable_(key);
-  if (arguments.length !== 2) throw Error('Must supply a key and a value.');
+  if (arguments.length < 2) throw Error('Must supply a key and a value.');
   return this.dict_[key] = value;
 };
 
@@ -97,7 +97,7 @@ Dict.prototype.items = function() {
 
 Dict.prototype.iteritems = function(cb) {
   this.keys().forEach(function(key) {
-    cb(key, this.dict_[key]);
+    cb(key, this.dict_[key], this);
   }, this);
 };
 
@@ -109,7 +109,7 @@ Dict.prototype.values = function() {
 
 Dict.prototype.modify = function(key, fn) {
   var value = this.get(key);
-  return this.set(key, fn(value));
+  return this.set(key, fn(value, key, this));
 };
 
 Dict.prototype.modifySome = function(keys, fn) {
