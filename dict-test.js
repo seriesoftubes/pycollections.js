@@ -490,6 +490,28 @@ describe('Setting a value', function() {
       expect(dict.set.bind(dict, key)).toThrow();
     });
   });
+
+  it('Should update an existing key value pair after re-setting a key.', function() {
+    expect(dict.length()).toBe(0);
+
+    var theKey = 'key';
+    var oldValue = 1;
+    dict.set(theKey, oldValue);
+    var oldKeys = dict.keys();
+
+    expect(dict.length()).toBe(1);
+    expect(dict.get(theKey)).toBe(oldValue);
+
+    var newValue = 8765;
+    dict.set(theKey, newValue);
+    var newKeys = dict.keys();
+
+    expect(dict.length()).toBe(1);
+    expect(dict.get(theKey)).not.toBe(oldValue);
+    expect(dict.get(theKey)).toBe(newValue);
+
+    expect(oldKeys).toEqual(newKeys);
+  });
 });
 
 describe('Dict.clear', function() {
