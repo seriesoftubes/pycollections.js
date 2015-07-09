@@ -54,7 +54,8 @@ Dict.prototype.pop = function(key, opt_defaultValue) {
 
 Dict.prototype.popitem = function() {
   if (this.isEmpty()) throw Error('Cannot pop item from empty dict.');
-  return this.pop(this.keys()[0]);
+  var keyToPop = this.keys()[0];
+  return [keyToPop, this.pop(keyToPop)];
 };
 
 Dict.prototype.length = function() {

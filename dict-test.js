@@ -616,7 +616,6 @@ describe('Dict.copy', function() {
     original.set(anotherKeyToSet, 987);
     expect(copied.get.bind(copied, anotherKeyToSet)).toThrow();
     expect(copied.get(anotherKeyToSet, 'default')).toBe('default');
-
   });
 });
 
@@ -644,13 +643,55 @@ describe('Dict.del', function() {
   it('Should raise an error removing a non-existing key', function() {
     expect(dict.del.bind(dict, 'non existing key')).toThrow();
   });
-
 });
 
 describe('Dict.pop', function() {
+  var dict;
+  var existingKey = 'key';
+  var existingValue = {'a': 123};
 
+  beforeEach(function() {
+    dict = new Dict();
+    dict.set(existingKey, existingValue);
+  });
+
+  it('Should remove and return an existing key successfully', function() {
+    var getExistingKey = dict.get.bind(dict, existingKey);
+    expect(dict.length()).toBe(1);
+    expect(getExistingKey).not.toThrow();
+
+    var popped = dict.pop(existingKey);
+    expect(popped).toBe(existingValue);
+
+    expect(dict.length()).toBe(0);
+    expect(getExistingKey).toThrow();
+  });
+
+  it('Should raise an error removing a non-existing key', function() {
+    expect(dict.pop.bind(dict, 'non existing key')).toThrow();
+  });
 });
 
 describe('Dict.popitem', function() {
+  var dict;
 
+  beforeEach(function() {
+    dict = new Dict();
+  });
+
+  it('Should raise an error when executed on an empty dict.', function() {
+    expect(dict.popitem.bind(dict)).toThrow();
+  });
+
+  it('Should return and delete the sole key-value pair from a dict with 1 key.', function() {
+    var key = 'key';
+    var value = 123;
+    dict.set(key, value);
+    var item = dict.items()[0];
+
+    var popped = dict.popitem();
+    expect(popped).toEqual(item);
+    expect(dict.isEmpty()).toBe(true);
+    expect(dict.length()).toBe(0);
+  });
 });
