@@ -1,3 +1,4 @@
+// Tests for counter.js.
 
 describe('Counter constructor', function() {
   it('Is a subclass of Dict and DefaultDict.', function() {

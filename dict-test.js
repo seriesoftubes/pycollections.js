@@ -1,3 +1,5 @@
+// Tests for dict.js.
+
 describe('Dict after initialization with no args', function() {
   var dict;
 

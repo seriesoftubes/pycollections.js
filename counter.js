@@ -1,14 +1,16 @@
+/**
+ * A Counter can count distinct hashable elements.
+ * Corresponds to Python's collections.Counter class.
+ */
+
 
 /*
-for most_common or least_common,
-do a sort and get top n
-
+TODO:
+most_common or least_common- do a sort and get top n
 .elements()
 .subtract()
 .fromKeys -- raise notImplemented
 */
-
-
 var Counter = function(opt_keyValues) {
   DefaultDict.call(this, Number, opt_keyValues);
 };

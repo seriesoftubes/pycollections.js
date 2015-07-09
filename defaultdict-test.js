@@ -1,3 +1,5 @@
+// Tests for defaultdict.js.
+
 describe('Initialized empty defaultdict', function() {
 
   it('Must have a default function', function() {

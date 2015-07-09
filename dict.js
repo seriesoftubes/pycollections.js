@@ -1,3 +1,8 @@
+/**
+ * A Dict is a useful interface on top of Object.
+ * Corresponds to Python's built-in dict class.
+ */
+
 
 var Dict = function(opt_keyValues) {
   this.dict_ = {};
