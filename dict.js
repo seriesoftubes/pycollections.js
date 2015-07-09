@@ -81,6 +81,7 @@ Dict.prototype.get = function(key, opt_defaultValue) {
 // maybe have internal dict_ for boolean, string, and number
 Dict.prototype.set = function(key, value) {
   Dict.checkKeyIsHashable_(key);
+  if (arguments.length !== 2) throw Error('Must supply a key and a value.');
   return this.dict_[key] = value;
 };
 

@@ -1,4 +1,3 @@
-
 describe('Dict after initialization with no args', function() {
   var dict;
 
@@ -168,6 +167,7 @@ describe('Dict after initialization with non-empty array as the arg', function()
     expect(dict.get('b', defaultValue)).toBe(99);
   });
 });
+
 
 describe('Dict after initialization with non-empty non-unique array as the arg', function() {
   var dict;
@@ -433,7 +433,7 @@ describe('Dict after initialization with non-empty Dict as the arg', function() 
 });
 
 
-describe('From keys initialization', function() {
+describe('Dict.fromKeys', function() {
   it('Should set all supplied keys to the same value.', function() {
     var theValue = {1: 2, 3: {4: 5}};
     var keys = ['a', 'b', 'c'];
@@ -450,11 +450,16 @@ describe('From keys initialization', function() {
 });
 
 
-describe('Setting a value', function() {
+describe('Dict.set', function() {
   var dict;
 
   beforeEach(function() {
     dict = new Dict();
+  });
+
+  it('Should throw an error unless called with 2 args.', function() {
+    expect(dict.set.bind(dict, 1)).toThrow();
+    expect(dict.set.bind(dict, 1, 2)).not.toThrow();
   });
 
   it('Should set a string type key to a value and get it.', function() {
@@ -514,6 +519,7 @@ describe('Setting a value', function() {
   });
 });
 
+
 describe('Dict.clear', function() {
   var dict;
 
@@ -566,6 +572,7 @@ describe('Dict.clear', function() {
     expect(oldItems).toEqual([['key', 123]]);
   });
 });
+
 
 describe('Dict.copy', function() {
   var original;
@@ -645,6 +652,7 @@ describe('Dict.del', function() {
   });
 });
 
+
 describe('Dict.pop', function() {
   var dict;
   var existingKey = 'key';
@@ -672,6 +680,7 @@ describe('Dict.pop', function() {
   });
 });
 
+
 describe('Dict.popitem', function() {
   var dict;
 
@@ -693,5 +702,49 @@ describe('Dict.popitem', function() {
     expect(popped).toEqual(item);
     expect(dict.isEmpty()).toBe(true);
     expect(dict.length()).toBe(0);
+  });
+});
+
+
+describe('Dict.hasKey', function() {
+  var dict;
+
+  beforeEach(function() {
+    dict = new Dict();
+  });
+
+  it('Should return false for empty dict on all keys', function() {
+    expect(dict.length()).toBe(0);
+    expect(dict.isEmpty()).toBe(true);
+    ['', 'a', 0, 1, true, false].forEach(function(key) {
+      expect(dict.hasKey(key)).toBe(false);
+    });
+  });
+
+  it('Should return true for an existing string key.', function() {
+    var key = 'string';
+    dict.set(key, 123);
+    expect(dict.hasKey(key)).toBe(true);
+    expect(dict.hasKey('not existing')).toBe(false);
+  });
+
+  it('Should return true for an existing numeric key and its string counterpart', function() {
+    var key = 100;
+    dict.set(key, 123);
+    expect(dict.hasKey(key)).toBe(true);
+    expect(dict.hasKey(String(key))).toBe(true);
+
+    expect(dict.hasKey(9999999)).toBe(false);
+    expect(dict.hasKey('9999999')).toBe(false);
+  });
+
+  it('Should return true for an existing boolean key and its string counterpart', function() {
+    var key = true;
+    dict.set(key, 123);
+    expect(dict.hasKey(key)).toBe(true);
+    expect(dict.hasKey(String(key))).toBe(true);
+
+    expect(dict.hasKey(false)).toBe(false);
+    expect(dict.hasKey('false')).toBe(false);
   });
 });
