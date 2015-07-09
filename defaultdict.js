@@ -16,7 +16,7 @@ DefaultDict.prototype = Object.create(Dict.prototype);
 
 DefaultDict.prototype.get = function(key /*, defaultValue */) {
   // If .get(k, v), use super method.
-  if (arguments.length === 2) {
+  if (arguments.length > 1) {
     return Dict.prototype.get.apply(this, arguments);
   }
   Dict.checkKeyIsHashable_(key);
