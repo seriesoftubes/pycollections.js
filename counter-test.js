@@ -95,4 +95,29 @@ describe('Counter.update', function() {
     expect(counter.get('b')).toBe(2);
     expect(counter.get(384)).toBe(0);
   });
+
+  it('Should fail given array with <100% hashable elements.', function() {
+    var elements = ['a', 'a', 'b', {'not': 'hashable'}];
+    var counter = new Counter();
+    expect(counter.update.bind(counter, elements)).toThrow()
+  });
+});
+
+
+describe('Counter.elements', function() {
+  it('Should return an empty array for an empty Counter.', function() {
+    var counter = new Counter();
+    expect(counter.elements()).toEqual([]);
+  });
+
+  it('Should return an array containing <value> amount of each key', function() {
+    var counter = new Counter({'a': 0});
+    expect(counter.elements()).toEqual([]);
+
+    counter.update(['a']);
+    expect(counter.elements()).toEqual(['a']);
+
+    counter.update(['a']);
+    expect(counter.elements()).toEqual(['a', 'a']);
+  });
 });
