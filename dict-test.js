@@ -477,6 +477,56 @@ describe('Dict constructed with non Dict/Object arg', function() {
 });
 
 
+describe('Dict.hasKey', function() {
+  it('Should return false for all keys for an empty dict.', function() {
+    var dict = new Dict();
+    [0, 1, false, true, '', 'a'].forEach(function(key) {
+      expect(dict.hasKey(key)).toBe(false);
+    });
+  });
+
+  it('Should return true for an existing key', function() {
+    var dict = new Dict({'a': 1});
+    expect(dict.hasKey('a')).toBe(true);
+  });
+});
+
+
+describe('Dict.isEmpty', function() {
+
+});
+
+
+describe('Dict.modify', function() {
+
+});
+
+
+describe('Dict.checkKeyIsHashable', function() {
+  it('Should throw an error for objects, arrays, and dicts', function() {
+    var keys = [
+      {},
+      [],
+      new Dict()
+    ];
+    keys.forEach(function(key) {
+      expect(Dict.checkKeyIsHashable_.bind(null, key)).toThrow();
+    });
+  });
+
+  it('Should not throw an error for numbers, strings, and booleans', function() {
+    var keys = [
+      0, 1,
+      '', 'a',
+      false, true
+    ];
+    keys.forEach(function(key) {
+      expect(Dict.checkKeyIsHashable_.bind(null, key)).not.toThrow();
+    });
+  });
+});
+
+
 describe('Dict.values', function() {
   it('Should return the values corresponding to each unique key, regardless of uniqueness', function() {
     var dict = new Dict({'a': 1, 'b': 1, 'c': 1});
