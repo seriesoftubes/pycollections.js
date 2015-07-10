@@ -4,10 +4,6 @@
  */
 
 
-/*
-TODO:
-most_common or least_common- do a sort and get top n
-*/
 var Counter = function(opt_keyValues) {
   DefaultDict.call(this, Number, opt_keyValues);
 };

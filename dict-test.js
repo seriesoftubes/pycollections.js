@@ -493,12 +493,92 @@ describe('Dict.hasKey', function() {
 
 
 describe('Dict.isEmpty', function() {
+  it('Should be true for a dict that has no keys set', function() {
+    var dict = new Dict();
+    expect(dict.isEmpty()).toBe(true);
+  });
 
+  it('Should be false for a dict that has had at least 1 key set on it', function() {
+    var dict = new Dict({'a': 1});
+    expect(dict.isEmpty()).toBe(false);
+
+    var dict = new Dict();
+    dict.set('a', 1);
+    expect(dict.isEmpty()).toBe(false);
+
+    var dict = new Dict();
+    dict.update(['a', 1]);
+    expect(dict.isEmpty()).toBe(false);
+  });
 });
 
 
 describe('Dict.modify', function() {
+  var dict;
 
+  beforeEach(function() {
+    dict = new Dict();
+  });
+
+  it('Should throw an error if not given a function as its second arg.', function() {
+    expect(dict.modify.bind(dict)).toThrow();
+    expect(dict.modify.bind(dict, 123)).toThrow();
+  });
+
+  it('Should not affect any keys given an identity function', function() {
+    var keyA = 'a';
+    var keyB = 'B';
+    var valueA = 1;
+    var valueB = 2;
+    dict.set(keyA, valueA);
+    dict.set(keyB, valueB);
+
+    var identity = function(v) {
+      return v;
+    };
+    dict.modify(keyA, identity);
+    dict.modify(keyB, identity);
+
+    expect(dict.get(keyA)).toBe(valueA);
+    expect(dict.get(keyB)).toBe(valueB);
+  });
+
+  it('Should always set a key to the value returned by a function that always returns the same value', function() {
+    var keyA = 'a';
+    var keyB = 'B';
+    var valueA = 123;
+    var valueB = 987;
+    dict.set(keyA, valueA);
+    dict.set(keyB, valueB);
+
+    var getOne = function() { return 1; };
+    dict.modify(keyA, getOne);
+    dict.modify(keyB, getOne);
+
+    expect(dict.get(keyA)).toBe(1);
+    expect(dict.get(keyB)).toBe(1);
+  });
+
+  it('Should modify the value of a key based on a function that operates on the current value, key, and the dict itself', function() {
+    var multiplier = 2;
+    var yeaKey = 'yea!';
+    var modifier = function(value, key, theDict) {
+      expect(theDict).toBe(dict);
+      expect(theDict.hasKey(key)).toBe(true);
+      expect(theDict.get(key)).toBe(value);
+
+      var result = {};
+      result[yeaKey] = value * multiplier;
+      return result;
+    };
+
+    var originalValueOfA = 1;
+    var keyA = 'a';
+    dict.set(keyA, originalValueOfA);
+    dict.modify(keyA, modifier);
+    var newA = dict.get(keyA);
+    expect(newA[yeaKey]).toBe(originalValueOfA * multiplier)
+  });
 });
 
 
