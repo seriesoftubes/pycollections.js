@@ -6,7 +6,7 @@
 
 var Dict = function(opt_keyValues) {
   this.dict_ = {};
-  opt_keyValues && this.update(opt_keyValues);
+  opt_keyValues !== undefined && this.update(opt_keyValues);
 };
 
 Dict.prototype.update = function(keyValues) {

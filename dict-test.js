@@ -1,6 +1,6 @@
 // Tests for dict.js.
 
-describe('Dict after initialization with no args', function() {
+describe('Dict constructed with no args', function() {
   var dict;
 
   beforeEach(function() {
@@ -50,7 +50,7 @@ describe('Dict after initialization with no args', function() {
 });
 
 
-describe('Dict after initialization with empty array as the arg', function() {
+describe('Dict constructed with empty Array', function() {
   var dict;
 
   beforeEach(function() {
@@ -100,7 +100,7 @@ describe('Dict after initialization with empty array as the arg', function() {
 });
 
 
-describe('Dict after initialization with non-empty array as the arg', function() {
+describe("Dict constructed with Array of 2 unique key-value pairs: one representing the key 'a' and another for 'b'", function() {
   var dict;
 
   var constructorArgs = [
@@ -116,21 +116,24 @@ describe('Dict after initialization with non-empty array as the arg', function()
     expect(dict.length()).toBe(2);
   });
 
-  it('Has some items', function() {
+  it('Has 2 items that match the constructor key-value pairs', function() {
     var items = dict.items();
+    expect(items.length).toBe(2);
     constructorArgs.forEach(function(keyValue) {
       expect(items).toContain(keyValue);
     });
   });
 
-  it('Has some keys', function() {
+  it("Has 2 keys: 'a' and 'b'", function() {
     var keys = dict.keys();
+    expect(keys.length).toBe(2);
     expect(keys).toContain('a');
     expect(keys).toContain('b');
   });
 
-  it('Has some values', function() {
+  it('Has 2 values corresponding to those in the "value" part of the key-value pairs passed to the constructor.', function() {
     var values = dict.values();
+    expect(values.length).toBe(2);
     expect(values).toContain(1);
     expect(values).toContain(99);
   });
@@ -142,7 +145,7 @@ describe('Dict after initialization with non-empty array as the arg', function()
       false, true,
   ];
 
-  it('contains only a and b', function() {
+  it('Contains only the keys "a" and "b"', function() {
     possibleKeys.forEach(function(key) {
       expect(dict.hasKey(key)).toBe(false);
     });
@@ -171,7 +174,7 @@ describe('Dict after initialization with non-empty array as the arg', function()
 });
 
 
-describe('Dict after initialization with non-empty non-unique array as the arg', function() {
+describe('Dict constructed with non-empty non-unique Array, with one key-value pair for key "a" and 2 key-value pairs whose key part is "b"', function() {
   var dict;
 
   var constructorArgs = [
@@ -188,21 +191,24 @@ describe('Dict after initialization with non-empty non-unique array as the arg',
     expect(dict.length()).toBe(2);
   });
 
-  it('Has some items', function() {
+  it('Has 2 items: one for the sole key "a" key-value pair from the constructor arg, and another from the final "b" key-value pair from the constructor arg.', function() {
     var items = dict.items();
+    expect(items.length).toBe(2);
     expect(items).toContain(['a', 1]);
     expect(items).toContain(['b', 100]);
   });
 
-  it('Has some keys', function() {
+  it('Has 2 keys: "a" and "b"', function() {
     var keys = dict.keys();
+    expect(keys.length).toBe(2);
     expect(keys).toContain('a');
     expect(keys).toContain('b');
     expect(keys).not.toContain('basd');
   });
 
-  it('Has some values', function() {
+  it('Has 2 values: one corresponding to the value of the "a" key-value pair of the constructor arg, and another corresponding to the latest "b" key-value pair of the constructor arg.', function() {
     var values = dict.values();
+    expect(values.length).toBe(2);
     expect(values).toContain(1);
     expect(values).toContain(100);
   });
@@ -214,7 +220,7 @@ describe('Dict after initialization with non-empty non-unique array as the arg',
       false, true
   ];
 
-  it('contains only a and b', function() {
+  it('Contains only a and b', function() {
     possibleKeys.forEach(function(key) {
       expect(dict.hasKey(key)).toBe(false);
     });
@@ -268,7 +274,7 @@ describe('Dict after initialization with empty object as the arg', function() {
 });
 
 
-describe('Dict after initialization with non-empty object as the arg', function() {
+describe('Dict after initialization with non-empty object containing "a" and "b" keys as the arg', function() {
   var dict;
 
   var constructorArgs = {
@@ -284,21 +290,24 @@ describe('Dict after initialization with non-empty object as the arg', function(
     expect(dict.length()).toBe(2);
   });
 
-  it('Has some items', function() {
+  it('Has 2 items matching the key-value pairs of the constructor arg.', function() {
     var items = dict.items();
+    expect(items.length).toBe(2);
     expect(items).toContain(['a', true]);
     expect(items).toContain(['b', [1, 2, 3]]);
   });
 
-  it('Has some keys', function() {
+  it('Has 2 keys: "a" and "b"', function() {
     var keys = dict.keys();
+    expect(keys.length).toBe(2);
     expect(keys).toContain('a');
     expect(keys).toContain('b');
     expect(keys).not.toContain('basd');
   });
 
-  it('Has some values', function() {
+  it('Has 2 values matching those of the constructor arg Object.', function() {
     var values = dict.values();
+    expect(values.length).toBe(2);
     expect(values).toContain(true);
     expect(values).toContain([1, 2 ,3]);
   });
@@ -310,7 +319,7 @@ describe('Dict after initialization with non-empty object as the arg', function(
       false, true
   ];
 
-  it('contains only a and b', function() {
+  it('Contains only a and b', function() {
     possibleKeys.forEach(function(key) {
       expect(dict.hasKey(key)).toBe(false);
     });
@@ -364,8 +373,7 @@ describe('Dict after initialization with empty Dict as the arg', function() {
 });
 
 
-// TODO: ensure instantiation fails with improper arg
-describe('Dict after initialization with non-empty Dict as the arg', function() {
+describe('Dict after initialization with non-empty Dict containing keys "a" and "b" as the arg', function() {
   var dict;
 
   var constructorArgs = new Dict({
@@ -381,21 +389,24 @@ describe('Dict after initialization with non-empty Dict as the arg', function() 
     expect(dict.length()).toBe(2);
   });
 
-  it('Has some items', function() {
+  it('Has 2 items', function() {
     var items = dict.items();
+    expect(items.length).toBe(2);
     expect(items).toContain(['a', true]);
     expect(items).toContain(['b', [1, 2, 3]]);
   });
 
-  it('Has some keys', function() {
+  it('Has 2 keys', function() {
     var keys = dict.keys();
+    expect(keys.length).toBe(2);
     expect(keys).toContain('a');
     expect(keys).toContain('b');
     expect(keys).not.toContain('basd');
   });
 
-  it('Has some values', function() {
+  it('Has 2 values', function() {
     var values = dict.values();
+    expect(values.length).toBe(2);
     expect(values).toContain(true);
     expect(values).toContain([1, 2 ,3]);
   });
@@ -407,7 +418,7 @@ describe('Dict after initialization with non-empty Dict as the arg', function() 
       false, true
   ];
 
-  it('contains only a and b', function() {
+  it('Contains only a and b', function() {
     possibleKeys.forEach(function(key) {
       expect(dict.hasKey(key)).toBe(false);
     });
@@ -432,6 +443,61 @@ describe('Dict after initialization with non-empty Dict as the arg', function() 
     var defaultValue = {1: 2};
     expect(dict.get('a', defaultValue)).toBe(true);
     expect(dict.get('b', defaultValue)).toEqual([1, 2, 3]);
+  });
+});
+
+
+describe('Dict constructed with non Dict/Object arg', function() {
+  var getDictMaker = function(v) {
+    return function() {
+      return new Dict(v);
+    };
+  };
+
+  it('Should throw an error when constructed with a Number', function() {
+    var numbers = [0, 1, 0.5, 3, -1];
+    numbers.forEach(function(num) {
+      expect(getDictMaker(num)).toThrow();
+    });
+  });
+
+  it('Should throw an error when constructed with a String', function() {
+    var strings = ['', 'a', 'Aojidf', '123', ' \n '];
+    strings.forEach(function(str) {
+      expect(getDictMaker(str)).toThrow();
+    });
+  });
+
+  it('Should throw an error when constructed with a Boolean', function() {
+    var bools = [false, true];
+    bools.forEach(function(bool) {
+      expect(getDictMaker(bool)).toThrow();
+    });
+  });
+});
+
+
+describe('Dict.values', function() {
+  it('Should return the values corresponding to each unique key, regardless of uniqueness', function() {
+    var dict = new Dict({'a': 1, 'b': 1, 'c': 1});
+    expect(dict.length()).toBe(3);
+    expect(dict.values()).toEqual([1, 1, 1]);
+  });
+});
+
+
+describe('Dict.keys', function() {
+  it('Should return the most recent set of unique keys', function() {
+    var dict = new Dict();
+    var letterA = 'a';
+    var secondValue = 2;
+    dict.update([
+      [letterA, 1],
+      [letterA, secondValue]
+    ]);
+    expect(dict.keys()).toEqual([letterA]);
+    expect(dict.hasKey(letterA)).toBe(true);
+    expect(dict.get(letterA)).toBe(secondValue);
   });
 });
 
