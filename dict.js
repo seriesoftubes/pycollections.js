@@ -214,13 +214,16 @@ Dict.prototype.modify = function(key, fn) {
 };
 
 Dict.prototype.modifySome = function(keys, fn) {
-  keys.forEach(function(key) {
-    this.modify(key, fn);
-  }, this);
+  for (var i = 0, len = keys.length; i < len; i++) {
+    this.modify(keys[i], fn);
+  }
 };
 
 Dict.prototype.modifyAll = function(fn) {
-  this.modifySome(this.keys(), fn);
+  var self = this;
+  this.iterkeys(function(key) {
+    self.modify(key, fn);
+  });
 };
 
 return Dict;
