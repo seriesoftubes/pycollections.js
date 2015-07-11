@@ -39,9 +39,10 @@ var Dict = function(opt_keyValues) {
 };
 
 Dict.fromKeys = function(keys, valueForAllKeys) {
-  var keyValues = keys.map(function(key) {
-    return [key, valueForAllKeys];
-  });
+  var keyValues = [];
+  for (var i = 0, len=keys.length; i < len; i++) {
+    keyValues.push([keys[i], valueForAllKeys]);
+  }
   return new Dict(keyValues);
 };
 
