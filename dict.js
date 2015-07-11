@@ -20,6 +20,7 @@ var TYPES = [
   TYPE_UNDEFINED
 ];
 
+// TODO: maybe memoize this (would req json.dump or a indexOf on array)
 var GET_TYPE = function(v) {
   return v === null ? TYPE_NULL : typeof(v);
 };
