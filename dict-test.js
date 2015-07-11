@@ -249,7 +249,7 @@ describe('Dict constructed with non-empty non-unique Array, with one key-value p
 });
 
 
-describe('Dict after initialization with empty object as the arg', function() {
+describe('Dict constructed with empty object as the arg', function() {
   var dict;
 
   beforeEach(function() {
@@ -274,7 +274,7 @@ describe('Dict after initialization with empty object as the arg', function() {
 });
 
 
-describe('Dict after initialization with non-empty object containing "a" and "b" keys as the arg', function() {
+describe('Dict constructed with non-empty object containing "a" and "b" keys as the arg', function() {
   var dict;
 
   var constructorArgs = {
@@ -348,7 +348,7 @@ describe('Dict after initialization with non-empty object containing "a" and "b"
 });
 
 
-describe('Dict after initialization with empty Dict as the arg', function() {
+describe('Dict constructed with empty Dict as the arg', function() {
   var dict;
 
   beforeEach(function() {
@@ -373,7 +373,7 @@ describe('Dict after initialization with empty Dict as the arg', function() {
 });
 
 
-describe('Dict after initialization with non-empty Dict containing keys "a" and "b" as the arg', function() {
+describe('Dict constructed with non-empty Dict containing keys "a" and "b" as the arg', function() {
   var dict;
 
   var constructorArgs = new Dict({
@@ -488,6 +488,29 @@ describe('Dict.hasKey', function() {
   it('Should return true for an existing key', function() {
     var dict = new Dict({'a': 1});
     expect(dict.hasKey('a')).toBe(true);
+  });
+});
+
+
+describe('Dict.get', function() {
+  it('Should throw an error when not supplied with at least 1 arg', function() {
+    var dict = new Dict();
+    var existingKey = 'a';
+    dict.set(existingKey, 1);
+
+    expect(function() {
+      dict.get();
+    }).toThrow();
+
+    expect(function() {
+      dict.get(existingKey);
+    }).not.toThrow();
+  });
+
+  it('Should return the default value supplied for a non-present key', function() {
+    var dict = new Dict();
+    var defaultValue = 'default';
+    expect(dict.get('non present', defaultValue)).toBe(defaultValue);
   });
 });
 

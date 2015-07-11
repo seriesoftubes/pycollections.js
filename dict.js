@@ -20,7 +20,7 @@ var TYPES = [
   TYPE_UNDEFINED
 ];
 
-// TODO: maybe memoize this (would req json.dump or a indexOf on array)
+// TODO: maybe memoize this (would req json.dump or a indexOf on array) - test d.get()
 var GET_TYPE = function(v) {
   return v === null ? TYPE_NULL : typeof(v);
 };
@@ -105,9 +105,11 @@ Dict.prototype.hasKey = function(key) {
 };
 
 Dict.prototype.get = function(key, opt_defaultValue) {
+  var numArgs = arguments.length;
+  if (!numArgs) throw Error('Must supply a key');
   Dict.checkKeyIsHashable_(key);
   var hasKey = this.hasKey(key);
-  if (arguments.length === 1 && !hasKey) throw Error('Missing key: ' + key);
+  if (numArgs === 1 && !hasKey) throw Error('Missing key: ' + key);
   return hasKey ? this.dict_[GET_TYPE(key)][key] : opt_defaultValue;
 };
 
