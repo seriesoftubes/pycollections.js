@@ -4,6 +4,7 @@
  */
 
 
+var Counter = (function() {
 var Counter = function(opt_keyValues) {
   DefaultDict.call(this, Number, opt_keyValues);
 };
@@ -112,3 +113,6 @@ Counter.prototype.leastCommon = function(opt_n) {
   });
   return arguments.length ? items.slice(0, opt_n) : items;
 };
+
+return Counter;
+})();

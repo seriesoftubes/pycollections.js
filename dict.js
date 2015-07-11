@@ -3,7 +3,8 @@
  * Corresponds to Python's built-in dict class.
  */
 
-// todo: wrap code in fn
+
+var Dict = (function() {
 
 var TYPE_BOOLEAN = typeof(true);
 var TYPE_NUMBER = typeof(1);
@@ -160,3 +161,6 @@ Dict.prototype.modifySome = function(keys, fn) {
 Dict.prototype.modifyAll = function(fn) {
   this.modifySome(this.keys(), fn);
 };
+
+return Dict;
+})();

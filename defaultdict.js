@@ -5,6 +5,7 @@
 
 
 // TODO: dist file that has all classes.
+var DefaultDict = (function() {
 var DefaultDict = function(defaultFn, opt_keyValues) {
   if (typeof(defaultFn) !== 'function') throw Error('Must supply a default function.');
   this.default_ = defaultFn
@@ -22,3 +23,6 @@ DefaultDict.prototype.get = function(key /*, defaultValue */) {
   Dict.checkKeyIsHashable_(key);
   return this.hasKey(key) ? Dict.prototype.get.call(this, key) : this.set(key, this.default_());
 };
+
+return DefaultDict;
+})();
