@@ -698,8 +698,6 @@ describe('Dict.getFirstKey', function() {
 
 
 describe('Dict.getFirstMatchingKey', function() {
-  var alwaysTrue = function() {return true};
-
   it('Should throw a KeyNotFound error when called on an empty dict.', function() {
     var dict = new Dict();
     try {
@@ -711,17 +709,36 @@ describe('Dict.getFirstMatchingKey', function() {
     throw Error('Should not be reached because a key should not be found.');
   });
 
-  it('Should not throw a KeyNotFound error when called on a non-empty dict with an always-true predicate', function() {
+  it('Should not throw a KeyNotFound error when called on a 1-element dict with an always-true predicate', function() {
     var theKey = 'a';
     var dict = new Dict([[theKey, 123]]);
-    expect(dict.getFirstMatchingKey(alwaysTrue)).toBe(theKey);
+
+    var alwaysTrue = function(key, ctx) {
+      expect(key).toBe(theKey);
+      expect(ctx).toBe(dict);
+      return true;
+    };
+
+    var firstKey = dict.getFirstMatchingKey(alwaysTrue);
+    expect(firstKey).toBe(theKey);
   });
 
   it('Should return one of the keys of a non-empty dict when called with an always-true predicate', function() {
     var keys = [0, 1, false, true, '', 'a', undefined, null];
     var dict = Dict.fromKeys(keys);
+
+    var numKeysSeen = 0;
+
+    var alwaysTrue = function(key, ctx) {
+      expect(keys).toContain(key);
+      expect(ctx).toBe(dict);
+      numKeysSeen++;
+      return true;
+    };
+
     var firstKey = dict.getFirstMatchingKey(alwaysTrue);
     expect(keys).toContain(firstKey);
+    expect(numKeysSeen).toBe(1);
   });
 
   it('Should accept a predicate that processes potentially every key in the dict', function() {
