@@ -121,25 +121,24 @@ Dict.prototype.set = function(key, value) {
 
 Dict.prototype.keys = function() {
   var keysByType = this.dict_;
-  // todo: have pairs of (typename, conversion function) and do this as loop
-
-  var booleanKeys = Object.keys(keysByType[TYPE_BOOLEAN]);
-  var booleans = booleanKeys.map(function(k){return k === 'true' ? true : false;});
-
-  var numericKeys = Object.keys(keysByType[TYPE_NUMBER]);
-  var numbers = numericKeys.map(Number);
-
-  var stringKeys = Object.keys(keysByType[TYPE_STRING]);
-  var strings = stringKeys.map(String);
-
-  var nullKeys = Object.keys(keysByType[TYPE_NULL]);
-  var nulls = nullKeys.map(function(){return null;});
-
-  var undefinedKeys = Object.keys(keysByType[TYPE_UNDEFINED]);
-  var undefineds = undefinedKeys.map(function(){return undefined;});
-
   var allKeys = [];
-  allKeys = allKeys.concat.call(allKeys, booleans, nulls, numbers, strings, undefineds);
+  var keys = [];
+  var i = 0;
+
+  keys = Object.keys(keysByType[TYPE_BOOLEAN]);
+  // Boolean('false') === true.  Detect if it's one or the other.
+  for (i = 0; i < keys.length; i++) allKeys.push(keys[i] === 'true' ? true : false);
+
+  keys = Object.keys(keysByType[TYPE_NUMBER]);
+  for (i = 0; i < keys.length; i++) allKeys.push(Number(keys[i]));
+
+  keys = Object.keys(keysByType[TYPE_STRING]);
+  for (i = 0; i < keys.length; i++) allKeys.push(String(keys[i]));
+
+  // there can be only 1 key in the null/undefined dicts.
+  Object.keys(keysByType[TYPE_NULL]).length && allKeys.push(null);
+  Object.keys(keysByType[TYPE_UNDEFINED]).length && allKeys.push(undefined);
+
   return allKeys;
 };
 
