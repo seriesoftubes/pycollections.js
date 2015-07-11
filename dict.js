@@ -126,39 +126,55 @@ Dict.prototype.iterkeys = function(cb) {
 
   keys = Object.keys(keysByType[TYPE_BOOLEAN]);
   // Boolean('false') === true.  Detect if it's one or the other.
-  for (i = 0; i < keys.length; i++) cb(keys[i] === 'true' ? true : false);
+  for (i = 0; i < keys.length; i++) cb(keys[i] === 'true' ? true : false, this);
 
   keys = Object.keys(keysByType[TYPE_NUMBER]);
-  for (i = 0; i < keys.length; i++) cb(Number(keys[i]));
+  for (i = 0; i < keys.length; i++) cb(Number(keys[i]), this);
 
   keys = Object.keys(keysByType[TYPE_STRING]);
-  for (i = 0; i < keys.length; i++) cb(String(keys[i]));
+  for (i = 0; i < keys.length; i++) cb(String(keys[i]), this);
 
   // there can be only 1 key in the null/undefined dicts.
-  Object.keys(keysByType[TYPE_NULL]).length && cb(null);
-  Object.keys(keysByType[TYPE_UNDEFINED]).length && cb(undefined);
+  Object.keys(keysByType[TYPE_NULL]).length && cb(null, this);
+  Object.keys(keysByType[TYPE_UNDEFINED]).length && cb(undefined, this);
 };
 
 Dict.prototype.keys = function() {
-  var keys = [];
-  this.iterkeys(keys.push.bind(keys));
-  return keys;
-};
-
-Dict.prototype.items = function() {
-  return this.keys().map(function(key) {
-    return [key, this.get(key)];
-  }, this);
+  var results = [];
+  this.iterkeys(function(key) {
+    results.push(key);
+  });
+  return results;
 };
 
 Dict.prototype.iteritems = function(cb) {
-  this.keys().forEach(function(key) {
-    cb(key, this.get(key), this);
-  }, this);
+  var self = this;
+  this.iterkeys(function(key) {
+    cb(key, self.get(key), self);
+  });
+};
+
+Dict.prototype.items = function() {
+  var results = [];
+  this.iteritems(function(key, value) {
+    results.push([key, value]);
+  });
+  return results;
+};
+
+Dict.prototype.itervalues = function(cb) {
+  var self = this;
+  this.iterkeys(function(key) {
+    cb(self.get(key), self);
+  });
 };
 
 Dict.prototype.values = function() {
-  return this.keys().map(this.get.bind(this));
+  var results = [];
+  this.itervalues(function(value) {
+    results.push(value);
+  });
+  return results;
 };
 
 Dict.prototype.modify = function(key, fn) {
