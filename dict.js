@@ -119,27 +119,30 @@ Dict.prototype.set = function(key, value) {
   return this.dict_[GET_TYPE(key)][key] = value;
 };
 
-Dict.prototype.keys = function() {
+Dict.prototype.iterkeys = function(cb) {
   var keysByType = this.dict_;
-  var allKeys = [];
   var keys = [];
   var i = 0;
 
   keys = Object.keys(keysByType[TYPE_BOOLEAN]);
   // Boolean('false') === true.  Detect if it's one or the other.
-  for (i = 0; i < keys.length; i++) allKeys.push(keys[i] === 'true' ? true : false);
+  for (i = 0; i < keys.length; i++) cb(keys[i] === 'true' ? true : false);
 
   keys = Object.keys(keysByType[TYPE_NUMBER]);
-  for (i = 0; i < keys.length; i++) allKeys.push(Number(keys[i]));
+  for (i = 0; i < keys.length; i++) cb(Number(keys[i]));
 
   keys = Object.keys(keysByType[TYPE_STRING]);
-  for (i = 0; i < keys.length; i++) allKeys.push(String(keys[i]));
+  for (i = 0; i < keys.length; i++) cb(String(keys[i]));
 
   // there can be only 1 key in the null/undefined dicts.
-  Object.keys(keysByType[TYPE_NULL]).length && allKeys.push(null);
-  Object.keys(keysByType[TYPE_UNDEFINED]).length && allKeys.push(undefined);
+  Object.keys(keysByType[TYPE_NULL]).length && cb(null);
+  Object.keys(keysByType[TYPE_UNDEFINED]).length && cb(undefined);
+};
 
-  return allKeys;
+Dict.prototype.keys = function() {
+  var keys = [];
+  this.iterkeys(keys.push.bind(keys));
+  return keys;
 };
 
 Dict.prototype.items = function() {
