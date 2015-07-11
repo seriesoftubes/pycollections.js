@@ -2,8 +2,8 @@
  * A Dict is a useful interface on top of Object.
  * Corresponds to Python's built-in dict class.
  */
+'use strict';
 
-// TODO: strict mode
 
 var DictKeyFound = function(key) {
   this.key = key;

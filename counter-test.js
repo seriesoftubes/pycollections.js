@@ -1,4 +1,6 @@
 // Tests for counter.js.
+'use strict';
+
 
 describe('Counter constructor', function() {
   it('Is a subclass of Dict and DefaultDict.', function() {

@@ -1,4 +1,6 @@
 // Tests for defaultdict.js.
+'use strict';
+
 
 describe('Initialized empty defaultdict', function() {
 

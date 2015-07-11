@@ -1,4 +1,6 @@
 // Tests for dict.js.
+'use strict';
+
 
 describe('Dict constructed with no args', function() {
   var dict;

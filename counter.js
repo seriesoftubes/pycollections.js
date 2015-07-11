@@ -2,6 +2,7 @@
  * A Counter can count distinct hashable elements.
  * Corresponds to Python's collections.Counter class.
  */
+'use strict';
 
 
 var Counter = (function() {

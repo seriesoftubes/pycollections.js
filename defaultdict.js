@@ -2,6 +2,7 @@
  * A DefaultDict automatically sets a default value for missing keys when running .get(key).
  * Corresponds to Python's collections.DefaultDict class.
  */
+'use strict';
 
 
 // TODO: dist file that has all classes.
