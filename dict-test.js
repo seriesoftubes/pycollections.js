@@ -630,11 +630,12 @@ describe('Dict.keys', function() {
     expect(dict.get(letterA)).toBe(secondValue);
   });
 
-  it('Should return keys of boolean, number, string, and undefined types.', function() {
+  it('Should return keys of boolean, null, number, string, and undefined types.', function() {
     var keysOfAllTypes = [
       false, true,
       0, 1,
       '', 'a',
+      null,
       undefined
     ];
     var dict = Dict.fromKeys(keysOfAllTypes, 1);
@@ -712,6 +713,21 @@ describe('Dict.set', function() {
     expect(dict.get(stringKey)).toBe(stringValue);
   });
 
+  it('Should set null key (but not its corresponding string key) to a value and get it.', function() {
+    var nullValue = {1: 2};
+    var nullKey = null;
+    var stringKey = String(nullKey);
+    expect(stringKey).toBe('null');
+    dict.set(nullKey, nullValue);
+    expect(dict.get(nullKey)).toBe(nullValue);
+    expect(dict.get.bind(dict, stringKey)).toThrow();
+
+    var stringValue = {3: 4};
+    dict.set(stringKey, stringValue);
+    expect(dict.get(nullKey)).toBe(nullValue);
+    expect(dict.get(stringKey)).toBe(stringValue);
+  });
+
   it('Should set undefined key (but not its corresponding string key) to a value and get it.', function() {
     var undefinedValue = {1: 2};
     var undefinedKey = undefined;
@@ -730,8 +746,7 @@ describe('Dict.set', function() {
   it('Should not allow setting a key of type object or array, or a null key.', function() {
     var badKeys = [
       [1, 2],
-      {3: 'asdf'},
-      null
+      {3: 'asdf'}
     ];
     badKeys.forEach(function(key) {
       expect(dict.set.bind(dict, key, 987)).toThrow();
@@ -990,7 +1005,14 @@ describe('Dict.hasKey', function() {
     expect(dict.hasKey('false')).toBe(false);
   });
 
-  it('Should return true for an existing undefined key and its string counterpart', function() {
+  it('Should return true for an existing null key and not its string counterpart', function() {
+    var key = null;
+    dict.set(key, 123);
+    expect(dict.hasKey(key)).toBe(true);
+    expect(dict.hasKey(String(key))).toBe(false);
+  });
+
+  it('Should return true for an existing undefined key and not its string counterpart', function() {
     var key = undefined;
     dict.set(key, 123);
     expect(dict.hasKey(key)).toBe(true);

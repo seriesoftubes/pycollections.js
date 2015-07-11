@@ -7,16 +7,22 @@
 var Dict = (function() {
 
 var TYPE_BOOLEAN = typeof(true);
+var TYPE_NULL = 'null'; // special fake type just for the purpose of dict.
 var TYPE_NUMBER = typeof(1);
 var TYPE_STRING = typeof('s');
 var TYPE_UNDEFINED = typeof(undefined);
-// TODO: null type.  can do GetType = fn(key) {key === null ? null : typeof(key);}
+
 var TYPES = [
   TYPE_BOOLEAN,
+  TYPE_NULL,
   TYPE_NUMBER,
   TYPE_STRING,
   TYPE_UNDEFINED
 ];
+
+var GET_TYPE = function(v) {
+  return v === null ? TYPE_NULL : typeof(v);
+};
 
 
 var Dict = function(opt_keyValues) {
@@ -49,7 +55,7 @@ Dict.fromKeys = function(keys, valueForAllKeys) {
 };
 
 Dict.checkKeyIsHashable_ = function(key) {
-  if (typeof(key) === 'object') throw Error('Unhashable key:' + key);
+  if (GET_TYPE(key) === 'object') throw Error('Unhashable key:' + key);
 };
 
 Dict.prototype.clear = function() {
@@ -67,7 +73,7 @@ Dict.prototype.copy = function() {
 Dict.prototype.del = function(key) {
   Dict.checkKeyIsHashable_(key);
   if (!this.hasKey(key)) throw Error('Missing key: ' + key);
-  delete this.dict_[typeof(key)][key];
+  delete this.dict_[GET_TYPE(key)][key];
 };
 
 Dict.prototype.pop = function(key, opt_defaultValue) {
@@ -94,20 +100,20 @@ Dict.prototype.isEmpty = function() {
 
 Dict.prototype.hasKey = function(key) {
   Dict.checkKeyIsHashable_(key);
-  return this.dict_[typeof(key)].hasOwnProperty(key);
+  return this.dict_[GET_TYPE(key)].hasOwnProperty(key);
 };
 
 Dict.prototype.get = function(key, opt_defaultValue) {
   Dict.checkKeyIsHashable_(key);
   var hasKey = this.hasKey(key);
   if (arguments.length === 1 && !hasKey) throw Error('Missing key: ' + key);
-  return hasKey ? this.dict_[typeof(key)][key] : opt_defaultValue;
+  return hasKey ? this.dict_[GET_TYPE(key)][key] : opt_defaultValue;
 };
 
 Dict.prototype.set = function(key, value) {
   Dict.checkKeyIsHashable_(key);
   if (arguments.length < 2) throw Error('Must supply a key and a value.');
-  return this.dict_[typeof(key)][key] = value;
+  return this.dict_[GET_TYPE(key)][key] = value;
 };
 
 Dict.prototype.keys = function() {
@@ -123,11 +129,14 @@ Dict.prototype.keys = function() {
   var stringKeys = Object.keys(keysByType[TYPE_STRING]);
   var strings = stringKeys.map(String);
 
+  var nullKeys = Object.keys(keysByType[TYPE_NULL]);
+  var nulls = nullKeys.map(function(){return null;});
+
   var undefinedKeys = Object.keys(keysByType[TYPE_UNDEFINED]);
   var undefineds = undefinedKeys.map(function(){return undefined;});
 
   var allKeys = [];
-  allKeys = allKeys.concat.call(allKeys, booleans, numbers, strings, undefineds);
+  allKeys = allKeys.concat.call(allKeys, booleans, nulls, numbers, strings, undefineds);
   return allKeys;
 };
 
