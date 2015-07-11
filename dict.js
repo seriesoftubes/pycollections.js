@@ -38,23 +38,6 @@ var Dict = function(opt_keyValues) {
   opt_keyValues !== undefined && this.update(opt_keyValues);
 };
 
-Dict.prototype.update = function(keyValues) {
-  var setKey = this.set.bind(this);
-  if (keyValues instanceof Dict) {
-    keyValues.iteritems(setKey);
-  } else if (keyValues instanceof Array) {
-    keyValues.forEach(function(keyValue) {
-      setKey(keyValue[0], keyValue[1]);
-    });
-  } else if (typeof keyValues === 'object') {
-    Object.keys(keyValues).forEach(function(key) {
-      setKey(key, keyValues[key]);
-    });
-  } else {
-    throw Error('Cannot update dict from type: ' + typeof(keyValues));
-  }
-};
-
 Dict.fromKeys = function(keys, valueForAllKeys) {
   var keyValues = keys.map(function(key) {
     return [key, valueForAllKeys];
@@ -78,6 +61,43 @@ Dict.prototype.copy = function() {
   return new Dict(this);
 };
 
+Dict.prototype.set = function(key, value) {
+  Dict.checkKeyIsHashable_(key);
+  if (arguments.length < 2) throw Error('Must supply a key and a value.');
+  return this.dict_[GET_TYPE(key)][key] = value;
+};
+
+Dict.prototype.update = function(keyValues) {
+  var setKey = this.set.bind(this);
+  if (keyValues instanceof Dict) {
+    keyValues.iteritems(setKey);
+  } else if (keyValues instanceof Array) {
+    keyValues.forEach(function(keyValue) {
+      setKey(keyValue[0], keyValue[1]);
+    });
+  } else if (typeof keyValues === 'object') {
+    Object.keys(keyValues).forEach(function(key) {
+      setKey(key, keyValues[key]);
+    });
+  } else {
+    throw Error('Cannot update dict from type: ' + typeof(keyValues));
+  }
+};
+
+Dict.prototype.hasKey = function(key) {
+  Dict.checkKeyIsHashable_(key);
+  return this.dict_[GET_TYPE(key)].hasOwnProperty(key);
+};
+
+Dict.prototype.get = function(key, opt_defaultValue) {
+  var numArgs = arguments.length;
+  if (!numArgs) throw Error('Must supply a key');
+  Dict.checkKeyIsHashable_(key);
+  var hasKey = this.hasKey(key);
+  if (numArgs === 1 && !hasKey) throw Error('Missing key: ' + key);
+  return hasKey ? this.dict_[GET_TYPE(key)][key] : opt_defaultValue;
+};
+
 Dict.prototype.del = function(key) {
   Dict.checkKeyIsHashable_(key);
   if (!this.hasKey(key)) throw Error('Missing key: ' + key);
@@ -96,36 +116,6 @@ Dict.prototype.popitem = function() {
   if (this.isEmpty()) throw Error('Cannot pop item from empty dict.');
   var keyToPop = this.keys()[0];
   return [keyToPop, this.pop(keyToPop)];
-};
-
-// TODO: move these functions below keys()
-Dict.prototype.length = function() {
-  return this.keys().length;
-};
-
-Dict.prototype.isEmpty = function() {
-  return !this.length();
-  // todo: use getFirstKey
-};
-
-Dict.prototype.hasKey = function(key) {
-  Dict.checkKeyIsHashable_(key);
-  return this.dict_[GET_TYPE(key)].hasOwnProperty(key);
-};
-
-Dict.prototype.get = function(key, opt_defaultValue) {
-  var numArgs = arguments.length;
-  if (!numArgs) throw Error('Must supply a key');
-  Dict.checkKeyIsHashable_(key);
-  var hasKey = this.hasKey(key);
-  if (numArgs === 1 && !hasKey) throw Error('Missing key: ' + key);
-  return hasKey ? this.dict_[GET_TYPE(key)][key] : opt_defaultValue;
-};
-
-Dict.prototype.set = function(key, value) {
-  Dict.checkKeyIsHashable_(key);
-  if (arguments.length < 2) throw Error('Must supply a key and a value.');
-  return this.dict_[GET_TYPE(key)][key] = value;
 };
 
 Dict.prototype.iterkeys = function(cb) {
@@ -170,6 +160,18 @@ Dict.prototype.getFirstMatchingKey = function(predicate) {
   }
 
   throw new DictKeyNotFound();
+};
+
+Dict.prototype.length = function() {
+  var count = 0;
+  this.iterkeys(function(key) {
+    count++;
+  });
+  return count;
+};
+
+Dict.prototype.isEmpty = function() {
+  return !this.length();
 };
 
 Dict.prototype.iteritems = function(cb) {
