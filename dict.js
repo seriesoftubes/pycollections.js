@@ -52,9 +52,9 @@ Dict.checkKeyIsHashable_ = function(key) {
 
 Dict.prototype.clear = function() {
   var typeToKeyValues = {};
-  TYPES.forEach(function(type) {
-    typeToKeyValues[type] = {};
-  });
+  for (var i = 0, len = TYPES.length; i < len; i++) {
+    typeToKeyValues[TYPES[i]] = {};
+  }
   this.dict_ = typeToKeyValues;
 };
 
