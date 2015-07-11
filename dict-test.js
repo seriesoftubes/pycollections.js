@@ -629,6 +629,20 @@ describe('Dict.keys', function() {
     expect(dict.hasKey(letterA)).toBe(true);
     expect(dict.get(letterA)).toBe(secondValue);
   });
+
+  it('Should return keys of boolean, number, string, and undefined types.', function() {
+    var keysOfAllTypes = [
+      false, true,
+      0, 1,
+      '', 'a',
+      undefined
+    ];
+    var dict = Dict.fromKeys(keysOfAllTypes, 1);
+    var keys = dict.keys();
+    keysOfAllTypes.forEach(function(key) {
+      expect(keys.indexOf(key)).toBeGreaterThan(-1);
+    });
+  });
 });
 
 
@@ -665,33 +679,62 @@ describe('Dict.set', function() {
     var key = 'yea';
     var value = {1: 2};
     dict.set(key, value);
-    expect(dict.dict_[key]).toBe(value);
     expect(dict.get(key)).toBe(value);
   });
 
-  it('Should set a number type key and its corresponding string key to the same value and get it.', function() {
-    var numericKeyValue = {1: 2};
-    dict.set(1, numericKeyValue);
-    expect(dict.dict_[1]).toBe(numericKeyValue);
-    expect(dict.get(1)).toBe(numericKeyValue);
-    expect(dict.dict_['1']).toBe(numericKeyValue);
-    expect(dict.get('1')).toBe(numericKeyValue);
+  it('Should set a number type key (but not its corresponding string key) to a value and get it.', function() {
+    var numericKey = 1;
+    var stringKey = String(numericKey);
+    expect(stringKey).toBe('1');
+    var numericValue = {1: 2};
+    dict.set(numericKey, numericValue);
+    expect(dict.get(numericKey)).toBe(numericValue);
+    expect(dict.get.bind(dict, stringKey)).toThrow();
 
-    var stringKeyValue = {3: 4};
-    dict.set('1', stringKeyValue);
-    expect(dict.dict_[1]).toBe(stringKeyValue);
-    expect(dict.get(1)).toBe(stringKeyValue);
-    expect(dict.dict_['1']).toBe(stringKeyValue);
-    expect(dict.get('1')).toBe(stringKeyValue);
+    var stringValue = {3: 4};
+    dict.set(stringKey, stringValue);
+    expect(dict.get(numericKey)).toBe(numericValue);
+    expect(dict.get(stringKey)).toBe(stringValue);
   });
 
-  it('Should not allow setting a key of type object or array.', function() {
+  it('Should set a boolean type key (but not its corresponding string key) to a value and get it.', function() {
+    var boolValue = {1: 2};
+    var boolKey = false;
+    var stringKey = String(boolKey);
+    expect(stringKey).toBe('false');
+    dict.set(boolKey, boolValue);
+    expect(dict.get(boolKey)).toBe(boolValue);
+    expect(dict.get.bind(dict, stringKey)).toThrow();
+
+    var stringValue = {3: 4};
+    dict.set(stringKey, stringValue);
+    expect(dict.get(boolKey)).toBe(boolValue);
+    expect(dict.get(stringKey)).toBe(stringValue);
+  });
+
+  it('Should set undefined key (but not its corresponding string key) to a value and get it.', function() {
+    var undefinedValue = {1: 2};
+    var undefinedKey = undefined;
+    var stringKey = String(undefinedKey);
+    expect(stringKey).toBe('undefined');
+    dict.set(undefinedKey, undefinedValue);
+    expect(dict.get(undefinedKey)).toBe(undefinedValue);
+    expect(dict.get.bind(dict, stringKey)).toThrow();
+
+    var stringValue = {3: 4};
+    dict.set(stringKey, stringValue);
+    expect(dict.get(undefinedKey)).toBe(undefinedValue);
+    expect(dict.get(stringKey)).toBe(stringValue);
+  });
+
+  it('Should not allow setting a key of type object or array, or a null key.', function() {
     var badKeys = [
       [1, 2],
-      {3: 'asdf'}
+      {3: 'asdf'},
+      null
     ];
     badKeys.forEach(function(key) {
-      expect(dict.set.bind(dict, key)).toThrow();
+      expect(dict.set.bind(dict, key, 987)).toThrow();
     });
   });
 
@@ -927,23 +970,30 @@ describe('Dict.hasKey', function() {
     expect(dict.hasKey('not existing')).toBe(false);
   });
 
-  it('Should return true for an existing numeric key and its string counterpart', function() {
+  it('Should return true for an existing numeric key and not its string counterpart', function() {
     var key = 100;
     dict.set(key, 123);
     expect(dict.hasKey(key)).toBe(true);
-    expect(dict.hasKey(String(key))).toBe(true);
+    expect(dict.hasKey(String(key))).toBe(false);
 
     expect(dict.hasKey(9999999)).toBe(false);
     expect(dict.hasKey('9999999')).toBe(false);
   });
 
-  it('Should return true for an existing boolean key and its string counterpart', function() {
+  it('Should return true for an existing boolean key and not its string counterpart', function() {
     var key = true;
     dict.set(key, 123);
     expect(dict.hasKey(key)).toBe(true);
-    expect(dict.hasKey(String(key))).toBe(true);
+    expect(dict.hasKey(String(key))).toBe(false);
 
     expect(dict.hasKey(false)).toBe(false);
     expect(dict.hasKey('false')).toBe(false);
+  });
+
+  it('Should return true for an existing undefined key and its string counterpart', function() {
+    var key = undefined;
+    dict.set(key, 123);
+    expect(dict.hasKey(key)).toBe(true);
+    expect(dict.hasKey(String(key))).toBe(false);
   });
 });
