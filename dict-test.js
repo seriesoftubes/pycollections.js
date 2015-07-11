@@ -670,6 +670,33 @@ describe('Dict.keys', function() {
 });
 
 
+describe('Dict.getFirstKey', function() {
+  it('Should throw a KeyNotFound error when called on an empty dict.', function() {
+    var dict = new Dict();
+    try {
+      dict.getFirstKey();
+    } catch (e) {
+      expect(e instanceof DictKeyNotFound).toBe(true);
+      return;
+    }
+    throw Error('Should not be reached');
+  });
+
+  it('Should not throw a KeyNotFound error when called on a non-empty dict', function() {
+    var theKey = 'a';
+    var dict = new Dict([[theKey, 123]]);
+    expect(dict.getFirstKey()).toBe(theKey);
+  });
+
+  it('Should return one of the keys of a non-empty dict', function() {
+    var keys = [0, 1, false, true, '', 'a', undefined, null];
+    var dict = Dict.fromKeys(keys);
+    var firstKey = dict.getFirstKey();
+    expect(keys).toContain(firstKey);
+  });
+});
+
+
 describe('Dict.fromKeys', function() {
   it('Should set all supplied keys to the same value.', function() {
     var theValue = {1: 2, 3: {4: 5}};

@@ -3,6 +3,13 @@
  * Corresponds to Python's built-in dict class.
  */
 
+// TODO: strict mode
+
+var DictKeyFound = function(key) {
+  this.key = key;
+};
+var DictKeyNotFound = function() {};
+
 
 var Dict = (function() {
 
@@ -91,12 +98,14 @@ Dict.prototype.popitem = function() {
   return [keyToPop, this.pop(keyToPop)];
 };
 
+// TODO: move these functions below keys()
 Dict.prototype.length = function() {
   return this.keys().length;
 };
 
 Dict.prototype.isEmpty = function() {
   return !this.length();
+  // todo: use getFirstKey
 };
 
 Dict.prototype.hasKey = function(key) {
@@ -121,20 +130,10 @@ Dict.prototype.set = function(key, value) {
 
 Dict.prototype.iterkeys = function(cb) {
   var keysByType = this.dict_;
-  var keys = [];
-  var i = 0;
-
-  keys = Object.keys(keysByType[TYPE_BOOLEAN]);
-  // Boolean('false') === true.  Detect if it's one or the other.
-  for (i = 0; i < keys.length; i++) cb(keys[i] === 'true' ? true : false, this);
-
-  keys = Object.keys(keysByType[TYPE_NUMBER]);
-  for (i = 0; i < keys.length; i++) cb(Number(keys[i]), this);
-
-  keys = Object.keys(keysByType[TYPE_STRING]);
-  for (i = 0; i < keys.length; i++) cb(String(keys[i]), this);
-
-  // there can be only 1 key in the null/undefined dicts.
+  var key;
+  for (key in keysByType[TYPE_BOOLEAN]) cb(key === 'true' ? true : false, this);
+  for (key in keysByType[TYPE_NUMBER]) cb(Number(key), this);
+  for (key in keysByType[TYPE_STRING]) cb(key, this);
   Object.keys(keysByType[TYPE_NULL]).length && cb(null, this);
   Object.keys(keysByType[TYPE_UNDEFINED]).length && cb(undefined, this);
 };
@@ -145,6 +144,32 @@ Dict.prototype.keys = function() {
     results.push(key);
   });
   return results;
+};
+
+Dict.prototype.getFirstKey = function() {
+  try {
+    this.iterkeys(function(key) {
+      throw new DictKeyFound(key);
+    });
+  } catch (e) {
+    if (e instanceof DictKeyFound) return e.key;
+    throw e;
+  }
+
+  throw new DictKeyNotFound();
+};
+
+Dict.prototype.getFirstMatchingKey = function(predicate) {
+  try {
+    this.iterkeys(function(key, ctx) {
+      if (predicate(key, ctx)) throw new DictKeyFound(key);
+    });
+  } catch (e) {
+    if (e instanceof DictKeyFound) return e.key;
+    throw e;
+  }
+
+  throw new DictKeyNotFound();
 };
 
 Dict.prototype.iteritems = function(cb) {
