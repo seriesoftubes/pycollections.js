@@ -679,7 +679,7 @@ describe('Dict.getFirstKey', function() {
       expect(e instanceof DictKeyNotFound).toBe(true);
       return;
     }
-    throw Error('Should not be reached');
+    throw Error('Should not be reached because a key should not be found.');
   });
 
   it('Should not throw a KeyNotFound error when called on a non-empty dict', function() {
@@ -693,6 +693,60 @@ describe('Dict.getFirstKey', function() {
     var dict = Dict.fromKeys(keys);
     var firstKey = dict.getFirstKey();
     expect(keys).toContain(firstKey);
+  });
+});
+
+
+describe('Dict.getFirstMatchingKey', function() {
+  var alwaysTrue = function() {return true};
+
+  it('Should throw a KeyNotFound error when called on an empty dict.', function() {
+    var dict = new Dict();
+    try {
+      dict.getFirstMatchingKey();
+    } catch (e) {
+      expect(e instanceof DictKeyNotFound).toBe(true);
+      return;
+    }
+    throw Error('Should not be reached because a key should not be found.');
+  });
+
+  it('Should not throw a KeyNotFound error when called on a non-empty dict with an always-true predicate', function() {
+    var theKey = 'a';
+    var dict = new Dict([[theKey, 123]]);
+    expect(dict.getFirstMatchingKey(alwaysTrue)).toBe(theKey);
+  });
+
+  it('Should return one of the keys of a non-empty dict when called with an always-true predicate', function() {
+    var keys = [0, 1, false, true, '', 'a', undefined, null];
+    var dict = Dict.fromKeys(keys);
+    var firstKey = dict.getFirstMatchingKey(alwaysTrue);
+    expect(keys).toContain(firstKey);
+  });
+
+  it('Should accept a predicate that processes potentially every key in the dict', function() {
+    var keys = [0, 1, false, true, '', 'a', undefined, null];
+    var dict = Dict.fromKeys(keys, 1);
+
+    var numKeysSeen = 0;
+
+    // This predicate should iterate over all keys.
+    var alwaysFalse = function(key, ctx) {
+      expect(keys).toContain(key);
+      expect(ctx).toBe(dict);
+      numKeysSeen++;
+      return false;
+    };
+
+    try {
+      dict.getFirstMatchingKey(alwaysFalse);
+    } catch (e) {
+      expect(e instanceof DictKeyNotFound).toBe(true);
+      expect(numKeysSeen).toEqual(keys.length);
+      return;
+    }
+
+    throw Error('Should not be reached because a key should not be found.');
   });
 });
 
