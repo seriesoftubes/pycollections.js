@@ -73,13 +73,16 @@ Dict.prototype.update = function(keyValues) {
   if (keyValues instanceof Dict) {
     keyValues.iteritems(setKey);
   } else if (keyValues instanceof Array) {
-    keyValues.forEach(function(keyValue) {
+    for (var i = 0, len = keyValues.length; i < len; i++) {
+      var keyValue = keyValues[i];
       setKey(keyValue[0], keyValue[1]);
-    });
+    }
   } else if (typeof keyValues === 'object') {
-    Object.keys(keyValues).forEach(function(key) {
+    var keys = Object.keys(keyValues);
+    for (i = 0, len = keys.length; i < len; i++) {
+      var key = keys[i];
       setKey(key, keyValues[key]);
-    });
+    }
   } else {
     throw Error('Cannot update dict from type: ' + typeof(keyValues));
   }
