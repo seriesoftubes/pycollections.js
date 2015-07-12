@@ -538,7 +538,7 @@ describe('Dict.isEmpty', function() {
 });
 
 
-describe('Dict.modify', function() {
+describe('Dict.setOneNewValue', function() {
   var dict;
 
   beforeEach(function() {
@@ -546,8 +546,8 @@ describe('Dict.modify', function() {
   });
 
   it('Should throw an error if not given a function as its second arg.', function() {
-    expect(dict.modify.bind(dict)).toThrow();
-    expect(dict.modify.bind(dict, 123)).toThrow();
+    expect(dict.setOneNewValue.bind(dict)).toThrow();
+    expect(dict.setOneNewValue.bind(dict, 123)).toThrow();
   });
 
   it('Should not affect any keys given an identity function', function() {
@@ -561,8 +561,8 @@ describe('Dict.modify', function() {
     var identity = function(v) {
       return v;
     };
-    dict.modify(keyA, identity);
-    dict.modify(keyB, identity);
+    dict.setOneNewValue(keyA, identity);
+    dict.setOneNewValue(keyB, identity);
 
     expect(dict.get(keyA)).toBe(valueA);
     expect(dict.get(keyB)).toBe(valueB);
@@ -577,8 +577,8 @@ describe('Dict.modify', function() {
     dict.set(keyB, valueB);
 
     var getOne = function() { return 1; };
-    dict.modify(keyA, getOne);
-    dict.modify(keyB, getOne);
+    dict.setOneNewValue(keyA, getOne);
+    dict.setOneNewValue(keyB, getOne);
 
     expect(dict.get(keyA)).toBe(1);
     expect(dict.get(keyB)).toBe(1);
@@ -600,7 +600,7 @@ describe('Dict.modify', function() {
     var originalValueOfA = 1;
     var keyA = 'a';
     dict.set(keyA, originalValueOfA);
-    dict.modify(keyA, modifier);
+    dict.setOneNewValue(keyA, modifier);
     var newA = dict.get(keyA);
     expect(newA[yeaKey]).toBe(originalValueOfA * multiplier)
   });

@@ -201,19 +201,35 @@ Dict.prototype.values = function() {
   return results;
 };
 
-Dict.prototype.modify = function(key, fn) {
+Dict.prototype.setOneNewValue = function(key, fn) {
   return this.set(key, fn(this.get(key), key, this));
 };
 
-Dict.prototype.modifySome = function(keys, fn) {
+Dict.prototype.setSomeNewValues = function(keys, fn) {
   for (var i = 0, len = keys.length; i < len; i++) {
-    this.modify(keys[i], fn);
+    this.setOneNewValue(keys[i], fn);
   }
 };
 
-Dict.prototype.modifyAll = function(fn) {
+Dict.prototype.setAllNewValues = function(fn) {
   this.iterkeys(function(key, self) {
-    self.modify(key, fn);
+    self.setOneNewValue(key, fn);
+  });
+};
+
+Dict.prototype.modifyOneValueInPlace = function(key, fn) {
+  fn(this.get(key), key, this);
+};
+
+Dict.prototype.modifySomeValuesInPlace = function(keys, fn) {
+  for (var i = 0, len = keys.length; i < len; i++) {
+    this.modifyOneValueInPlace(keys[i], fn);
+  }
+};
+
+Dict.prototype.modifyAllValuesInPlace = function(fn) {
+  this.iterkeys(function(key, self) {
+    self.modifyOneValueInPlace(key, fn);
   });
 };
 

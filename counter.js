@@ -31,7 +31,7 @@ Counter.prototype.update = function(keyValues) {
     return DefaultDict.prototype.update.call(this, keyValues);
   }
 
-  var modify = this.modify.bind(this);
+  var modify = this.setOneNewValue.bind(this);
   if (isDict) {
     // Given an Object/Dict, increments current count
     // of each key in the Dict/Object by its corresponding value.
@@ -75,7 +75,7 @@ Counter.prototype.elements = function() {
 };
 
 Counter.prototype.subtract = function(keyValues) {
-  var modify = this.modify.bind(this);
+  var modify = this.setOneNewValue.bind(this);
   if (keyValues instanceof Dict) {
     // Given an Object/Dict, decrements current count
     // of each key in the Dict/Object by its corresponding value.
