@@ -15,13 +15,12 @@ var TYPE_NUMBER = typeof(1);
 var TYPE_STRING = typeof('s');
 var TYPE_UNDEFINED = typeof(undefined);
 
-var TYPES = [
-  TYPE_BOOLEAN,
-  TYPE_NULL,
-  TYPE_NUMBER,
-  TYPE_STRING,
-  TYPE_UNDEFINED
-];
+var TYPES = {};
+TYPES[TYPE_BOOLEAN] = true;
+TYPES[TYPE_NULL] = true;
+TYPES[TYPE_NUMBER] = true;
+TYPES[TYPE_STRING] = true;
+TYPES[TYPE_UNDEFINED] = true;
 
 // TODO: maybe memoize this (would req json.dump or a indexOf on array) - test d.get()
 var GET_TYPE = function(v) {
@@ -43,13 +42,13 @@ Dict.fromKeys = function(keys, valueForAllKeys) {
 };
 
 Dict.checkKeyIsHashable_ = function(key) {
-  if (GET_TYPE(key) === 'object') throw Error('Unhashable key:' + key);
+  if (!TYPES[GET_TYPE(key)]) throw Error('Unhashable key:' + key);
 };
 
 Dict.prototype.clear = function() {
   var typeToKeyValues = {};
-  for (var i = 0, len = TYPES.length; i < len; i++) {
-    typeToKeyValues[TYPES[i]] = {};
+  for (var type in TYPES) {
+    typeToKeyValues[type] = {};
   }
   this.dict_ = typeToKeyValues;
 };
