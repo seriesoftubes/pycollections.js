@@ -113,11 +113,6 @@ Dict.prototype.pop = function(key, opt_defaultValue) {
   return value;
 };
 
-Dict.prototype.popitem = function() {
-  var keyToPop = this.getFirstKey();
-  return [keyToPop, this.pop(keyToPop)];
-};
-
 Dict.prototype.iterkeys = function(cb) {
   var keysByType = this.dict_;
   var key;
@@ -164,6 +159,11 @@ Dict.prototype.getFirstMatchingKey = function(predicate) {
   return firstKey;
 };
 
+Dict.prototype.popitem = function() {
+  var keyToPop = this.getFirstKey();
+  return [keyToPop, this.pop(keyToPop)];
+};
+
 Dict.prototype.length = function() {
   var count = 0;
   this.iterkeys(function(){count++});
@@ -203,8 +203,7 @@ Dict.prototype.values = function() {
 };
 
 Dict.prototype.modify = function(key, fn) {
-  var value = this.get(key);
-  return this.set(key, fn(value, key, this));
+  return this.set(key, fn(this.get(key), key, this));
 };
 
 Dict.prototype.modifySome = function(keys, fn) {
