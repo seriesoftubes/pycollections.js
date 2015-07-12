@@ -4,10 +4,6 @@
  */
 'use strict';
 
-
-var DictKeyFound = function(key) {
-  this.key = key;
-};
 var DictKeyNotFound = function() {};
 
 
@@ -118,9 +114,7 @@ Dict.prototype.pop = function(key, opt_defaultValue) {
 };
 
 Dict.prototype.popitem = function() {
-  var keys = this.keys();
-  if (!keys.length) throw Error('Cannot pop item from empty dict.');
-  var keyToPop = keys[0];
+  var keyToPop = this.getFirstKey();
   return [keyToPop, this.pop(keyToPop)];
 };
 
@@ -143,29 +137,31 @@ Dict.prototype.keys = function() {
 };
 
 Dict.prototype.getFirstKey = function() {
-  try {
-    this.iterkeys(function(key) {
-      throw new DictKeyFound(key);
-    });
-  } catch (e) {
-    if (e instanceof DictKeyFound) return e.key;
-    else throw e;
-  }
-
-  throw new DictKeyNotFound();
+  var firstKey;
+  var keyWasFound = false;
+  this.iterkeys(function(key) {
+    if (!keyWasFound) {
+      firstKey = key; 
+      keyWasFound = true;
+    }
+  });
+  // important that this throws an exception because the first key can be literal undefined.
+  if (!keyWasFound) throw new DictKeyNotFound();
+  return firstKey;
 };
 
 Dict.prototype.getFirstMatchingKey = function(predicate) {
-  try {
-    this.iterkeys(function(key, ctx) {
-      if (predicate(key, ctx)) throw new DictKeyFound(key);
-    });
-  } catch (e) {
-    if (e instanceof DictKeyFound) return e.key;
-    else throw e;
-  }
-
-  throw new DictKeyNotFound();
+  var firstKey;
+  var keyWasFound = false;
+  this.iterkeys(function(key, self) {
+    if (!keyWasFound && predicate(key, self)) {
+      firstKey = key;
+      keyWasFound = true;
+    }
+  });
+  // important that this throws an exception because the first key can be literal undefined.
+  if (!keyWasFound) throw new DictKeyNotFound();
+  return firstKey;
 };
 
 Dict.prototype.length = function() {
@@ -179,8 +175,7 @@ Dict.prototype.isEmpty = function() {
 };
 
 Dict.prototype.iteritems = function(cb) {
-  var self = this;
-  this.iterkeys(function(key) {
+  this.iterkeys(function(key, self) {
     cb(key, self.get(key), self);
   });
 };
@@ -194,8 +189,7 @@ Dict.prototype.items = function() {
 };
 
 Dict.prototype.itervalues = function(cb) {
-  var self = this;
-  this.iterkeys(function(key) {
+  this.iterkeys(function(key, self) {
     cb(self.get(key), self);
   });
 };
@@ -220,8 +214,7 @@ Dict.prototype.modifySome = function(keys, fn) {
 };
 
 Dict.prototype.modifyAll = function(fn) {
-  var self = this;
-  this.iterkeys(function(key) {
+  this.iterkeys(function(key, self) {
     self.modify(key, fn);
   });
 };
