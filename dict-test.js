@@ -608,25 +608,36 @@ describe('Dict.modify', function() {
 
 
 describe('Dict.checkKeyIsHashable', function() {
-  it('Should throw an error for objects, arrays, and dicts', function() {
+  it('Should throw an error for Objects, Arrays, Dicts, Errors, Functions, and a plain custom class', function() {
+    var MyClass = function() {};
+    var fn = function(v) {return 123};
     var keys = [
       {},
       [],
-      new Dict()
+      fn,
+      Error('fake'),
+      new Dict(),
+      new MyClass()
     ];
     keys.forEach(function(key) {
-      expect(Dict.checkKeyIsHashable_.bind(null, key)).toThrow();
+      expect(function() {
+        Dict.checkKeyIsHashable_(key);
+      }).toThrow();
     });
   });
 
-  it('Should not throw an error for numbers, strings, and booleans', function() {
+  it('Should not throw an error for numbers, strings, booleans, undefined, and null.', function() {
     var keys = [
       0, 1,
       '', 'a',
-      false, true
+      false, true,
+      undefined,
+      null
     ];
     keys.forEach(function(key) {
-      expect(Dict.checkKeyIsHashable_.bind(null, key)).not.toThrow();
+      expect(function() {
+        Dict.checkKeyIsHashable_(key);
+      }).not.toThrow();
     });
   });
 });
