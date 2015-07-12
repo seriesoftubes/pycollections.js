@@ -4,10 +4,10 @@
  */
 'use strict';
 
-var DictKeyNotFound = function() {};
+window.DictKeyNotFound = function() {};
 
 
-var Dict = (function() {
+window.Dict = (function() {
 
 var TYPE_BOOLEAN = typeof(true);
 var TYPE_NULL = 'null'; // special fake type just for the purpose of dict.
