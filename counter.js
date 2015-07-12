@@ -42,60 +42,61 @@ Counter.prototype.update = function(keyValues) {
     // if given an Array of anything, counts each array element
     // as a key to increment by 1.
     var incrementByOne = Counter.getIncrementor(1);
-    keyValues.forEach(function(key) {
-       modify(key, incrementByOne);
-    });
+    for (var i = 0, len = keyValues.length; i < len; i++) {
+      modify(keyValues[i], incrementByOne);
+    }
   } else if (isObject) {
     // Given an Object/Dict, increments current count
     // of each key in the Dict/Object by its corresponding value.
-    Object.keys(keyValues).forEach(function(key) {
+    var keys = Object.keys(keyValues);
+    for (i = 0, len = keys.length; i < len; i++) {
+      var key = keys[i];
       modify(key, Counter.getIncrementor(keyValues[key]));
-    });
+    };
   } else {
     DefaultDict.prototype.update.call(this, keyValues);
   }
 };
 
-Counter.prototype.elements = function() {
-  var elements = [];
-  this.iteritems(function(key, numberOfElementsWithKey) {
-    for (var i = 0; i < numberOfElementsWithKey; i++) {
-      elements.push(key);
-    }
-  });
-  return elements;
-};
-
 Counter.prototype.iterelements = function(callback) {
-  var self = this;
-  this.iteritems(function(key, numberOfElementsWithKey) {
+  this.iteritems(function(key, numberOfElementsWithKey, self) {
     for (var i = 0; i < numberOfElementsWithKey; i++) {
       callback(key, i, numberOfElementsWithKey, self);
     }
   });
 };
 
+Counter.prototype.elements = function() {
+  var elements = [];
+  this.iterelements(function(key) {
+    elements.push(key);
+  });
+  return elements;
+};
+
 Counter.prototype.subtract = function(keyValues) {
   var modify = this.modify.bind(this);
   if (keyValues instanceof Dict) {
-    // Given an Object/Dict, increments current count
+    // Given an Object/Dict, decrements current count
     // of each key in the Dict/Object by its corresponding value.
     keyValues.iteritems(function(key, value) {
       modify(key, Counter.getIncrementor(-value));
     });
   } else if (keyValues instanceof Array) {
     // if given an Array of anything, counts each array element
-    // as a key to increment by 1.
+    // as a key to decrement by 1.
     var decrement = Counter.getIncrementor(-1);
-    keyValues.forEach(function(key) {
-       modify(key, decrement);
-    });
+    for (var i = 0, len = keyValues.length; i < len; i++) {
+      modify(keyValues[i], decrement);
+    }
   } else if (typeof keyValues === 'object') {
-    // Given an Object/Dict, increments current count
+    // Given an Object/Dict, decrements current count
     // of each key in the Dict/Object by its corresponding value.
-    Object.keys(keyValues).forEach(function(key) {
+    var keys = Object.keys(keyValues);
+    for (i = 0, len = keys.length; i < len; i++) {
+      var key = keys[i];
       modify(key, Counter.getIncrementor(-keyValues[key]));
-    });
+    };
   } else {
     throw Error('Must subtract Dict, Array, or Object.');
   }
