@@ -1056,7 +1056,15 @@ describe('Dict.pop', function() {
   });
 
   it('Should raise an error removing a non-existing key', function() {
-    expect(dict.pop.bind(dict, 'non existing key')).toThrow();
+    expect(function() {
+      dict.pop('non existing key');
+    }).toThrow();
+  });
+
+  it('Should not raise an error removing a non-existing key with an optional default value specified', function() {
+    expect(function() {
+      dict.pop('non existing key', 'defaultValue');
+    }).not.toThrow();
   });
 });
 

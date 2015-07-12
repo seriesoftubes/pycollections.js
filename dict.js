@@ -39,11 +39,11 @@ var Dict = function(opt_keyValues) {
 };
 
 Dict.fromKeys = function(keys, valueForAllKeys) {
-  var keyValues = [];
+  var dict = new Dict();
   for (var i = 0, len=keys.length; i < len; i++) {
-    keyValues.push([keys[i], valueForAllKeys]);
+    dict.set(keys[i], valueForAllKeys);
   }
-  return new Dict(keyValues);
+  return dict;
 };
 
 Dict.checkKeyIsHashable_ = function(key) {
@@ -110,9 +110,10 @@ Dict.prototype.del = function(key) {
 
 Dict.prototype.pop = function(key, opt_defaultValue) {
   Dict.checkKeyIsHashable_(key);
-  if (arguments.length === 1 && !this.hasKey(key)) throw Error('Missing key: ' + key);
+  var hasKey = this.hasKey(key);
+  if (arguments.length === 1 && !hasKey) throw Error('Missing key: ' + key);
   var value = this.get(key, opt_defaultValue);
-  this.del(key);
+  hasKey && this.del(key);
   return value;
 };
 
@@ -147,7 +148,7 @@ Dict.prototype.getFirstKey = function() {
     });
   } catch (e) {
     if (e instanceof DictKeyFound) return e.key;
-    throw e;
+    else throw e;
   }
 
   throw new DictKeyNotFound();
@@ -160,7 +161,7 @@ Dict.prototype.getFirstMatchingKey = function(predicate) {
     });
   } catch (e) {
     if (e instanceof DictKeyFound) return e.key;
-    throw e;
+    else throw e;
   }
 
   throw new DictKeyNotFound();
@@ -168,9 +169,7 @@ Dict.prototype.getFirstMatchingKey = function(predicate) {
 
 Dict.prototype.length = function() {
   var count = 0;
-  this.iterkeys(function(key) {
-    count++;
-  });
+  this.iterkeys(function(){count++});
   return count;
 };
 
