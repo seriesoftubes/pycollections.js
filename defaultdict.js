@@ -7,6 +7,7 @@
 
 // TODO: dist file that has all classes.
 window.DefaultDict = (function() {
+
 var DefaultDict = function(defaultFn, opt_keyValues) {
   if (typeof(defaultFn) !== 'function') throw Error('Must supply a default function.');
   this.default_ = defaultFn

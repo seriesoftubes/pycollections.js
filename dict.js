@@ -11,22 +11,32 @@ window.DictKeyNotFound = function() {};
 window.Dict = (function() {
 
 var TYPE_BOOLEAN = typeof(true);
-// TODO: add NaN support
-var TYPE_NULL = 'null'; // special fake type just for the purpose of dict.
+var TYPE_NAN = String(NaN);  // special fake type just for the purpose of dict.
+var TYPE_NULL = String(null);  // special fake type just for the purpose of dict.
 var TYPE_NUMBER = typeof(1);
 var TYPE_STRING = typeof('s');
 var TYPE_UNDEFINED = typeof(undefined);
 
 var TYPES = {};
 TYPES[TYPE_BOOLEAN] = true;
+TYPES[TYPE_NAN] = true;
 TYPES[TYPE_NULL] = true;
 TYPES[TYPE_NUMBER] = true;
 TYPES[TYPE_STRING] = true;
 TYPES[TYPE_UNDEFINED] = true;
 
-// TODO: maybe memoize this (would req json.dump or a indexOf on array) - test d.get()
+if (Number.isNaN) {
+  var nanTest = Number.isNaN.bind(Number);
+} else {
+  // Un-break functionality of window.isNaN for browsers that need it:
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN
+  var nanTest = function(v) {
+    return v != v;
+  };
+}
+
 var GET_TYPE = function(v) {
-  return v === null ? TYPE_NULL : typeof(v);
+  return v === null ? TYPE_NULL : (nanTest(v) ? TYPE_NAN : typeof(v));
 };
 
 
@@ -123,6 +133,7 @@ Dict.prototype.iterkeys = function(cb) {
   for (key in keysByType[TYPE_BOOLEAN]) cb(key === 'true' ? true : false, this);
   for (key in keysByType[TYPE_NUMBER]) cb(Number(key), this);
   for (key in keysByType[TYPE_STRING]) cb(key, this);
+  Object.keys(keysByType[TYPE_NAN]).length && cb(NaN, this);
   Object.keys(keysByType[TYPE_NULL]).length && cb(null, this);
   Object.keys(keysByType[TYPE_UNDEFINED]).length && cb(undefined, this);
 };

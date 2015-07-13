@@ -6,6 +6,7 @@
 
 
 window.Counter = (function() {
+
 var Counter = function(opt_keyValues) {
   DefaultDict.call(this, Number, opt_keyValues);
 };

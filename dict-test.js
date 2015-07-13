@@ -476,27 +476,60 @@ describe('Dict constructed with non Dict/Object arg', function() {
       expect(getDictMaker(bool)).toThrow();
     });
   });
+
+  it('Should not throw an error when constructed with undefined', function() {
+    // undefined is a special case that is ignored
+    expect(getDictMaker(undefined)).not.toThrow();
+  });
+
+  it('Should throw an error when constructed with null', function() {
+    expect(getDictMaker(null)).toThrow();
+  });
+
+  it('Should throw an error when constructed with NaN', function() {
+    expect(getDictMaker(NaN)).toThrow();
+  });
 });
 
 
 describe('Dict.hasKey', function() {
   it('Should return false for all keys for an empty dict.', function() {
     var dict = new Dict();
-    [0, 1, false, true, '', 'a'].forEach(function(key) {
+    [0, 1, false, true, '', 'a', undefined, null, NaN].forEach(function(key) {
       expect(dict.hasKey(key)).toBe(false);
     });
   });
 
-  it('Should return true for an existing key', function() {
-    var dict = new Dict({'a': 1});
-    expect(dict.hasKey('a')).toBe(true);
+  it('Should return true for an existing key of type Number, String, Boolean, undefined, null, and NaN', function() {
+    var dict = new Dict();
+
+    var keys = [
+      0, 1,
+      '', 'a',
+      false, true,
+      undefined,
+      null,
+      NaN
+    ];
+    keys.forEach(function(key) {
+      dict.set(key, 123);
+    });
+
+    keys.forEach(function(key) {
+      expect(dict.hasKey(key)).toBe(true);
+    });
   });
 });
 
 
 describe('Dict.get', function() {
+  var dict;
+
+  beforeEach(function() {
+    dict = new Dict();
+  });
+
   it('Should throw an error when not supplied with at least 1 arg', function() {
-    var dict = new Dict();
     var existingKey = 'a';
     dict.set(existingKey, 1);
 
@@ -510,9 +543,71 @@ describe('Dict.get', function() {
   });
 
   it('Should return the default value supplied for a non-present key', function() {
-    var dict = new Dict();
     var defaultValue = 'default';
     expect(dict.get('non present', defaultValue)).toBe(defaultValue);
+  });
+
+  it('Should return the value of an existing key of type Number', function() {
+    var value = {1: 23};
+
+    var key0 = 0;
+    dict.set(key0, value);
+    expect(dict.get(key0)).toBe(value);
+
+    var key1 = 1;
+    dict.set(key1, value);
+    expect(dict.get(key1)).toBe(value);
+    expect(dict.get(key0)).toBe(value);
+  });
+
+  it('Should return the value of an existing key of type Boolean', function() {
+    var value = {1: 23};
+
+    var key0 = false;
+    dict.set(key0, value);
+    expect(dict.get(key0)).toBe(value);
+
+    var key1 = true;
+    dict.set(key1, value);
+    expect(dict.get(key1)).toBe(value);
+    expect(dict.get(key0)).toBe(value);
+  });
+
+  it('Should return the value of an existing key of type String', function() {
+    var value = {1: 23};
+
+    var key0 = '';
+    dict.set(key0, value);
+    expect(dict.get(key0)).toBe(value);
+
+    var key1 = 'a';
+    dict.set(key1, value);
+    expect(dict.get(key1)).toBe(value);
+    expect(dict.get(key0)).toBe(value);
+  });
+
+  it('Should return the value of an existing key of type NaN', function() {
+    var value = {1: 23};
+
+    var key0 = NaN;
+    dict.set(key0, value);
+    expect(dict.get(key0)).toBe(value);
+  });
+
+  it('Should return the value of an existing key of type null', function() {
+    var value = {1: 23};
+
+    var key0 = null;
+    dict.set(key0, value);
+    expect(dict.get(key0)).toBe(value);
+  });
+
+  it('Should return the value of an existing key of type undefined', function() {
+    var value = {1: 23};
+
+    var key0 = undefined;
+    dict.set(key0, value);
+    expect(dict.get(key0)).toBe(value);
   });
 });
 
@@ -626,13 +721,14 @@ describe('Dict.checkKeyIsHashable', function() {
     });
   });
 
-  it('Should not throw an error for numbers, strings, booleans, undefined, and null.', function() {
+  it('Should not throw an error for numbers, strings, booleans, undefined, null, and NaN.', function() {
     var keys = [
       0, 1,
       '', 'a',
       false, true,
       undefined,
-      null
+      null,
+      NaN
     ];
     keys.forEach(function(key) {
       expect(function() {
@@ -666,19 +762,31 @@ describe('Dict.keys', function() {
     expect(dict.get(letterA)).toBe(secondValue);
   });
 
-  it('Should return keys of boolean, null, number, string, and undefined types.', function() {
+  it('Should return keys of boolean, NaN, null, number, string, and undefined types.', function() {
     var keysOfAllTypes = [
       false, true,
       0, 1,
       '', 'a',
+      NaN,
       null,
       undefined
     ];
     var dict = Dict.fromKeys(keysOfAllTypes, 1);
     var keys = dict.keys();
+    expect(keys.length).toBe(keysOfAllTypes.length);
+
+    var keysNotCovered = keysOfAllTypes.slice();
+
     keysOfAllTypes.forEach(function(key) {
-      expect(keys.indexOf(key)).toBeGreaterThan(-1);
+      if (!Number.isNaN(key)) {
+        expect(keys.indexOf(key)).toBeGreaterThan(-1);
+
+        keysNotCovered.splice(keysNotCovered.indexOf(key), 1);
+      }
     });
+
+    expect(keysNotCovered.length).toBe(1);
+    expect(Number.isNaN(keysNotCovered[0])).toBe(true);
   });
 });
 
@@ -877,10 +985,31 @@ describe('Dict.set', function() {
     expect(dict.get(stringKey)).toBe(stringValue);
   });
 
-  it('Should not allow setting a key of type object or array, or a null key.', function() {
+  it('Should set NaN key (but not its corresponding string key) to a value and get it.', function() {
+    var nanValue = {1: 2};
+    var nanKey = NaN;
+    var stringKey = String(nanKey);
+    expect(stringKey).toBe('NaN');
+    dict.set(nanKey, nanValue);
+    expect(dict.get(nanKey)).toBe(nanValue);
+    expect(dict.get.bind(dict, stringKey)).toThrow();
+
+    var stringValue = {3: 4};
+    dict.set(stringKey, stringValue);
+    expect(dict.get(nanKey)).toBe(nanValue);
+    expect(dict.get(stringKey)).toBe(stringValue);
+  });
+
+  it('Should not allow setting a key of type object, array, function, class instance, Dict, or Error.', function() {
+    var MyClass = function () {};
+    var fn = function(v) { return 123};
     var badKeys = [
       [1, 2],
-      {3: 'asdf'}
+      {3: 'asdf'},
+      fn,
+      Error(123),
+      new MyClass(),
+      new Dict()
     ];
     badKeys.forEach(function(key) {
       expect(dict.set.bind(dict, key, 987)).toThrow();
