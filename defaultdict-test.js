@@ -24,6 +24,7 @@ describe('Initialized empty defaultdict', function() {
       expect(dd.hasKey(key)).toBe(false);
       expect(dd.get(key)).toBe(defaultFnValue);
     });
+    expect(dd.length()).toBe(missingKeys.length);
   });
 
   it('Returns custom supplied default value when a key is missing and get is called with a second arg', function() {
@@ -34,6 +35,7 @@ describe('Initialized empty defaultdict', function() {
       expect(dd.hasKey(key)).toBe(false);
       expect(dd.get(key, forcedDefault)).toBe(forcedDefault);
     });
+    expect(dd.length()).toBe(0);
   });
 
   it('Should support setting a key to a value that differs from the type of the defaultFunction', function() {

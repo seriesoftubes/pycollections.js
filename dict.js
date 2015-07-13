@@ -34,10 +34,10 @@ var Dict = function(opt_keyValues) {
   opt_keyValues !== undefined && this.update(opt_keyValues);
 };
 
-Dict.fromKeys = function(keys, valueForAllKeys) {
+Dict.fromKeys = function(keys, opt_valueForAllKeys) {
   var dict = new Dict();
   for (var i = 0, len = keys.length; i < len; i++) {
-    dict.set(keys[i], valueForAllKeys);
+    dict.set(keys[i], opt_valueForAllKeys);
   }
   return dict;
 };

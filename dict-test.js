@@ -703,7 +703,7 @@ describe('Dict.getFirstKey', function() {
 
   it('Should return one of the keys of a non-empty dict', function() {
     var keys = [0, 1, false, true, '', 'a', undefined, null];
-    var dict = Dict.fromKeys(keys);
+    var dict = Dict.fromKeys(keys, 123);
     var firstKey = dict.getFirstKey();
     expect(keys).toContain(firstKey);
   });
@@ -738,7 +738,7 @@ describe('Dict.getFirstMatchingKey', function() {
 
   it('Should return one of the keys of a non-empty dict when called with an always-true predicate', function() {
     var keys = [0, 1, false, true, '', 'a', undefined, null];
-    var dict = Dict.fromKeys(keys);
+    var dict = Dict.fromKeys(keys, 123);
 
     var numKeysSeen = 0;
 
