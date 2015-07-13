@@ -11,6 +11,7 @@ window.DictKeyNotFound = function() {};
 window.Dict = (function() {
 
 var TYPE_BOOLEAN = typeof(true);
+// TODO: add NaN support
 var TYPE_NULL = 'null'; // special fake type just for the purpose of dict.
 var TYPE_NUMBER = typeof(1);
 var TYPE_STRING = typeof('s');

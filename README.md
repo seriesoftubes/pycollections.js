@@ -35,6 +35,7 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, ea
 
 
 ## Demo
+
 Python:
 ```py
 d = dict()
@@ -44,27 +45,6 @@ JS:
 var d = new Dict();
 ```
 
-Python:
-```py
-d[5.8] = 'num'
-5.8 in d  # True
-'5.8' in d  # False
-len(d)  # 1
-
-d['5.8'] = 'str'
-len(d)  # 2
-d[5.8]  # 'num'
-d['5.8']  # 'str'
-```
-
-JS:
-```js
-d.set(5.8, 'num');
-d.set('5.8', 'str');
-d.length();  // 2
-d.get(5.8);  // 'num'
-d.get('5.8');  // 'str'
-```
 
 Python:
 ```python
@@ -75,3 +55,47 @@ JS:
 ```js
 d.hasKey(123);
 ```
+
+
+Python:
+```py
+d[8] = 'num'
+8 in d  # True
+'8' in d  # False
+len(d)  # 1
+
+d['8'] = 'str'
+len(d)  # 2
+d[8]  # 'num'
+d['8']  # 'str'
+```
+
+JS:
+```js
+d.set(8, 'num');
+d.hasKey(8); // true
+d.hasKey('8'); // false
+d.length(); // 1
+
+d.set('8', 'str');
+d.length();  // 2
+d.get(8);  // 'num'
+d.get('8');  // 'str'
+```
+
+Python:
+```py
+d['my key']
+d.get('missing key', 'default value')
+d.get('missing key')
+```
+
+JS:
+```js
+d.get('my key');
+d.get('missing key', 'default value');
+// Must explicitly pass undefined as the default,
+// otherwise the key is assumed to exist.
+d.get('missing key', undefined);
+```
+
