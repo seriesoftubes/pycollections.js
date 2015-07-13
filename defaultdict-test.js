@@ -36,6 +36,14 @@ describe('Initialized empty defaultdict', function() {
     });
   });
 
+  it('Should support setting a key to a value that differs from the type of the defaultFunction', function() {
+    var dd = new DefaultDict(String);
+    var key = 12.32;
+    var value = {'yep': 82.1};
+    dd.set(key, value);
+    expect(dd.get(key)).toBe(value);
+  });
+
   it('Should support counting values via a Number default function', function() {
     var letters = 'abccc'.split('');
     var dd = new DefaultDict(Number);
@@ -49,17 +57,34 @@ describe('Initialized empty defaultdict', function() {
 
   it('Should support building default arrays', function() {
     var keyToValues = new DefaultDict(function(){return []});
+    expect(keyToValues.length()).toBe(0);
+
     var bobKey = 'Bob';
     var messageForBob = 'is awesome';
     keyToValues.modifyOneValueInPlace(bobKey, function(array) {
       array.push(messageForBob);
     });
+    expect(keyToValues.length()).toBe(1);
+
+    expect(keyToValues.get(bobKey)).toEqual([messageForBob]);
+
     var nancyKey = 'Nancy';
     var niceMessage = 'you are nice';
     keyToValues.modifyOneValueInPlace(nancyKey, function(array) {
       array.push(niceMessage);
     });
+    expect(keyToValues.length()).toBe(2);
+
+    // different keys should lead to different Arrays.
+    expect(keyToValues.get(nancyKey)).not.toBe(keyToValues.get(bobKey));
     expect(keyToValues.get(nancyKey)).toEqual([niceMessage]);
+    expect(keyToValues.get(bobKey)).toEqual([messageForBob]);
+
+    var fakeKey = 'fake!';
+    expect(keyToValues.hasKey(fakeKey)).toEqual(false);
+    expect(keyToValues.get(fakeKey)).toEqual([]);
+    expect(keyToValues.hasKey(fakeKey)).toEqual(true);
+    expect(keyToValues.length()).toBe(3);
   });
 
   it('Should enable a dict of dicts', function() {

@@ -4,6 +4,7 @@
  */
 'use strict';
 
+
 window.DictKeyNotFound = function() {};
 
 
@@ -35,7 +36,7 @@ var Dict = function(opt_keyValues) {
 
 Dict.fromKeys = function(keys, valueForAllKeys) {
   var dict = new Dict();
-  for (var i = 0, len=keys.length; i < len; i++) {
+  for (var i = 0, len = keys.length; i < len; i++) {
     dict.set(keys[i], valueForAllKeys);
   }
   return dict;
@@ -47,9 +48,7 @@ Dict.checkKeyIsHashable_ = function(key) {
 
 Dict.prototype.clear = function() {
   var typeToKeyValues = {};
-  for (var type in TYPES) {
-    typeToKeyValues[type] = {};
-  }
+  for (var type in TYPES) typeToKeyValues[type] = {};
   this.dict_ = typeToKeyValues;
 };
 
@@ -91,15 +90,19 @@ Dict.prototype.hasKey = function(key) {
 Dict.prototype.get = function(key, opt_defaultValue) {
   var numArgs = arguments.length;
   if (!numArgs) throw Error('Must supply a key');
+
   Dict.checkKeyIsHashable_(key);
+
   var hasKey = this.hasKey(key);
   if (numArgs === 1 && !hasKey) throw Error('Missing key: ' + key);
+
   return hasKey ? this.dict_[GET_TYPE(key)][key] : opt_defaultValue;
 };
 
 Dict.prototype.del = function(key) {
   Dict.checkKeyIsHashable_(key);
   if (!this.hasKey(key)) throw Error('Missing key: ' + key);
+
   delete this.dict_[GET_TYPE(key)][key];
 };
 
@@ -107,6 +110,7 @@ Dict.prototype.pop = function(key, opt_defaultValue) {
   Dict.checkKeyIsHashable_(key);
   var hasKey = this.hasKey(key);
   if (arguments.length === 1 && !hasKey) throw Error('Missing key: ' + key);
+
   var value = this.get(key, opt_defaultValue);
   hasKey && this.del(key);
   return value;

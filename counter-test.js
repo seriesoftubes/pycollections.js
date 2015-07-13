@@ -50,6 +50,26 @@ describe('Counter.getIncrementor', function() {
 });
 
 
+describe('Counter.fromKeys', function() {
+  it('Should throw an error', function() {
+    var counter = new Counter();
+    expect(function() {
+      counter.fromKeys([1, 2, 3], 123);
+    }).toThrow();
+  });
+});
+
+
+describe('Counter.get', function() {
+  it('Should return 0 from a non-existing key', function() {
+    var counter = new Counter();
+    [0, 1, '', 'a', false, true, undefined, null].forEach(function(key) {
+      expect(counter.get(key)).toBe(0);
+    });
+  });
+});
+
+
 describe('Counter.update', function() {
   it('Should throw an error when given no args.', function() {
     var counter = new Counter();
