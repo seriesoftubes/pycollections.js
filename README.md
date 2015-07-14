@@ -32,9 +32,6 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, al
 - getFirstKey()
 - getFirstMatchingKey(predicate)
 - isEmpty()
-- modifyOneValueInPlace(key, fn)
-- modifySomeValuesInPlace(keys, fn)
-- modifyAllValuesInPlace(fn)
 - setOneNewValue(key, fn)
 - setSomeNewValues(keys, fn)
 - setAllNewValues(fn)
@@ -253,17 +250,27 @@ js.getFirstMatchingKey(function(k) {
 });  // 'key'
 
 // Since there is no direct access to stored elements,
-// you can't do things like "py[123] += 1";
-// instead, you must do one of the following:
+// you can't do things like "py[123] += 1".
+// This is especially true of keys whose values are primitive types:
+// Boolean, String, or Number.
+// Instead, you must do one of the following:
 js.setOneNewValue('key', function(currentValue) {
   return currentValue + 10;
 });
 js.get('key');  // 109
 
-js.set('array key', []);
-js.modifyOneValueInPlace('array key', function(currentValue) {
-  currentValue.push(123);
+js.setSomeNewValues(['key'], function(currentValue) {
+  return currentValue + 10;
 });
+js.get('key');  // 119
+
+js.setAllNewValues(function(currentValue) {
+  return currentValue + 10;
+});
+js.get('key');  // 129
+
+js.set('array key', []);
+js.get('array key').push(123);
 js.get('array key');  // [123]
 ```
 
@@ -322,15 +329,13 @@ js.keys();  // [1]
 ```py
 py = defaultdict(list)
 for letter in 'abc':
-  py[letter].append(letter)
-py.items()  # [('a', 'a'), ('b', 'b'), ('c', 'c')]
+  py[letter].append(123)
+py.items()  # [('a', [123]), ('b', [123]), ('c', [123])]
 ```
 ```js
 var js = new DefaultDict([].constructor);
 'abc'.split('').forEach(function(letter) {
-  js.modifyOneValueInPlace(letter, function(newlyFormedArray) {
-    newlyFormedArray.push(letter);
-  });
+  js.get(letter).push(123);
 });
-js.items();  // [['a', 'a'], ['b', 'b'], ['c', 'c']]
+js.items();  // [['a', [123]], ['b', [123]], ['c', [123]]]
 ```

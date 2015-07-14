@@ -244,21 +244,5 @@ Dict.prototype.setAllNewValues = function(fn) {
   });
 };
 
-Dict.prototype.modifyOneValueInPlace = function(key, fn) {
-  fn(this.get(key), key, this);
-};
-
-Dict.prototype.modifySomeValuesInPlace = function(keys, fn) {
-  for (var i = 0, len = keys.length; i < len; i++) {
-    this.modifyOneValueInPlace(keys[i], fn);
-  }
-};
-
-Dict.prototype.modifyAllValuesInPlace = function(fn) {
-  this.iterkeys(function(key, self) {
-    self.modifyOneValueInPlace(key, fn);
-  });
-};
-
 return Dict;
 })();

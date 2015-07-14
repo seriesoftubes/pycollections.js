@@ -63,18 +63,14 @@ describe('Initialized empty defaultdict', function() {
 
     var bobKey = 'Bob';
     var messageForBob = 'is awesome';
-    keyToValues.modifyOneValueInPlace(bobKey, function(array) {
-      array.push(messageForBob);
-    });
+    keyToValues.get(bobKey).push(messageForBob);
     expect(keyToValues.length()).toBe(1);
 
     expect(keyToValues.get(bobKey)).toEqual([messageForBob]);
 
     var nancyKey = 'Nancy';
     var niceMessage = 'you are nice';
-    keyToValues.modifyOneValueInPlace(nancyKey, function(array) {
-      array.push(niceMessage);
-    });
+    keyToValues.get(nancyKey).push(niceMessage);
     expect(keyToValues.length()).toBe(2);
 
     // different keys should lead to different Arrays.
@@ -95,9 +91,7 @@ describe('Initialized empty defaultdict', function() {
     var key2 = 'woohoo!';
     var yea = 'yea!';
     expect(dictOfDicts.get(key)).toEqual(new Dict());
-    dictOfDicts.modifyOneValueInPlace(key, function(theDict, key) {
-      theDict.set(key2, yea);
-    });
+    dictOfDicts.get(key).set(key2, yea);
     expect(dictOfDicts.get(key).get(key2)).toBe(yea);
   });
 
@@ -110,15 +104,13 @@ describe('Initialized empty defaultdict', function() {
     var key2 = 2;
     var key3 = 'yea';
     var nice = 'nice';
-    selfReferencing.modifyOneValueInPlace(key1, function(nestedDict1) {
-      expect(nestedDict1).toBe(selfReferencing);
+    var nestedDict1 = selfReferencing.get(key1);
+    expect(nestedDict1).toBe(selfReferencing);
 
-      nestedDict1.modifyOneValueInPlace(key2, function(nestedDict2) {
-        expect(nestedDict2).toBe(selfReferencing);
-
-        nestedDict2.set(key3, nice);
-      });
-    });
+    var nestedDict2 = nestedDict1.get(key2);
+    expect(nestedDict2).toBe(selfReferencing);
+    
+    nestedDict2.set(key3, nice);
 
     expect(selfReferencing.get(key1).get(key2).get(key3)).toBe(nice);
 
