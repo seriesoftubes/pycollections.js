@@ -266,3 +266,71 @@ js.modifyOneValueInPlace('array key', function(currentValue) {
 });
 js.get('array key');  // [123]
 ```
+
+
+----
+----
+
+# DefaultDict
+
+### Static methods: same as Dict (DefaultDict is a subclass of Dict)
+
+### Instance methods: same as Dict
+
+
+## Demo
+
+### Creating a new instance
+```py
+py = defaultdict(list)
+py = defaultdict(int, a=1)
+py = defaultdict(str, [('a', 1)])
+py = defaultdict(int, dict(a=1))
+py = defaultdict(123)  # raises TypeError
+```
+```js
+var js = new DefaultDict([].constructor);
+var js = new Dict(Number, {'a': 1});
+var js = new Dict(String, [['a', 1]]);
+var js = new Dict(Number, new Dict({'a': 1}));
+var js = new Dict(123);  // throws Error
+```
+
+### Getting a potentially-missing key's value
+```py
+py = defaultdict(int)
+len(py)  # 0
+py[1]  # 0
+len(py)  # 1
+py.keys()  # [1]
+py.get(123)  # None
+len(py)  # 1
+py.keys()  # [1]
+```
+```js
+var js = new DefaultDict(Number);
+js.length();  // 0
+js.get(1);  // 0
+js.length();  // 1
+js.keys();  // [1]
+js.get(123, null);  // null
+js.length();  // 1
+js.keys();  // [1]
+```
+
+### Operating on potentially-missing keys' values
+```py
+py = defaultdict(list)
+for letter in 'abc':
+  py[letter].append(letter)
+py.items()  # [('a', 'a'), ('b', 'b'), ('c', 'c')]
+```
+```js
+var js = new DefaultDict([].constructor);
+'abc'.split('').forEach(function(letter) {
+  js.modifyOneValueInPlace(letter, function(newlyFormedArray) {
+    newlyFormedArray.push(letter);
+  });
+});
+js.items();  // [['a', 'a'], ['b', 'b'], ['c', 'c']]
+```
