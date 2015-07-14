@@ -235,3 +235,34 @@ js.iteritems(function(key, value) {
 });
 js.items();  // [['a', 1]]
 ```
+----
+### Using non-Python methods
+```js
+var js = new Dict();
+js.isEmpty();  // true
+js.set('key', 99);
+js.isEmpty();  // false
+// executes without putting all keys into a new array in memory
+js.getFirstKey();  // 1
+// executes without putting all keys into a new array in memory
+js.getFirstMatchingKey(function(k) {
+  return typeof(k) === 'number';
+ });  // throws DictKeyNotFound
+js.getFirstMatchingKey(function(k) {
+  return typeof(k) === 'string';
+});  // 'key'
+
+// Since there is no direct access to stored elements,
+// you can't do things like "py[123] += 1";
+// instead, you must do one of the following:
+js.setOneNewValue('key', function(currentValue) {
+  return currentValue + 10;
+});
+js.get('key');  // 109
+
+js.set('array key', []);
+js.modifyOneValueInPlace('array key', function(currentValue) {
+  currentValue.push(123);
+});
+js.get('array key');  // [123]
+```
