@@ -297,10 +297,10 @@ py = defaultdict(123)  # raises TypeError
 ```
 ```js
 var js = new DefaultDict([].constructor);
-var js = new Dict(Number, {'a': 1});
-var js = new Dict(String, [['a', 1]]);
-var js = new Dict(Number, new Dict({'a': 1}));
-var js = new Dict(123);  // throws Error
+var js = new DefaultDict(Number, {'a': 1});
+var js = new DefaultDict(String, [['a', 1]]);
+var js = new DefaultDict(Number, new Dict({'a': 1}));
+var js = new DefaultDict(123);  // throws Error
 ```
 
 ### Getting a potentially-missing key's value
@@ -374,4 +374,84 @@ js.hasKey(3);  // true
 js.hasKey(2);  // true
 js.hasKey(1);  // true
 js.get(3);  // 123
+```
+
+----
+----
+
+# Counter
+
+### Static methods: same as DefaultDict, with some changes
+- fromKeys() is not implemented (throws an error)
+- getIncrementor(incrementBy)
+
+
+### Instance methods: same as DefaultDict, plus some new ones
+- iterelements(cb)
+- elements()
+- subtract(iterable)
+- mostCommon(opt_n)
+- leastCommon(opt_n)
+
+
+## Demo
+
+### Creating a new instance
+```py
+py = Counter()
+py = Counter(a=2, b=1)
+py = Counter(['a', 'a', 'b'])
+py = Counter(123)  # raises TypeError
+```
+```js
+var js = new Counter();
+var js = new Counter({'a': 2, 'b': 1});
+var js = new Counter(['a', 'a', 'b']);
+var js = new Counter(123);  // throws Error
+```
+
+### Counting distinct elements
+```py
+py = Counter()
+py.update(['a', 'a', 32, 'false', False, float('inf')])
+py.items()  # [('a', 2), (32, 1), ('false', 1), (False, 1), (inf, 1)]
+list(py.elements())  # ['a', 'a', 32, 'false', False, inf]
+```
+```js
+var js = new Counter();
+js.update(['a', 'a', 32, 'false', false, NaN]);
+js.items();  // [['a', 2], [32, 1], ['false', 1], [false, 1], [NaN, 1]]
+js.elements();  // ['a', 'a', 32, 'false', false, NaN]
+```
+
+### Increasing/decreasing counts
+```py
+py = Counter(['a', 'b', 'b', 'c', 'c', 'c'])
+py[99]  # 0
+py['a']  # 1
+py['b']  # 2
+py['c']  # 3
+py.update(['a', 'a', 'b'])
+py['a']  # 3
+py['b']  # 3
+py[99]  # 0
+py['c']  # 3
+
+py.subtract({'a': 4})
+py['a']  # -1
+```
+```js
+var js = new Counter(['a', 'b', 'b', 'c', 'c', 'c']);
+js.get(99);  // 0
+js.get('a');  // 1
+js.get('b');  // 2
+js.get('c');  // 3
+js.update(['a', 'a', 'b'])
+js.get('a');  // 3
+js.get('b');  // 3
+js.get(99);  // 0
+js.get('c');  // 3
+
+js.subtract({'a': 4})
+js.get('a')  // -1
 ```
