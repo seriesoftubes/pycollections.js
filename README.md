@@ -196,3 +196,42 @@ js.length();  // 2
 js.update([['b', 123]]);
 js.get('b');  // 123
 ```
+----
+### Iterating over keys, values, and items
+```py
+py = {'a': 1}
+# does not put all keys into memory at once
+for key in py:
+  print key  # prints 'a'
+py.keys()  # ['a']
+
+# does not put all values into memory at once
+for value in py.itervalues():
+  print value  # prints 1
+py.values()  # [1]
+
+# does not put all items into memory at once
+for item in py.iteritems():
+  print item  # prints ('a', 1)
+py.items()  # [('a', 1)]
+```
+```js
+var js = new Dict({'a': 1});
+// does not put all keys into memory at once
+js.iterkeys(function(key) {
+  console.log(key);  // logs 'a'
+});
+js.keys();  // ['a']
+
+// does not put all values into memory at once
+js.itervalues(function(value) {
+  console.log(value);  // logs 1
+});
+js.values();  // [1]
+
+// does not put all items into memory at once
+js.iteritems(function(key, value) {
+  console.log(key, value);  // logs 'a', 1
+});
+js.items();  // [['a', 1]]
+```
