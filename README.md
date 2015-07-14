@@ -49,6 +49,7 @@ py = dict.fromkeys([1, 2, 3], {'the': 'value'})
 py = dict(a=1, b=2)
 py = dict([('a', 1), ('b', 2)])
 py = dict(dict(a=1))
+py = dict(123)  # raises TypeError
 ```
 ```js
 var js = new Dict();
@@ -56,16 +57,19 @@ var js = Dict.fromKeys([1, 2, 3], {'the': 'value'});
 var js = new Dict({'a': 1, 'b': 2});
 var js = new Dict([['a', 1], ['b', 2]]);
 var js = new Dict(new Dict({'a': 1}));
+var js = new Dict(123);  // throws Error
 ```
 -----
 ### Detecting presence of a key
 ```py
 py = {}
 987 in py  # False
+[] in py  # raises TypeError due to unhashable key
 ```
 ```js
 var js = new Dict();
 js.hasKey(987);  // false
+js.hasKey([]);  // throws DictKeyNotHashable
 ```
 ----
 ### Getting a potentially-missing key's value
@@ -74,15 +78,19 @@ py = {}
 py['missing key']  # raises KeyError
 py.get('missing key', 'default')  # 'default'
 py.get('missing key')  # None
+py[[]]  # raises TypeError due to unhashable key
+py.get([])  # raises TypeError due to unhashable key
 ```
 ```js
 var js = new Dict();
-js.get('my key');  // throws DictKeyNotFoundError
+js.get('my key');  // throws DictKeyNotFound
 js.get('missing key', 'default');  // 'default'
 // Must explicitly pass null/undefined as the default;
 // when passing only one .get() argument, the key is must exist,
 // otherwise it thows an error.
 js.get('missing key', null);  // null
+js.get([]);  // throws DictKeyNotHashable
+js.get([], null);  // throws DictKeyNotHashable
 ```
 ----
 
@@ -117,10 +125,12 @@ js.get('8');  // 'str'
 ```py
 py = {'a': 1}
 del py['a']
+del py['b']  # raises KeyError
 ```
 ```js
 var js = new Dict({'a': 1});
 js.del('a');
+js.del('b');  // throws DictKeyNotFound
 ```
 ----
 ### Popping a key
@@ -128,11 +138,15 @@ js.del('a');
 py = {'a': 1, 'b': 2}
 py.pop('a')  # 1
 py.popitem()  # ('b', 2)
+py.pop(123)  # raises KeyError
+py.pop(123, 45)  # 45
 ```
 ```js
 var js = new Dict({'a': 1, 'b': 2});
 js.pop('a');  // 1
 js.popitem(); // ['b', 2]
+js.pop(123);  // throws DictKeyNotFound
+js.pop(123, 45);  // 45
 ```
 ----
 ### Clearing out all key-value pairs
@@ -141,12 +155,14 @@ py = {'a': 1, 'b': 2}
 len(py)  # 2
 py.clear()
 len(py)  # 0
+py['a']  # raises KeyError
 ```
 ```js
 var js = new Dict({'a': 1, 'b': 2});
 js.length();  // 2
 js.clear();
 js.length();  // 0
+js.get('a');  // throws DictKeyNotFound
 ```
 ----
 ### Forming a copy
