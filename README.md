@@ -23,7 +23,6 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, al
 - keys()
 - popitem()
 - length()
-- isEmpty()
 - iteritems(cb)
 - items()
 - itervalues(cb)
@@ -32,6 +31,7 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, al
 ### Instance methods (not present in Python dict):
 - getFirstKey()
 - getFirstMatchingKey(predicate)
+- isEmpty()
 - modifyOneValueInPlace(key, fn)
 - modifySomeValuesInPlace(keys, fn)
 - modifyAllValuesInPlace(fn)
@@ -46,10 +46,16 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, al
 ```py
 py = {}
 py = dict.fromkeys([1, 2, 3], {'the': 'value'})
+py = dict(a=1, b=2)
+py = dict([('a', 1), ('b', 2)])
+py = dict(dict(a=1))
 ```
 ```js
 var js = new Dict();
 var js = Dict.fromKeys([1, 2, 3], {'the': 'value'});
+var js = new Dict({'a': 1, 'b': 2});
+var js = new Dict([['a', 1], ['b', 2]]);
+var js = new Dict(new Dict({'a': 1}));
 ```
 -----
 ### Detecting presence of a key
@@ -74,13 +80,14 @@ var js = new Dict();
 js.get('my key');  // throws DictKeyNotFoundError
 js.get('missing key', 'default');  // 'default'
 // Must explicitly pass null/undefined as the default;
-// with 1 .get() argument, the key is assumed to exist.
+// when passing only one .get() argument, the key is must exist,
+// otherwise it thows an error.
 js.get('missing key', null);  // null
 ```
 ----
 
 ### Distinguishing between keys of different types
-Support for distinct Boolean, Number, String, Null, NaN, and undefined keys.
+Support for distinct Boolean, Number, String, NaN, null, and undefined keys.
 ```py
 py = {}
 py[8] = 'num'
@@ -106,5 +113,70 @@ js.get(8);  // 'num'
 js.get('8');  // 'str'
 ```
 ----
-
-
+### Deleting a key
+```py
+py = {'a': 1}
+del py['a']
+```
+```js
+var js = new Dict({'a': 1});
+js.del('a');
+```
+----
+### Popping a key
+```py
+py = {'a': 1, 'b': 2}
+py.pop('a')  # 1
+py.popitem()  # ('b', 2)
+```
+```js
+var js = new Dict({'a': 1, 'b': 2});
+js.pop('a');  // 1
+js.popitem(); // ['b', 2]
+```
+----
+### Clearing out all key-value pairs
+```py
+py = {'a': 1, 'b': 2}
+len(py)  # 2
+py.clear()
+len(py)  # 0
+```
+```js
+var js = new Dict({'a': 1, 'b': 2});
+js.length();  // 2
+js.clear();
+js.length();  // 0
+```
+----
+### Forming a copy
+```py
+py1 = {'a': 1, 'b': 2}
+py2  = py1.copy()
+py1['a'] = 987
+py2['a']  # 1
+```
+```js
+var js1 = new Dict({'a': 1, 'b': 2});
+var js2 = js1.copy();
+js1.set('a', 987);
+js2.get('a');  // 1
+```
+----
+### Updating key-value pairs
+```py
+py = {'a': 1, 'b': 2}
+py.update({'a': 999})
+py['a']  # 999
+len(py)  # 2
+py.update([('b', 123)])
+py['b']  # 123
+```
+```js
+var js = new Dict({'a': 1, 'b': 2});
+js.update({'a': 999});
+js.get('a');  // 999
+js.length();  // 2
+js.update([['b', 123]]);
+js.get('b');  // 123
+```
