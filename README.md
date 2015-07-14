@@ -339,3 +339,39 @@ var js = new DefaultDict([].constructor);
 });
 js.items();  // [['a', [123]], ['b', [123]], ['c', [123]]]
 ```
+
+### DefaultDict of Dicts
+```py
+py = defaultdict(dict)
+py[123][0] = 9
+nested_dict = py[123]
+nested_dict[0]  # 9
+```
+```js
+var js = new DefaultDict(function(){return new Dict()});
+js.get(123).set(0, 9);
+var nestedDict = js.get(123);
+nestedDict.get(0);  // 9
+```
+
+### Fun with self-referencing
+```py
+py = defaultdict(lambda: py)
+py[1][1][2][3] = 123
+len(py)  # 3
+py[1] is py  # True
+3 in py  # True
+2 in py  # True
+1 in py  # True
+py[3]  # 123
+```
+```js
+var js = new DefaultDict(function(){return js});
+js.get(1).get(1).get(2).set(3, 123);
+js.length();  // 3
+js.get(1) === js;  // true
+js.hasKey(3);  // true
+js.hasKey(2);  // true
+js.hasKey(1);  // true
+js.get(3);  // 123
+```
