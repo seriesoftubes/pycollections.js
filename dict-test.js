@@ -39,7 +39,7 @@ describe('Dict constructed with no args', function() {
 
   it('Throws an error from get() with any key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get.bind(dict, key)).toThrow();
+      expect(dict.get.bind(dict, key)).toThrow(new DictKeyNotFound(key));
     });
   });
 
@@ -89,7 +89,7 @@ describe('Dict constructed with empty Array', function() {
 
   it('Throws an error from get() with any key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get.bind(dict, key)).toThrow();
+      expect(dict.get.bind(dict, key)).toThrow(new DictKeyNotFound(key));
     });
   });
 
@@ -157,7 +157,7 @@ describe("Dict constructed with Array of 2 unique key-value pairs: one represent
 
   it('Throws error from get() with non-present key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get.bind(dict, key)).toThrow();
+      expect(dict.get.bind(dict, key)).toThrow(new DictKeyNotFound(key));
     });
   });
 
@@ -232,7 +232,7 @@ describe('Dict constructed with non-empty non-unique Array, with one key-value p
 
   it('Throws error from get() with non-present key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get.bind(dict, key)).toThrow();
+      expect(dict.get.bind(dict, key)).toThrow(new DictKeyNotFound(key));
     });
   });
 
@@ -331,7 +331,7 @@ describe('Dict constructed with non-empty object containing "a" and "b" keys as 
 
   it('Throws an error from get() with non-present key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get.bind(dict, key)).toThrow();
+      expect(dict.get.bind(dict, key)).toThrow(new DictKeyNotFound(key));
     });
   });
 
@@ -430,7 +430,7 @@ describe('Dict constructed with non-empty Dict containing keys "a" and "b" as th
 
   it('Throws an error from get() with non-present key and no defaultValue', function() {
     possibleKeys.forEach(function(key) {
-      expect(dict.get.bind(dict, key)).toThrow();
+      expect(dict.get.bind(dict, key)).toThrow(new DictKeyNotFound(key));
     });
   });
 
@@ -717,7 +717,7 @@ describe('Dict.checkKeyIsHashable', function() {
     keys.forEach(function(key) {
       expect(function() {
         Dict.checkKeyIsHashable_(key);
-      }).toThrow();
+      }).toThrow(new DictKeyNotHashable(key));
     });
   });
 
@@ -932,7 +932,7 @@ describe('Dict.set', function() {
     var numericValue = {1: 2};
     dict.set(numericKey, numericValue);
     expect(dict.get(numericKey)).toBe(numericValue);
-    expect(dict.get.bind(dict, stringKey)).toThrow();
+    expect(dict.get.bind(dict, stringKey)).toThrow(new DictKeyNotFound(stringKey));
 
     var stringValue = {3: 4};
     dict.set(stringKey, stringValue);
@@ -947,7 +947,7 @@ describe('Dict.set', function() {
     expect(stringKey).toBe('false');
     dict.set(boolKey, boolValue);
     expect(dict.get(boolKey)).toBe(boolValue);
-    expect(dict.get.bind(dict, stringKey)).toThrow();
+    expect(dict.get.bind(dict, stringKey)).toThrow(new DictKeyNotFound(stringKey));
 
     var stringValue = {3: 4};
     dict.set(stringKey, stringValue);
@@ -962,7 +962,7 @@ describe('Dict.set', function() {
     expect(stringKey).toBe('null');
     dict.set(nullKey, nullValue);
     expect(dict.get(nullKey)).toBe(nullValue);
-    expect(dict.get.bind(dict, stringKey)).toThrow();
+    expect(dict.get.bind(dict, stringKey)).toThrow(new DictKeyNotFound(stringKey));
 
     var stringValue = {3: 4};
     dict.set(stringKey, stringValue);
@@ -977,7 +977,7 @@ describe('Dict.set', function() {
     expect(stringKey).toBe('undefined');
     dict.set(undefinedKey, undefinedValue);
     expect(dict.get(undefinedKey)).toBe(undefinedValue);
-    expect(dict.get.bind(dict, stringKey)).toThrow();
+    expect(dict.get.bind(dict, stringKey)).toThrow(new DictKeyNotFound(stringKey));
 
     var stringValue = {3: 4};
     dict.set(stringKey, stringValue);
@@ -992,7 +992,7 @@ describe('Dict.set', function() {
     expect(stringKey).toBe('NaN');
     dict.set(nanKey, nanValue);
     expect(dict.get(nanKey)).toBe(nanValue);
-    expect(dict.get.bind(dict, stringKey)).toThrow();
+    expect(dict.get.bind(dict, stringKey)).toThrow(new DictKeyNotFound(stringKey));
 
     var stringValue = {3: 4};
     dict.set(stringKey, stringValue);
@@ -1012,7 +1012,7 @@ describe('Dict.set', function() {
       new Dict()
     ];
     badKeys.forEach(function(key) {
-      expect(dict.set.bind(dict, key, 987)).toThrow();
+      expect(dict.set.bind(dict, key, 987)).toThrow(new DictKeyNotHashable(key));
     });
   });
 
@@ -1113,12 +1113,12 @@ describe('Dict.copy', function() {
     // setting a key on either copy should not affect the other.
     var keyToSet = 'key';
     copied.set(keyToSet, 123);
-    expect(original.get.bind(original, keyToSet)).toThrow();
+    expect(original.get.bind(original, keyToSet)).toThrow(new DictKeyNotFound(keyToSet));
     expect(original.get(keyToSet, 'default')).toBe('default');
 
     var anotherKeyToSet = 'yea';
     original.set(anotherKeyToSet, 987);
-    expect(copied.get.bind(copied, anotherKeyToSet)).toThrow();
+    expect(copied.get.bind(copied, anotherKeyToSet)).toThrow(new DictKeyNotFound(anotherKeyToSet));
     expect(copied.get(anotherKeyToSet, 'default')).toBe('default');
   });
 
@@ -1136,12 +1136,12 @@ describe('Dict.copy', function() {
     // setting a key on either copy should not affect the other.
     var keyToSet = 'key';
     copied.set(keyToSet, 123);
-    expect(original.get.bind(original, keyToSet)).toThrow();
+    expect(original.get.bind(original, keyToSet)).toThrow(new DictKeyNotFound(keyToSet));
     expect(original.get(keyToSet, 'default')).toBe('default');
 
     var anotherKeyToSet = 'yea';
     original.set(anotherKeyToSet, 987);
-    expect(copied.get.bind(copied, anotherKeyToSet)).toThrow();
+    expect(copied.get.bind(copied, anotherKeyToSet)).toThrow(new DictKeyNotFound(anotherKeyToSet));
     expect(copied.get(anotherKeyToSet, 'default')).toBe('default');
   });
 });
@@ -1164,11 +1164,12 @@ describe('Dict.del', function() {
     dict.del(existingKey);
 
     expect(dict.length()).toBe(0);
-    expect(getExistingKey).toThrow();
+    expect(getExistingKey).toThrow(new DictKeyNotFound(existingKey));
   });
 
   it('Should raise an error removing a non-existing key', function() {
-    expect(dict.del.bind(dict, 'non existing key')).toThrow();
+    var nonExistingKey = 'non existing key';
+    expect(dict.del.bind(dict, nonExistingKey)).toThrow(new DictKeyNotFound(nonExistingKey));
   });
 });
 
@@ -1192,13 +1193,14 @@ describe('Dict.pop', function() {
     expect(popped).toBe(existingValue);
 
     expect(dict.length()).toBe(0);
-    expect(getExistingKey).toThrow();
+    expect(getExistingKey).toThrow(new DictKeyNotFound(existingKey));
   });
 
   it('Should raise an error removing a non-existing key', function() {
+    var nonExistingKey = 'nope';
     expect(function() {
-      dict.pop('non existing key');
-    }).toThrow();
+      dict.pop(nonExistingKey);
+    }).toThrow(new DictKeyNotFound(nonExistingKey));
   });
 
   it('Should not raise an error removing a non-existing key with an optional default value specified', function() {

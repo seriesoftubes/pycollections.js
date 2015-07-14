@@ -5,7 +5,18 @@
 'use strict';
 
 
-window.DictKeyNotFound = function() {};
+window.DictKeyNotFound = function(opt_key) {
+  if (opt_key) {
+    this.keyWasSupplied = true;
+    this.key = opt_key;
+  } else {
+    this.keyWasSupplied = false;
+  }
+};
+
+window.DictKeyNotHashable = function(key) {
+  this.key = key;
+};
 
 
 window.Dict = (function() {
@@ -54,7 +65,7 @@ Dict.fromKeys = function(keys, opt_valueForAllKeys) {
 };
 
 Dict.checkKeyIsHashable_ = function(key) {
-  if (!TYPES[GET_TYPE(key)]) throw Error('Unhashable key:' + key);
+  if (!TYPES[GET_TYPE(key)]) throw new DictKeyNotHashable(key);
 };
 
 Dict.prototype.clear = function() {
@@ -105,14 +116,14 @@ Dict.prototype.get = function(key, opt_defaultValue) {
   Dict.checkKeyIsHashable_(key);
 
   var hasKey = this.hasKey(key);
-  if (numArgs === 1 && !hasKey) throw Error('Missing key: ' + key);
+  if (numArgs === 1 && !hasKey) throw new DictKeyNotFound(key);
 
   return hasKey ? this.dict_[GET_TYPE(key)][key] : opt_defaultValue;
 };
 
 Dict.prototype.del = function(key) {
   Dict.checkKeyIsHashable_(key);
-  if (!this.hasKey(key)) throw Error('Missing key: ' + key);
+  if (!this.hasKey(key)) throw new DictKeyNotFound(key);
 
   delete this.dict_[GET_TYPE(key)][key];
 };
@@ -120,7 +131,7 @@ Dict.prototype.del = function(key) {
 Dict.prototype.pop = function(key, opt_defaultValue) {
   Dict.checkKeyIsHashable_(key);
   var hasKey = this.hasKey(key);
-  if (arguments.length === 1 && !hasKey) throw Error('Missing key: ' + key);
+  if (arguments.length === 1 && !hasKey) throw new DictKeyNotFound(key);
 
   var value = this.get(key, opt_defaultValue);
   hasKey && this.del(key);

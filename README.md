@@ -1,14 +1,17 @@
 # collections.js
 ## Bringing collections.py to JavaScript
 
-collections.js contains class definitions for Dict, DefaultDict, and Counter, each of which is fully-stocked with functionality native to their collections.py counterparts.
+collections.js contains class definitions for Dict, DefaultDict, and Counter, all stocked with functionality that both exceeds that of the ES6 Map class and (mostly) mirrors their collections.py counterparts.
 
+----
 
 # Dict
+
 ### Static methods:
 - fromKeys(keys, opt_valueForAllKeys)
+
 ### Instance methods:
-- clear() (link to py/js example pair)
+- clear()
 - copy()
 - set(key, value)
 - update(iterable)
@@ -26,76 +29,82 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, ea
 - itervalues(cb)
 - values()
 
-### Methods not present in Python dict:
+### Instance methods (not present in Python dict):
 - getFirstKey()
 - getFirstMatchingKey(predicate)
 - modifyOneValueInPlace(key, fn)
 - modifySomeValuesInPlace(keys, fn)
 - modifyAllValuesInPlace(fn)
+- setOneNewValue(key, fn)
+- setSomeNewValues(keys, fn)
+- setAllNewValues(fn)
 
 
 ## Demo
 
-Python:
+### Creating a new instance
 ```py
-d = dict()
+py = {}
+py = dict.fromkeys([1, 2, 3], {'the': 'value'})
 ```
-JS:
 ```js
-var d = new Dict();
+var js = new Dict();
+var js = Dict.fromKeys([1, 2, 3], {'the': 'value'});
 ```
-
-
-Python:
-```python
-123 in d
-```
-
-JS:
-```js
-d.hasKey(123);
-```
-
-
-Python:
+-----
+### Detecting presence of a key
 ```py
-d[8] = 'num'
-8 in d  # True
-'8' in d  # False
-len(d)  # 1
-
-d['8'] = 'str'
-len(d)  # 2
-d[8]  # 'num'
-d['8']  # 'str'
+py = {}
+987 in py  # False
 ```
-
-JS:
 ```js
-d.set(8, 'num');
-d.hasKey(8); // true
-d.hasKey('8'); // false
-d.length(); // 1
-
-d.set('8', 'str');
-d.length();  // 2
-d.get(8);  // 'num'
-d.get('8');  // 'str'
+var js = new Dict();
+js.hasKey(987);  // false
 ```
-
-Python:
+----
+### Getting a potentially-missing key's value
 ```py
-d['my key']
-d.get('missing key', 'default value')
-d.get('missing key')
+py = {}
+py['missing key']  # raises KeyError
+py.get('missing key', 'default')  # 'default'
+py.get('missing key')  # None
 ```
-
-JS:
 ```js
-d.get('my key');
-d.get('missing key', 'default value');
-// Must explicitly pass undefined as the default,
-// otherwise the key is assumed to exist.
-d.get('missing key', undefined);
+var js = new Dict();
+js.get('my key');  // throws DictKeyNotFoundError
+js.get('missing key', 'default');  // 'default'
+// Must explicitly pass null/undefined as the default;
+// with 1 .get() argument, the key is assumed to exist.
+js.get('missing key', null);  // null
 ```
+----
+
+### Distinguishing between keys of different types
+Support for distinct Boolean, Number, String, Null, NaN, and undefined keys.
+```py
+py = {}
+py[8] = 'num'
+8 in py  # True
+'8' in py  # False
+len(py)  # 1
+
+py['8'] = 'str'
+len(py)  # 2
+py[8]  # 'num'
+py['8']  # 'str'
+```
+```js
+var js = new Dict();
+js.set(8, 'num');
+js.hasKey(8); // true
+js.hasKey('8'); // false
+js.length(); // 1
+
+js.set('8', 'str');
+js.length();  // 2
+js.get(8);  // 'num'
+js.get('8');  // 'str'
+```
+----
+
 
