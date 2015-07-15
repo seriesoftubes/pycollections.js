@@ -2,9 +2,15 @@
 
 module.exports = function (grunt) {
   var CONCAT_FILE = 'build/collections.js';
+  var DIST_FILE = 'dist/collections.min.js';
+  var UNCONCATENATED_SOURCE_FOLDER = 'src/';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
+
+    clean: {
+        js: [CONCAT_FILE, DIST_FILE]
+    },
 
     concat: {
       options: {
@@ -13,9 +19,9 @@ module.exports = function (grunt) {
       library: {
         src: [
           // order matters!
-          'src/dict.js',
-          'src/defaultdict.js',
-          'src/counter.js',
+          UNCONCATENATED_SOURCE_FOLDER + 'dict.js',
+          UNCONCATENATED_SOURCE_FOLDER + 'defaultdict.js',
+          UNCONCATENATED_SOURCE_FOLDER + 'counter.js',
         ],
         dest: CONCAT_FILE
       }
@@ -31,7 +37,7 @@ module.exports = function (grunt) {
       },
       target: {
         src: CONCAT_FILE,
-        dest: 'dist/collections.min.js'
+        dest: DIST_FILE
       }
     },
 
@@ -41,16 +47,17 @@ module.exports = function (grunt) {
       },
       files: [
         'Gruntfile.js',
-        'src/*.js'
+        UNCONCATENATED_SOURCE_FOLDER + '*.js'
       ],
       tasks: ['default']
     }
   });
 
+  grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['concat', 'uglify']);
+  grunt.registerTask('default', ['clean', 'concat', 'uglify']);
   grunt.registerTask('livereload', ['default', 'watch']);
 };
