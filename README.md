@@ -4,6 +4,38 @@
 collections.js contains class definitions for Dict, DefaultDict, and Counter, all stocked with functionality that both exceeds that of the ES6 Map class and (mostly) mirrors their collections.py counterparts.
 
 ----
+# Contents
+- ## Dict
+  - Static methods
+  - Instance methods
+  - Creating a new instance
+  - Detecting presence of a key
+  - Getting a potentially-missing key's value
+  - Distinguishing between keys of different types
+  - Deleting a key
+  - Popping a key
+  - Clearing out all key-value pairs
+  - Forming a copy
+  - Updating key-value pairs
+  - Iterating over keys, values, and items
+  - Using non-Python methods
+- ## DefaultDict
+  - Static methods
+  - Instance methods
+  - Creating a new instance
+  - Getting a potentially-missing key's value
+  - Operating on potentially-missing keys' values
+  - DefaultDict of Dicts
+  - Fun with self-referencing
+- ## Counter
+  - Static methods
+  - Instance methods
+  - Creating a new instance
+  - Counting distinct elements
+  - Increasing/decreasing counts
+
+----
+
 
 # Dict
 
