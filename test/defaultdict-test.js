@@ -2,6 +2,9 @@
 'use strict';
 
 
+var DefaultDict = pycollections.DefaultDict;
+
+
 describe('Initialized empty defaultdict', function() {
 
   it('Must have a default function', function() {

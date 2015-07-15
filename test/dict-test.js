@@ -2,6 +2,11 @@
 'use strict';
 
 
+var Dict = pycollections.Dict;
+var DictKeyNotFound = pycollections.DictKeyNotFound;
+var DictKeyNotHashable = pycollections.DictKeyNotHashable;
+
+
 describe('Dict constructed with no args', function() {
   var dict;
 

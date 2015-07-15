@@ -1,30 +1,14 @@
 'use strict';
 
 module.exports = function (grunt) {
-  var CONCAT_FILE = 'build/collections.js';
-  var DIST_FILE = 'dist/collections.min.js';
-  var UNCONCATENATED_SOURCE_FOLDER = 'src/';
+  var BUILD_FILE = 'pycollections.js';
+  var MINIFIED_FILE = 'pycollections.min.js';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     clean: {
-        js: [CONCAT_FILE, DIST_FILE]
-    },
-
-    concat: {
-      options: {
-        separator: ''
-      },
-      library: {
-        src: [
-          // order matters!
-          UNCONCATENATED_SOURCE_FOLDER + 'dict.js',
-          UNCONCATENATED_SOURCE_FOLDER + 'defaultdict.js',
-          UNCONCATENATED_SOURCE_FOLDER + 'counter.js',
-        ],
-        dest: CONCAT_FILE
-      }
+        js: [MINIFIED_FILE]
     },
 
     uglify: {
@@ -33,11 +17,11 @@ module.exports = function (grunt) {
         preserveComments: 'some',
         mangle: true,
         compress: true,
-        sourceMap: true
+        sourceMap: false
       },
       target: {
-        src: CONCAT_FILE,
-        dest: DIST_FILE
+        src: BUILD_FILE,
+        dest: MINIFIED_FILE
       }
     },
 
@@ -47,17 +31,16 @@ module.exports = function (grunt) {
       },
       files: [
         'Gruntfile.js',
-        UNCONCATENATED_SOURCE_FOLDER + '*.js'
+        BUILD_FILE
       ],
       tasks: ['default']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
-  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['clean', 'concat', 'uglify']);
+  grunt.registerTask('default', ['clean', 'uglify']);
   grunt.registerTask('livereload', ['default', 'watch']);
 };

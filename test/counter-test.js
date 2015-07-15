@@ -2,6 +2,10 @@
 'use strict';
 
 
+var Counter = pycollections.Counter;
+var DictKeyNotHashable = pycollections.DictKeyNotHashable;
+
+
 describe('Counter constructor', function() {
   it('Is a subclass of Dict and DefaultDict.', function() {
     expect(new Counter() instanceof Dict).toBe(true);
@@ -119,9 +123,10 @@ describe('Counter.update', function() {
   });
 
   it('Should fail given array with <100% hashable elements.', function() {
-    var elements = ['a', 'a', 'b', {'not': 'hashable'}];
+    var unhashable = {'not': 'hashable'};
+    var elements = ['a', 'a', 'b', unhashable];
     var counter = new Counter();
-    expect(counter.update.bind(counter, elements)).toThrow();
+    expect(counter.update.bind(counter, elements)).toThrow(new DictKeyNotHashable(unhashable));
   });
 });
 
