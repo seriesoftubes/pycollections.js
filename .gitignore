@@ -1,2 +1,5 @@
 .DS_STORE
 timer.html
+
+node_modules
+build

@@ -5,7 +5,6 @@
 'use strict';
 
 
-// TODO: dist file that has all classes.
 window.DefaultDict = (function() {
 
 var DefaultDict = function(defaultFn, opt_keyValues) {
