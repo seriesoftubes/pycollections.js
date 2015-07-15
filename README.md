@@ -5,10 +5,8 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, al
 
 ----
 # Contents
-- ## Dict
-  - Static methods
-  - Instance methods
-  - Creating a new instance
+- ## [Dict](#dict)
+  - [Creating a new Dict](#creating-a-new-dict)
   - Detecting presence of a key
   - Getting a potentially-missing key's value
   - Distinguishing between keys of different types
@@ -20,17 +18,13 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, al
   - Iterating over keys, values, and items
   - Using non-Python methods
 - ## DefaultDict
-  - Static methods
-  - Instance methods
-  - Creating a new instance
+  - Creating a new DefaultDict
   - Getting a potentially-missing key's value
   - Operating on potentially-missing keys' values
   - DefaultDict of Dicts
   - Fun with self-referencing
 - ## Counter
-  - Static methods
-  - Instance methods
-  - Creating a new instance
+  - Creating a new Counter
   - Counting distinct elements
   - Increasing/decreasing counts
 
@@ -71,7 +65,7 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, al
 
 ## Demo
 
-### Creating a new instance
+### Creating a new Dict
 ```py
 py = {}
 py = dict.fromkeys([1, 2, 3], {'the': 'value'})
