@@ -3,9 +3,6 @@
   "version": "0.0.1",
   "description": "Bringing collections.py to JavaScript",
   "main": "dist/collections.min.js",
-  "scripts": {
-    "test": "grunt test --verbose"
-  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/seriesoftubes/collections.js.git"
