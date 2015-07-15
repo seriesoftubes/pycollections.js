@@ -1,7 +1,7 @@
-# collections.js
+# pycollections.js
 ## Bringing collections.py to JavaScript
 
-collections.js contains class definitions for Dict, DefaultDict, and Counter, all stocked with functionality that both exceeds that of the ES6 Map class and (mostly) mirrors their collections.py counterparts.
+pycollections.js contains class definitions for Dict, DefaultDict, and Counter, all stocked with functionality that both exceeds that of the ES6 Map class and (mostly) mirrors their collections.py counterparts.
 
 ----
 # Contents
