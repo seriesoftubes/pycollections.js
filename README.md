@@ -5,28 +5,28 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, al
 
 ----
 # Contents
-- ## [Dict](#dict)
+- [Dict](#dict)
   - [Creating a new Dict](#creating-a-new-dict)
-  - Detecting presence of a key
-  - Getting a potentially-missing key's value
-  - Distinguishing between keys of different types
-  - Deleting a key
-  - Popping a key
-  - Clearing out all key-value pairs
-  - Forming a copy
-  - Updating key-value pairs
-  - Iterating over keys, values, and items
-  - Using non-Python methods
-- ## DefaultDict
-  - Creating a new DefaultDict
-  - Getting a potentially-missing key's value
-  - Operating on potentially-missing keys' values
-  - DefaultDict of Dicts
-  - Fun with self-referencing
-- ## Counter
-  - Creating a new Counter
-  - Counting distinct elements
-  - Increasing/decreasing counts
+  - [Detecting presence of a key](#detecting-presence-of-a-key)
+  - [Getting a potentially-missing key's value](#getting-a-potentially-missing-keys-value)
+  - [Distinguishing between keys of different types](#distinguishing-between-keys-of-different-types)
+  - [Deleting a key](#deleting-a-key)
+  - [Popping a key](#popping-a-key)
+  - [Clearing out all key-value pairs](#clearing-out-all-key-value-pairs)
+  - [Forming a copy](#forming-a-copy)
+  - [Updating key-value pairs](#updating-key-value-pairs)
+  - [Iterating over keys, values, and items](#iterating-over-keys-values-and-items)
+  - [Using non-Python methods](#using-non-python-methods)
+- [DefaultDict](#defaultdict)
+  - [Creating a new DefaultDict](#creating-a-new-defaultdict)
+  - [Getting a potentially-missing key's value](#getting-a-potentially-missing-keys-value-1)
+  - [Operating on potentially-missing keys' values](#operating-on-potentially-missing-keys-values)
+  - [DefaultDict of Dicts](#defaultdict-of-dicts)
+  - [Fun with self-referencing](#fun-with-self-referencing)
+- [Counter](#counter)
+  - [Creating a new Counter](#creating-a-new-counter)
+  - [Counting distinct elements](#counting-distinct-elements)
+  - [Increasing/decreasing counts](#increasing-decreasing-counts)
 
 ----
 
