@@ -313,7 +313,7 @@ js.get('array key');  // [123]
 
 ## Demo
 
-### Creating a new instance
+### Creating a new DefaultDict
 ```py
 py = defaultdict(list)
 py = defaultdict(int, a=1)
@@ -422,7 +422,7 @@ js.get(3);  // 123
 
 ## Demo
 
-### Creating a new instance
+### Creating a new Counter
 ```py
 py = Counter()
 py = Counter(a=2, b=1)
