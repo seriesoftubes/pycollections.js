@@ -1,11 +1,9 @@
 /**
- * @license
- * pycollections
- * (c) 2015 Brian Weidenbaum <bw aet brianweidenbaum dot com>
- * pycollections is freely distributable under the terms of the MIT license.
- * Documentation: https://github.com/seriesoftubes/pycollections
- * Version '0.0.1'
- */
+ * pycollections.js
+ * License: MIT
+ * Docs: https://github.com/seriesoftubes/pycollections
+*/ 
+
 !function(root) { 
 'use strict';
 
