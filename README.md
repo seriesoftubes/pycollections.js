@@ -26,7 +26,7 @@ collections.js contains class definitions for Dict, DefaultDict, and Counter, al
 - [Counter](#counter)
   - [Creating a new Counter](#creating-a-new-counter)
   - [Counting distinct elements](#counting-distinct-elements)
-  - [Increasing/decreasing counts](#increasing-decreasing-counts)
+  - [Increasing/decreasing counts](#increasingdecreasing-counts)
 
 ----
 
