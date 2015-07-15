@@ -1,4 +1,4 @@
-// Tests for defaultdict.js.
+// Tests for class DefaultDict.
 'use strict';
 
 

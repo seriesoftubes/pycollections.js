@@ -1,4 +1,4 @@
-// Tests for counter.js.
+// Tests for class Counter.
 'use strict';
 
 

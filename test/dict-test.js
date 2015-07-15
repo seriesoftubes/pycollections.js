@@ -1,4 +1,4 @@
-// Tests for dict.js.
+// Tests for class Dict.
 'use strict';
 
 
