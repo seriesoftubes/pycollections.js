@@ -27,6 +27,7 @@ pycollections.js contains class definitions for Dict, DefaultDict, and Counter, 
   - [Creating a new Counter](#creating-a-new-counter)
   - [Counting distinct elements](#counting-distinct-elements)
   - [Increasing/decreasing counts](#increasingdecreasing-counts)
+  - [Getting the most common elements](#getting-the-most-common-elements)
 
 ----
 
@@ -480,4 +481,20 @@ js.get('c');  // 3
 
 js.subtract({'a': 4})
 js.get('a')  // -1
+```
+
+### Getting the most common elements
+```py
+py = Counter(['a', 'b', 'b', 'c', 'c', 'c'])
+py.most_common(1)  # [('c', 3)]
+py.most_common(2)  # [('c', 3), ('b', 2)]
+py.most_common(99)  # [('c', 3), ('b', 2), ('a', 1)]
+py.most_common()  # [('c', 3), ('b', 2), ('a', 1)]
+```
+```js
+var js = new Counter(['a', 'b', 'b', 'c', 'c', 'c']);
+js.mostCommon(1);  // [['c', 3]]
+js.mostCommon(2);  // [['c', 3], ['b', 2]]
+js.mostCommon(99);  // [['c', 3], ['b', 2], ['a', 1]]
+js.mostCommon();  // [['c', 3], ['b', 2], ['a', 1]]
 ```
