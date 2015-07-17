@@ -60,6 +60,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['clean', 'uglify', 'jasmine_node', 'karma']);
+  grunt.registerTask('test', ['jasmine_node', 'karma']);
+  grunt.registerTask('default', ['clean', 'uglify', 'test']);
   grunt.registerTask('livereload', ['default', 'watch']);
 };
