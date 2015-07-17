@@ -1,7 +1,7 @@
 /**
  * pycollections.js
  * License: MIT
- * Docs: https://github.com/seriesoftubes/pycollections
+ * Docs: https://github.com/seriesoftubes/pycollections.js
 */ 
 
 !(function(root) { 
