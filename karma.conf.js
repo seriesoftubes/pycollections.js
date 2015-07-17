@@ -39,7 +39,8 @@ module.exports = function(config) {
 
     browsers: [
       'Chrome',
-      'Firefox'
+      'Firefox',
+      'Safari'
     ],
 
     // kill browser if it doesn't capture by this deadline (ms)

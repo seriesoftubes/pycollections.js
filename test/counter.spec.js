@@ -129,7 +129,12 @@ describe('Counter.update', function() {
     var unhashable = {'not': 'hashable'};
     var elements = ['a', 'a', 'b', unhashable];
     var counter = new Counter();
-    expect(counter.update.bind(counter, elements)).toThrow(new DictKeyNotHashable(unhashable));
+    try {
+      counter.update(elements);
+    } catch (e) {
+      expect(e instanceof DictKeyNotHashable).toBe(true);
+      expect(e.key).toBe(unhashable);
+    }
   });
 });
 
