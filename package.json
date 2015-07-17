@@ -1,5 +1,5 @@
 {
-  "name": "pycollections.js",
+  "name": "pycollections",
   "version": "0.1.0",
   "description": "Bringing collections.py to JavaScript",
   "main": "./dist/pycollections",

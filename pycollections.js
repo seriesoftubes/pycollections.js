@@ -1,8 +1,9 @@
 /**
- * pycollections.js
+ * pycollections
+ * Bringing collections.py to JavaScript.
  * License: MIT
  * Docs: https://github.com/seriesoftubes/pycollections.js
-*/ 
+*/
 
 !(function(root) { 
 'use strict';
