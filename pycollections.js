@@ -4,7 +4,7 @@
  * Docs: https://github.com/seriesoftubes/pycollections
 */ 
 
-!function(root) { 
+!(function(root) { 
 'use strict';
 
 
@@ -37,18 +37,24 @@ TYPES[TYPE_NUMBER] = true;
 TYPES[TYPE_STRING] = true;
 TYPES[TYPE_UNDEFINED] = true;
 
-if (Number.isNaN) {
-  var nanTest = Number.isNaN.bind(Number);
-} else {
+if (!Number.isNaN) {
   // Un-break functionality of window.isNaN for browsers that need it:
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN
-  var nanTest = function(v) {
-    return v != v;
+  Number.isNaN = function(v) {
+    return v !== v;
+  };
+}
+
+if (!Array.isArray) {
+  // Polyfill for isArray:
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+  Array.isArray = function(arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
   };
 }
 
 var GET_TYPE = function(v) {
-  return v === null ? TYPE_NULL : (nanTest(v) ? TYPE_NAN : typeof(v));
+  return v === null ? TYPE_NULL : (Number.isNaN(v) ? TYPE_NAN : typeof(v));
 };
 
 
@@ -89,7 +95,7 @@ Dict.prototype.update = function(keyValues) {
   var setKey = this.set.bind(this);
   if (keyValues instanceof Dict) {
     keyValues.iteritems(setKey);
-  } else if (keyValues instanceof Array) {
+  } else if (Array.isArray(keyValues)) {
     for (var i = 0, len = keyValues.length; i < len; i++) {
       var keyValue = keyValues[i];
       setKey(keyValue[0], keyValue[1]);
@@ -283,8 +289,8 @@ Counter.fromKeys = function() {
 
 Counter.prototype.update = function(keyValues) {
   var isDict = keyValues instanceof Dict;
-  var isArray = keyValues instanceof Array;
-  var isObject = typeof keyValues === 'object' && !isArray && !isDict;
+  var isArray = Array.isArray(keyValues);
+  var isObject = !isArray && !isDict && typeof keyValues === 'object';
   if (this.isEmpty() && (isDict || isObject)) {
     // If it's empty, copy the key-value pairs from the obj/dict as normal.
     return DefaultDict.prototype.update.call(this, keyValues);
@@ -338,7 +344,7 @@ Counter.prototype.subtract = function(keyValues) {
     keyValues.iteritems(function(key, value) {
       self.setOneNewValue(key, Counter.getIncrementor(-value));
     });
-  } else if (keyValues instanceof Array) {
+  } else if (Array.isArray(keyValues)) {
     // if given an Array of anything, counts each array element
     // as a key to decrement by 1.
     this.setSomeNewValues(keyValues, Counter.getIncrementor(-1));
@@ -389,4 +395,4 @@ if (typeof exports !== 'undefined') { // CommonJS module is defined
 } else { // Create our own pycollections namespace.
   root.pycollections = pycollections;
 }
-}(this);
+})(this);
