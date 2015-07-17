@@ -51,9 +51,9 @@ describe('Initialized empty defaultdict', function() {
     expect(dd.get(key)).toBe(value);
   });
 
-  it('Should support counting values via a Number default function', function() {
+  it('Should support counting values via a default function that returns 0', function() {
     var letters = 'abccc'.split('');
-    var dd = new DefaultDict(Number);
+    var dd = new DefaultDict(function(){return 0});
     dd.setSomeNewValues(letters, function(v) {
       return v + 1;
     });

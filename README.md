@@ -324,9 +324,9 @@ py = defaultdict(123)  # raises TypeError
 ```
 ```js
 var js = new DefaultDict([].constructor);
-var js = new DefaultDict(Number, {'a': 1});
+var js = new DefaultDict(function(){return 0}, {'a': 1});
 var js = new DefaultDict(String, [['a', 1]]);
-var js = new DefaultDict(Number, new Dict({'a': 1}));
+var js = new DefaultDict(function(){return 0}, new Dict({'a': 1}));
 var js = new DefaultDict(123);  // throws Error
 ```
 
@@ -342,7 +342,7 @@ len(py)  # 1
 py.keys()  # [1]
 ```
 ```js
-var js = new DefaultDict(Number);
+var js = new DefaultDict(function(){return 0});
 js.length();  // 0
 js.get(1);  // 0
 js.length();  // 1

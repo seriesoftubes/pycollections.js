@@ -41,7 +41,7 @@ if (!Number.isNaN) {
   // Un-break functionality of window.isNaN for browsers that need it:
   // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN
   Number.isNaN = function(v) {
-    return v !== v;
+    return v != v;
   };
 }
 
@@ -272,7 +272,7 @@ DefaultDict.prototype.get = function(key /*, defaultValue */) {
 
 
 var Counter = function(opt_keyValues) {
-  DefaultDict.call(this, Number, opt_keyValues);
+  DefaultDict.call(this, function(){return 0}, opt_keyValues);
 };
 Counter.constructor = DefaultDict;
 Counter.prototype = Object.create(DefaultDict.prototype);
