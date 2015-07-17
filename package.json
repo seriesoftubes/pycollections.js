@@ -1,8 +1,8 @@
 {
   "name": "pycollections",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Bringing collections.py to JavaScript",
-  "main": "./dist/pycollections",
+  "main": "./dist/pycollections.min.js",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/seriesoftubes/pycollections.js.git"
