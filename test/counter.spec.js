@@ -2,7 +2,10 @@
 'use strict';
 
 
+if (require) var pycollections = require('../pycollections');
 var Counter = pycollections.Counter;
+var Dict = pycollections.Dict;
+var DefaultDict = pycollections.DefaultDict;
 var DictKeyNotHashable = pycollections.DictKeyNotHashable;
 
 

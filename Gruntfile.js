@@ -25,6 +25,17 @@ module.exports = function (grunt) {
       }
     },
 
+    jasmine_node: {
+      options: {
+        forceExit: true,
+        match: '.',
+        matchall: false,
+        extensions: 'js',
+        specNameMatcher: 'spec'
+      },
+      all: []
+    },
+
     watch: {
       options: {
         livereload: true
@@ -39,8 +50,9 @@ module.exports = function (grunt) {
 
   grunt.loadNpmTasks('grunt-contrib-clean');
   grunt.loadNpmTasks('grunt-contrib-uglify');
+  grunt.loadNpmTasks('grunt-jasmine-node');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('default', ['clean', 'uglify']);
+  grunt.registerTask('default', ['clean', 'uglify', 'jasmine_node']);
   grunt.registerTask('livereload', ['default', 'watch']);
 };

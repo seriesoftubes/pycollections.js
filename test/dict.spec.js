@@ -2,6 +2,7 @@
 'use strict';
 
 
+if (require) var pycollections = require('../pycollections');
 var Dict = pycollections.Dict;
 var DictKeyNotFound = pycollections.DictKeyNotFound;
 var DictKeyNotHashable = pycollections.DictKeyNotHashable;

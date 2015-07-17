@@ -2,6 +2,8 @@
 'use strict';
 
 
+if (require) var pycollections = require('../pycollections');
+var Dict = pycollections.Dict;
 var DefaultDict = pycollections.DefaultDict;
 
 
