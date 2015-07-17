@@ -9,20 +9,20 @@ module.exports = function(config) {
 
     // to load in the browser
     files: [
-      'pycollections.min.js',
+      'dist/pycollections.min.js',
       'test/dict.spec.js',
       'test/defaultdict.spec.js',
       'test/counter.spec.js',
     ],
 
     exclude: [
-      'pycollections.js',
       'Gruntfile.js',
-      'SpecRunner.html',
-      'README.md',
-      'package.json',
-      'LICENSE',
       'karma.conf.js',
+      'LICENSE',
+      'package.json',
+      'pycollections.js',
+      'README.md',
+      'SpecRunner.html',
     ],
 
     reporters: ['progress'],

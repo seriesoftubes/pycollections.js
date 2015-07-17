@@ -2,7 +2,7 @@
 
 module.exports = function (grunt) {
   var BUILD_FILE = 'pycollections.js';
-  var MINIFIED_FILE = 'pycollections.min.js';
+  var MINIFIED_FILE = 'dist/pycollections.min.js';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
