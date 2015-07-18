@@ -7,6 +7,10 @@ It has been tested on NodeJS v0.12.7, and the latest Chrome, Firefox, and Safari
 
 ----
 # Contents
+- [Getting it](#getting-it)
+  - [NPM](#npm)
+  - [Bower](#bower)
+  - [cdnjs](#cdnjs)
 - [Dict](#dict)
   - [Creating a new Dict](#creating-a-new-dict)
   - [Detecting presence of a key](#detecting-presence-of-a-key)
@@ -33,6 +37,20 @@ It has been tested on NodeJS v0.12.7, and the latest Chrome, Firefox, and Safari
 
 ----
 
+# Getting it
+## NPM
+```
+npm install pycollections
+```
+## Bower
+```
+bower install pycollections
+```
+## cdnjs
+Coming soon!
+
+----
+----
 
 # Dict
 
