@@ -1,14 +1,28 @@
 'use strict';
 
 module.exports = function (grunt) {
-  var BUILD_FILE = 'pycollections.js';
+  var CONCAT_FILE = 'dist/pycollections.js';
   var MINIFIED_FILE = 'dist/pycollections.min.js';
 
   grunt.initConfig({
     pkg: grunt.file.readJSON('package.json'),
 
     clean: {
-        js: [MINIFIED_FILE]
+        js: [CONCAT_FILE, MINIFIED_FILE]
+    },
+
+    concat: {
+      options: {
+        separator: '\n'
+      },
+      dist: {
+        src: [
+          'src/header',
+          'src/0.source.js',
+          'src/footer',
+        ],
+        dest: CONCAT_FILE
+      }
     },
 
     uglify: {
@@ -20,7 +34,7 @@ module.exports = function (grunt) {
         sourceMap: false
       },
       target: {
-        src: BUILD_FILE,
+        src: CONCAT_FILE,
         dest: MINIFIED_FILE
       }
     },
@@ -46,21 +60,19 @@ module.exports = function (grunt) {
       options: {
         livereload: true
       },
-      files: [
-        'Gruntfile.js',
-        BUILD_FILE
-      ],
+      files: ['src/*.js', 'test/*.js'],
       tasks: ['default']
     }
   });
 
   grunt.loadNpmTasks('grunt-contrib-clean');
+  grunt.loadNpmTasks('grunt-contrib-concat');
   grunt.loadNpmTasks('grunt-contrib-uglify');
   grunt.loadNpmTasks('grunt-jasmine-node');
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
   grunt.registerTask('test', ['jasmine_node', 'karma']);
-  grunt.registerTask('default', ['clean', 'uglify', 'test']);
+  grunt.registerTask('default', ['clean', 'concat', 'uglify', 'test']);
   grunt.registerTask('livereload', ['default', 'watch']);
 };

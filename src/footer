@@ -1,0 +1,21 @@
+
+// Exporting
+var pycollections = {
+  'DictKeyNotFound': DictKeyNotFound,
+  'DictKeyNotHashable': DictKeyNotHashable,
+  'Dict': Dict,
+  'DefaultDict': DefaultDict,
+  'Counter': Counter
+};
+
+if (typeof exports !== 'undefined') { // CommonJS module is defined
+  if (typeof module !== 'undefined' && module.exports) { // Export module
+    module.exports = pycollections;
+  }
+  exports.pycollections = pycollections;
+} else if (typeof define === 'function' && define.amd) { // Register as a named module with AMD.
+  define('pycollections', [], function(){return pycollections});
+} else { // Create our own pycollections namespace.
+  root.pycollections = pycollections;
+}
+})(this);

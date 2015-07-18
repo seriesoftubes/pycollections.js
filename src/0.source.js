@@ -1,13 +1,3 @@
-/**
- * pycollections
- * Bringing collections.py to JavaScript.
- * License: MIT
- * Docs: https://github.com/seriesoftubes/pycollections.js
-*/
-
-!(function(root) { 
-'use strict';
-
 
 var DictKeyNotFound = function(opt_key) {
   if (arguments.length) {
@@ -170,7 +160,7 @@ Dict.prototype.getFirstKey = function() {
   var keyWasFound = false;
   this.iterkeys(function(key) {
     if (!keyWasFound) {
-      firstKey = key; 
+      firstKey = key;
       keyWasFound = true;
     }
   });
@@ -375,25 +365,3 @@ Counter.prototype.leastCommon = function(opt_n) {
   });
   return arguments.length ? items.slice(0, opt_n) : items;
 };
-
-
-// Exporting
-var pycollections = {
-  'DictKeyNotFound': DictKeyNotFound,
-  'DictKeyNotHashable': DictKeyNotHashable,
-  'Dict': Dict,
-  'DefaultDict': DefaultDict,
-  'Counter': Counter
-};
-
-if (typeof exports !== 'undefined') { // CommonJS module is defined
-  if (typeof module !== 'undefined' && module.exports) { // Export module
-    module.exports = pycollections;
-  }
-  exports.pycollections = pycollections;
-} else if (typeof define === 'function' && define.amd) { // Register as a named module with AMD.
-  define('pycollections', [], function(){return pycollections});
-} else { // Create our own pycollections namespace.
-  root.pycollections = pycollections;
-}
-})(this);
