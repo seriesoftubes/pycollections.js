@@ -1,18 +1,4 @@
 
-var DictKeyNotFound = function(opt_key) {
-  if (arguments.length) {
-    this.keyWasSupplied = true;
-    this.key = opt_key;
-  } else {
-    this.keyWasSupplied = false;
-  }
-};
-
-var DictKeyNotHashable = function(key) {
-  this.key = key;
-};
-
-
 var TYPE_BOOLEAN = typeof(true);
 var TYPE_NAN = String(NaN);  // special fake type just for the purpose of dict.
 var TYPE_NULL = String(null);  // special fake type just for the purpose of dict.
@@ -28,21 +14,6 @@ TYPES[TYPE_NUMBER] = true;
 TYPES[TYPE_STRING] = true;
 TYPES[TYPE_UNDEFINED] = true;
 
-if (!Number.isNaN) {
-  // Un-break functionality of window.isNaN for browsers that need it:
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN
-  Number.isNaN = function(v) {
-    return v != v;
-  };
-}
-
-if (!Array.isArray) {
-  // Polyfill for isArray:
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
-  Array.isArray = function(arg) {
-    return Object.prototype.toString.call(arg) === '[object Array]';
-  };
-}
 
 var GET_TYPE = function(v) {
   return v === null ? TYPE_NULL : (Number.isNaN(v) ? TYPE_NAN : typeof(v));
@@ -240,128 +211,4 @@ Dict.prototype.setAllNewValues = function(fn) {
   this.iterkeys(function(key, self) {
     self.setOneNewValue(key, fn);
   });
-};
-
-
-var DefaultDict = function(defaultFn, opt_keyValues) {
-  if (typeof(defaultFn) !== 'function') throw Error('Must supply a default function.');
-  this.default_ = defaultFn
-  Dict.call(this, opt_keyValues);
-};
-DefaultDict.prototype.constructor = Dict;
-DefaultDict.prototype = Object.create(Dict.prototype);
-
-
-DefaultDict.prototype.get = function(key /*, defaultValue */) {
-  // If .get(k, v), use super method.
-  if (arguments.length > 1) {
-    return Dict.prototype.get.apply(this, arguments);
-  }
-  Dict.checkKeyIsHashable_(key);
-  return this.hasKey(key) ? Dict.prototype.get.call(this, key) : this.set(key, this.default_());
-};
-
-
-var Counter = function(opt_keyValues) {
-  DefaultDict.call(this, function(){return 0}, opt_keyValues);
-};
-Counter.constructor = DefaultDict;
-Counter.prototype = Object.create(DefaultDict.prototype);
-
-Counter.getIncrementor = function(incrementBy) {
-  return function(v) {
-    return v + incrementBy;
-  };
-};
-
-Counter.fromKeys = function() {
-  throw Error('Not implemented on Counter.');
-};
-
-Counter.prototype.update = function(keyValues) {
-  var isDict = keyValues instanceof Dict;
-  var isArray = Array.isArray(keyValues);
-  var isObject = !isArray && !isDict && typeof keyValues === 'object';
-  if (this.isEmpty() && (isDict || isObject)) {
-    // If it's empty, copy the key-value pairs from the obj/dict as normal.
-    return DefaultDict.prototype.update.call(this, keyValues);
-  }
-
-  if (isDict) {
-    // Given an Object/Dict, increments current count
-    // of each key in the Dict/Object by its corresponding value.
-    var self = this;
-    keyValues.iteritems(function(key, value) {
-      self.setOneNewValue(key, Counter.getIncrementor(value));
-    });
-  } else if (isArray) {
-    // if given an Array of anything, counts each array element
-    // as a key to increment by 1.
-    this.setSomeNewValues(keyValues, Counter.getIncrementor(1));
-  } else if (isObject) {
-    // Given an Object/Dict, increments current count
-    // of each key in the Dict/Object by its corresponding value.
-    var keys = Object.keys(keyValues);
-    for (var i = 0, len = keys.length; i < len; i++) {
-      var key = keys[i];
-      this.setOneNewValue(key, Counter.getIncrementor(keyValues[key]));
-    }
-  } else {
-    DefaultDict.prototype.update.call(this, keyValues);
-  }
-};
-
-Counter.prototype.iterelements = function(callback) {
-  this.iteritems(function(key, numberOfElementsWithKey, self) {
-    for (var i = 0; i < numberOfElementsWithKey; i++) {
-      callback(key, i, numberOfElementsWithKey, self);
-    }
-  });
-};
-
-Counter.prototype.elements = function() {
-  var elements = [];
-  this.iterelements(function(key) {
-    elements.push(key);
-  });
-  return elements;
-};
-
-Counter.prototype.subtract = function(keyValues) {
-  if (keyValues instanceof Dict) {
-    // Given an Object/Dict, decrements current count
-    // of each key in the Dict/Object by its corresponding value.
-    var self = this;
-    keyValues.iteritems(function(key, value) {
-      self.setOneNewValue(key, Counter.getIncrementor(-value));
-    });
-  } else if (Array.isArray(keyValues)) {
-    // if given an Array of anything, counts each array element
-    // as a key to decrement by 1.
-    this.setSomeNewValues(keyValues, Counter.getIncrementor(-1));
-  } else if (typeof keyValues === 'object') {
-    // Given an Object/Dict, decrements current count
-    // of each key in the Dict/Object by its corresponding value.
-    var keys = Object.keys(keyValues);
-    for (var i = 0, len = keys.length; i < len; i++) {
-      var key = keys[i];
-      this.setOneNewValue(key, Counter.getIncrementor(-keyValues[key]));
-    }
-  } else {
-    throw Error('Must subtract Dict, Array, or Object.');
-  }
-};
-
-Counter.prototype.mostCommon = function(opt_n) {
-  var items = this.items().sort(function(a, b) {
-    return b[1] - a[1];
-  });
-  return arguments.length ? items.slice(0, opt_n) : items;
-};
-
-Counter.prototype.leastCommon = function(opt_n) {
-  var items = this.items().sort(function(a, b) {
-    return a[1] - b[1];
-  });
-  return arguments.length ? items.slice(0, opt_n) : items;
 };

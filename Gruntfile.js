@@ -18,7 +18,13 @@ module.exports = function (grunt) {
       dist: {
         src: [
           'src/header',
-          'src/0.source.js',
+
+          'src/0.polyfills.js',
+          'src/1.errors.js',
+          'src/2.dict.js',
+          'src/3.defaultdict.js',
+          'src/4.counter.js',
+
           'src/footer',
         ],
         dest: CONCAT_FILE

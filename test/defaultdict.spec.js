@@ -2,7 +2,7 @@
 'use strict';
 
 
-if (typeof require !== 'undefined') var pycollections = require('../pycollections');
+if (typeof require !== 'undefined') var pycollections = require('../dist/pycollections');
 var Dict = pycollections.Dict;
 var DefaultDict = pycollections.DefaultDict;
 
@@ -114,7 +114,7 @@ describe('Initialized empty defaultdict', function() {
 
     var nestedDict2 = nestedDict1.get(key2);
     expect(nestedDict2).toBe(selfReferencing);
-    
+
     nestedDict2.set(key3, nice);
 
     expect(selfReferencing.get(key1).get(key2).get(key3)).toBe(nice);

@@ -9,6 +9,23 @@
 'use strict';
 
 
+if (!Number.isNaN) {
+  // Un-break functionality of window.isNaN for browsers that need it:
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN
+  Number.isNaN = function(v) {
+    return v != v;
+  };
+}
+
+if (!Array.isArray) {
+  // Polyfill for isArray:
+  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
+  Array.isArray = function(arg) {
+    return Object.prototype.toString.call(arg) === '[object Array]';
+  };
+}
+
+
 var DictKeyNotFound = function(opt_key) {
   if (arguments.length) {
     this.keyWasSupplied = true;
@@ -38,21 +55,6 @@ TYPES[TYPE_NUMBER] = true;
 TYPES[TYPE_STRING] = true;
 TYPES[TYPE_UNDEFINED] = true;
 
-if (!Number.isNaN) {
-  // Un-break functionality of window.isNaN for browsers that need it:
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/isNaN
-  Number.isNaN = function(v) {
-    return v != v;
-  };
-}
-
-if (!Array.isArray) {
-  // Polyfill for isArray:
-  // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Array/isArray
-  Array.isArray = function(arg) {
-    return Object.prototype.toString.call(arg) === '[object Array]';
-  };
-}
 
 var GET_TYPE = function(v) {
   return v === null ? TYPE_NULL : (Number.isNaN(v) ? TYPE_NAN : typeof(v));

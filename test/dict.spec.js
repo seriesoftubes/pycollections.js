@@ -2,7 +2,7 @@
 'use strict';
 
 
-if (typeof require !== 'undefined') var pycollections = require('../pycollections');
+if (typeof require !== 'undefined') var pycollections = require('../dist/pycollections');
 var Dict = pycollections.Dict;
 var DictKeyNotFound = pycollections.DictKeyNotFound;
 var DictKeyNotHashable = pycollections.DictKeyNotHashable;
