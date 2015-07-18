@@ -1,0 +1,33 @@
+{
+  "name": "pycollections",
+  "description": "Bringing collections.py to JavaScript",
+  "moduleType": [
+    "amd",
+    "globals",
+    "node"
+  ],
+  "authors": ["Brian Weidenbaum"],
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/seriesoftubes/pycollections.js.git"
+  },
+  "keywords": [
+    "collections",
+    "defaultdict",
+    "dict",
+    "counter"
+  ],
+  "main": "dist/pycollections.min.js",
+  "ignore": [
+    ".*",
+    "*.html",
+    "Gruntfile.js",
+    "karma.conf.js",
+    "lib",
+    "package.json",
+    "pycollections.js",
+    "node_modules",
+    "test"
+  ]
+}
