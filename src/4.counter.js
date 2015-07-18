@@ -1,6 +1,8 @@
 
+var GET_ZERO = function() {return 0};
+
 var Counter = function(opt_keyValues) {
-  DefaultDict.call(this, function(){return 0}, opt_keyValues);
+  DefaultDict.call(this, GET_ZERO, opt_keyValues);
 };
 Counter.constructor = DefaultDict;
 Counter.prototype = Object.create(DefaultDict.prototype);
