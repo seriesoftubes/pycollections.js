@@ -5,7 +5,9 @@ var pycollections = {
   'DictKeyNotHashable': DictKeyNotHashable,
   'Dict': Dict,
   'DefaultDict': DefaultDict,
-  'Counter': Counter
+  'Counter': Counter,
+  'NamedTuple': NamedTuple,
+  'RESERVED_WORDS': RESERVED_WORDS
 };
 
 if (typeof exports !== 'undefined') { // CommonJS module is defined

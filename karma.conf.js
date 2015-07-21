@@ -13,6 +13,7 @@ module.exports = function(config) {
       'test/dict.spec.js',
       'test/defaultdict.spec.js',
       'test/counter.spec.js',
+      'test/namedtuple.spec.js',
     ],
 
     exclude: [

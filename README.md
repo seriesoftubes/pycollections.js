@@ -34,6 +34,12 @@ It has been tested on NodeJS v0.12.7, and the latest Chrome, Firefox, and Safari
   - [Counting distinct elements](#counting-distinct-elements)
   - [Increasing/decreasing counts](#increasingdecreasing-counts)
   - [Getting the most common elements](#getting-the-most-common-elements)
+- [NamedTuple](#namedtuple)
+  - [Defining a new namedtuple class](#defining-a-namedtuple-class)
+  - [Creating instances of the new class](#creating-instances-of-the-new-class)
+  - [Accessing an instance's properties directly](#accessing-an-instances-properties-directly)
+  - [Accessing an instance's properties via Array functions](#accessing-an-instances-properties-via-array-functions)
+
 
 ----
 
@@ -517,4 +523,63 @@ js.mostCommon(1);  // [['c', 3]]
 js.mostCommon(2);  // [['c', 3], ['b', 2]]
 js.mostCommon(99);  // [['c', 3], ['b', 2], ['a', 1]]
 js.mostCommon();  // [['c', 3], ['b', 2], ['a', 1]]
+```
+
+----
+----
+
+# NamedTuple
+
+## Demo
+
+### Defining a new NamedTuple class
+```py
+Py = namedtuple('Py', ['a', 'b'])
+```
+```js
+var Js = NamedTuple('Js', ['a', 'b']);
+```
+
+### Creating instances of the new class
+```py
+py = Py(1, 2)  #  Py(a=1, b=2)
+py = Py(1)  # throws TypeError
+py = Py(1, 2, 3)  # throws TypeError
+```
+```js
+var js = new Js(1, 2);
+js.toString();  // "Js(a=1, b=2)"
+var js = new Js(1);  // throws Error
+var js = new Js(1, 2, 3);  // throws Error
+```
+
+### Accessing an instance's properties directly
+```py
+py = Py(1, [2, 3])
+py.a  # 1
+py.b  # [2, 3]
+py[0]  # 1
+py[1]  # [2, 3]
+```
+```js
+var js = new Js(1, [2, 3]);
+js.a;  // 1
+js.b;  // [2, 3]
+js[0];  // 1
+js[1];  // [2, 3]
+```
+
+### Accessing an instance's properties via Array functions
+```py
+py = Py(1, 2)
+for value in py:
+  print value  # prints 1 then 2
+all(py)  # True
+```
+```js
+var js = new Js(1, 2);
+js.forEach(function(value, index) {
+  console.log(value, index);  // logs [1, 0] then [2, 1]
+});
+js.every(function(v){return v > 0});  // true
 ```
