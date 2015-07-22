@@ -6,6 +6,7 @@ var pycollections = {
   'Dict': Dict,
   'DefaultDict': DefaultDict,
   'Counter': Counter,
+  'OrderedDict': OrderedDict,
   'NamedTuple': NamedTuple,
   'RESERVED_WORDS': RESERVED_WORDS
 };

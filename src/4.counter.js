@@ -17,6 +17,10 @@ Counter.fromKeys = function() {
   throw Error('Not implemented on Counter.');
 };
 
+Counter.prototype.copy = function() {
+  return new Counter(this);
+};
+
 Counter.prototype.update = function(keyValues) {
   var isDict = keyValues instanceof Dict;
   var isArray = Array.isArray(keyValues);

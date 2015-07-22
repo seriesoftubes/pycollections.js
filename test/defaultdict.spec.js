@@ -127,3 +127,11 @@ describe('Initialized empty defaultdict', function() {
     expect(nestedDict2.get(key3)).toBe(nice);
   });
 });
+
+describe('DefaultDict.copy', function() {
+  it('should return a DefaultDict instance', function() {
+    var dd = new DefaultDict(String);
+    var copy = dd.copy();
+    expect(copy instanceof DefaultDict).toBe(true);
+  });
+});

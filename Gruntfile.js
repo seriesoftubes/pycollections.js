@@ -24,8 +24,9 @@ module.exports = function (grunt) {
           'src/2.dict.js',
           'src/3.defaultdict.js',
           'src/4.counter.js',
+          // TODO: make ordereddict 5 and namedtuple 6
+          'src/6.ordereddict.js',
           'src/5.namedtuple.js',
-
           'src/footer'
         ],
         dest: CONCAT_FILE

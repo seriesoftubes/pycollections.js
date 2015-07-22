@@ -14,6 +14,7 @@ module.exports = function(config) {
       'test/defaultdict.spec.js',
       'test/counter.spec.js',
       'test/namedtuple.spec.js',
+      'test/ordereddict.spec.js',
     ],
 
     exclude: [

@@ -309,3 +309,12 @@ describe('Counter.leastCommon', function() {
     expect(result4[2]).toEqual(['a', 3]);
   });
 });
+
+
+describe('Counter.copy', function() {
+  it('should return a Counter instance', function() {
+    var counter = new Counter();
+    var copy = counter.copy();
+    expect(copy instanceof Counter).toBe(true);
+  });
+});

@@ -4,7 +4,7 @@ var DefaultDict = function(defaultFn, opt_keyValues) {
   this.default_ = defaultFn
   Dict.call(this, opt_keyValues);
 };
-DefaultDict.prototype.constructor = Dict;
+DefaultDict.constructor = Dict;
 DefaultDict.prototype = Object.create(Dict.prototype);
 
 
@@ -15,4 +15,16 @@ DefaultDict.prototype.get = function(key /*, defaultValue */) {
   }
   Dict.checkKeyIsHashable_(key);
   return this.hasKey(key) ? Dict.prototype.get.call(this, key) : this.set(key, this.default_());
+};
+
+DefaultDict.fromKeys = function(defaultFn, keys, opt_valueForAllKeys) {
+  var dict = new DefaultDict(defaultFn);
+  for (var i = 0, len = keys.length; i < len; i++) {
+    dict.set(keys[i], opt_valueForAllKeys);
+  }
+  return dict;
+};
+
+DefaultDict.prototype.copy = function() {
+  return new DefaultDict(this.default_, this);
 };

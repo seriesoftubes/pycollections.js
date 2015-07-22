@@ -56,7 +56,7 @@ var NamedTupleToString = function() {
 };
 
 var NamedTupleAsDict = function() {
-  var dict = new Dict();
+  var dict = new OrderedDict();
   for (var i = 0; i < this.length; i++) dict.set(this.fields[i], this[i]);
   return dict;
 };
