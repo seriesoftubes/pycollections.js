@@ -1,7 +1,7 @@
 # pycollections.js
 ## Bringing collections.py to JavaScript
 
-pycollections.js contains class definitions for Dict, DefaultDict, and Counter, stocked with functionality that (mostly) mirrors their collections.py counterparts and exceeds that of the ES6 Map class.
+pycollections.js contains class definitions for Dict, DefaultDict, Counter, OrderedDict, and NamedTuple, stocked with functionality that (mostly) mirrors their collections.py counterparts and exceeds that of the ES6 Map class.
 
 It has been tested on NodeJS v0.12.7, and the latest Chrome, Firefox, and Safari browsers.
 
@@ -34,6 +34,9 @@ It has been tested on NodeJS v0.12.7, and the latest Chrome, Firefox, and Safari
   - [Counting distinct elements](#counting-distinct-elements)
   - [Increasing/decreasing counts](#increasingdecreasing-counts)
   - [Getting the most common elements](#getting-the-most-common-elements)
+- [OrderedDict](#ordereddict)
+  - [Creating a new OrderedDict](#creating-a-new-ordereddict)
+  - [Maintaining the order of keys and values](#maintaining-the-order-of-keys-and-values)
 - [NamedTuple](#namedtuple)
   - [Defining a new namedtuple class](#defining-a-namedtuple-class)
   - [Creating instances of the new class](#creating-instances-of-the-new-class)
@@ -528,6 +531,63 @@ js.mostCommon();  // [['c', 3], ['b', 2], ['a', 1]]
 ----
 ----
 
+# OrderedDict
+
+### Static methods: same as Dict (it's a Dict subclass)
+
+### Instance methods: same as Dict
+
+## Demo
+
+### Creating a new OrderedDict
+```py
+py = OrderedDict()
+py = OrderedDict(a=1, b=2)
+py = OrderedDict([('a', 1), ('b', 2)])
+```
+```js
+var js = new OrderedDict();
+var js = new OrderedDict({a:1, b:2});
+var js = new OrderedDict([['a', 1], ['b', 2]]);
+```
+
+### Maintaining the order of keys and values
+```py
+py = OrderedDict()
+py['1st'] = 0
+py['2nd'] = 1
+py['3rd'] = 2
+py.keys()  # ['1st', '2nd', '3rd']
+py.values()  # [0, 1, 2]
+
+py.pop('1st')  # 0
+py.keys()  # ['2nd', '3rd']
+py.values()  # [1, 2]
+
+py['1st'] = 0
+py.keys()  # ['2nd', '3rd', '1st']
+py.values()  # [1, 2, 0]
+```
+```js
+var js = new OrderedDict();
+js.set('1st', 0);
+js.set('2nd', 1);
+js.set('3rd', 2);
+js.keys();  // ['1st', '2nd', '3rd']
+js.values();  // [0, 1, 2]
+
+js.pop('1st');  // 0
+js.keys();  // ['2nd', '3rd']
+js.values();  // [1, 2]
+
+js.set('1st', 0);
+js.keys();  // ['2nd', '3rd', '1st']
+js.values();  // [1, 2, 0]
+```
+
+----
+----
+
 # NamedTuple
 
 ## Demo
@@ -560,6 +620,9 @@ py.a  # 1
 py.b  # [2, 3]
 py[0]  # 1
 py[1]  # [2, 3]
+
+py.a = 123  # raises AttributeError
+py[1] = 99  # raises TypeError
 ```
 ```js
 var js = new Js(1, [2, 3]);
@@ -567,6 +630,9 @@ js.a;  // 1
 js.b;  // [2, 3]
 js[0];  // 1
 js[1];  // [2, 3]
+
+js.a = 99;  // throws Error in strict mode, otherwise changes nothing
+js[1] = 99;  // changes nothing
 ```
 
 ### Accessing an instance's properties via Array functions

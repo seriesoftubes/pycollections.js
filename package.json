@@ -1,6 +1,6 @@
 {
   "name": "pycollections",
-  "version": "0.1.2",
+  "version": "0.1.3",
   "description": "Bringing collections.py to JavaScript",
   "main": "./dist/pycollections.min.js",
   "files": [
@@ -14,7 +14,10 @@
     "collections",
     "defaultdict",
     "dict",
-    "counter"
+    "counter",
+    "namedtuple",
+    "ordereddict",
+    "python"
   ],
   "author": "Brian Weidenbaum",
   "license": "MIT",
