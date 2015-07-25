@@ -5,10 +5,10 @@ var OrderedDict = function (opt_keyValues) {
 OrderedDict.constructor = Dict;
 OrderedDict.prototype = Object.create(Dict.prototype);
 
-OrderedDict.fromKeys = function(keys) {
+OrderedDict.fromKeys = function(keys, opt_valueForAllKeys) {
   var dict = new OrderedDict();
   for (var i = 0, len = keys.length; i < len; i++) {
-    dict.set(keys[i], arguments[1]);
+    dict.set(keys[i], opt_valueForAllKeys);
   }
   return dict;
 };
@@ -35,14 +35,14 @@ OrderedDict.prototype.set = function(key, value) {
 var DECREMENT_VALUE = function(v) {return v - 1};
 
 OrderedDict.prototype.del = function(key) {
+  var result = Dict.prototype.del.call(this, key);
   // Shift indexed keys to the right of the key.
   var orderedIndex = this._keyIndices.pop(key);
   for (var i = orderedIndex+1, len = this.length(); i < len; i++) {
     this._keyIndices.setOneNewValue(this._orderedKeys[i], DECREMENT_VALUE);
   }
   this._orderedKeys.splice(orderedIndex, 1);
-
-  return Dict.prototype.del.call(this, key);
+  return result;
 };
 
 OrderedDict.prototype.iterkeys = function(cb) {
