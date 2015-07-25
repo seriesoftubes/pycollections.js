@@ -24,24 +24,27 @@ OrderedDict.prototype.copy = function() {
 };
 
 OrderedDict.prototype.set = function(key, value) {
+  var hadKey = this.hasKey(key);
+  var result = Dict.prototype.set.apply(this, arguments);
+
   // If the key is new, index its order.
-  if (!this.hasKey(key)) {
-    var index = this._orderedKeys.push(key) - 1;
-    this._keyIndices.set(key, index);
-  }
-  return Dict.prototype.set.apply(this, arguments);
+  !hadKey && this._keyIndices.set(key, this._orderedKeys.push(key) - 1);
+
+  return result;
 };
 
 var DECREMENT_VALUE = function(v) {return v - 1};
 
 OrderedDict.prototype.del = function(key) {
   var result = Dict.prototype.del.call(this, key);
+
   // Shift indexed keys to the right of the key.
   var orderedIndex = this._keyIndices.pop(key);
   for (var i = orderedIndex+1, len = this.length(); i < len; i++) {
     this._keyIndices.setOneNewValue(this._orderedKeys[i], DECREMENT_VALUE);
   }
   this._orderedKeys.splice(orderedIndex, 1);
+
   return result;
 };
 
