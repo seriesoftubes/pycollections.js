@@ -123,8 +123,6 @@ Dict.prototype.get = function(key, opt_defaultValue) {
   var numArgs = arguments.length;
   if (!numArgs) throw Error('Must supply a key');
 
-  Dict.checkKeyIsHashable_(key);
-
   var hasKey = this.hasKey(key);
   if (numArgs === 1 && !hasKey) throw new DictKeyNotFound(key);
 
@@ -132,14 +130,12 @@ Dict.prototype.get = function(key, opt_defaultValue) {
 };
 
 Dict.prototype.del = function(key) {
-  Dict.checkKeyIsHashable_(key);
   if (!this.hasKey(key)) throw new DictKeyNotFound(key);
 
   delete this.dict_[GET_TYPE(key)][key];
 };
 
 Dict.prototype.pop = function(key, opt_defaultValue) {
-  Dict.checkKeyIsHashable_(key);
   var hasKey = this.hasKey(key);
   if (arguments.length === 1 && !hasKey) throw new DictKeyNotFound(key);
 
@@ -269,7 +265,6 @@ DefaultDict.prototype.get = function(key /*, defaultValue */) {
   if (arguments.length > 1) {
     return Dict.prototype.get.apply(this, arguments);
   }
-  Dict.checkKeyIsHashable_(key);
   return this.hasKey(key) ? Dict.prototype.get.call(this, key) : this.set(key, this.default_());
 };
 

@@ -13,7 +13,6 @@ DefaultDict.prototype.get = function(key /*, defaultValue */) {
   if (arguments.length > 1) {
     return Dict.prototype.get.apply(this, arguments);
   }
-  Dict.checkKeyIsHashable_(key);
   return this.hasKey(key) ? Dict.prototype.get.call(this, key) : this.set(key, this.default_());
 };
 
