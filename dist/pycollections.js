@@ -1,6 +1,6 @@
 /**
  * pycollections
- * Bringing collections.py to JavaScript.
+ * collections.py for JavaScript.
  * License: MIT
  * Docs: https://github.com/seriesoftubes/pycollections.js
 */

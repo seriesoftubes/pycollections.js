@@ -1,5 +1,5 @@
 # pycollections.js
-## Bringing collections.py to JavaScript
+## collections.py for JavaScript
 
 pycollections.js contains class definitions for Dict, DefaultDict, Counter, OrderedDict, and NamedTuple, stocked with functionality that (mostly) mirrors their collections.py counterparts and exceeds that of the ES6 Map class.
 

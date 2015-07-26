@@ -1,6 +1,6 @@
 {
   "name": "pycollections",
-  "description": "Bringing collections.py to JavaScript",
+  "description": "collections.py for JavaScript",
   "moduleType": [
     "amd",
     "globals",
@@ -16,7 +16,9 @@
     "collections",
     "defaultdict",
     "dict",
-    "counter"
+    "counter",
+    "ordereddict",
+    "namedtuple"
   ],
   "main": "dist/pycollections.min.js",
   "ignore": [
@@ -26,8 +28,8 @@
     "karma.conf.js",
     "lib",
     "package.json",
-    "pycollections.js",
     "node_modules",
+    "src"
     "test"
   ]
 }
