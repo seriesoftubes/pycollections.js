@@ -27,7 +27,7 @@ var Dict = function(opt_keyValues) {
 
 Dict.fromKeys = function(keys, opt_valueForAllKeys) {
   var dict = new Dict();
-  for (var i = 0, len = keys.length; i < len; i++) {
+  for (var i = 0, len = keys.length; i < len; ++i) {
     dict.set(keys[i], opt_valueForAllKeys);
   }
   return dict;
@@ -50,6 +50,7 @@ Dict.prototype.copy = function() {
 Dict.prototype.set = function(key, value) {
   Dict.checkKeyIsHashable_(key);
   if (arguments.length < 2) throw Error('Must supply a key and a value.');
+
   return this.dict_[GET_TYPE(key)][key] = value;
 };
 
@@ -58,13 +59,13 @@ Dict.prototype.update = function(keyValues) {
   if (keyValues instanceof Dict) {
     keyValues.iteritems(setKey);
   } else if (Array.isArray(keyValues)) {
-    for (var i = 0, len = keyValues.length; i < len; i++) {
+    for (var i = 0, len = keyValues.length; i < len; ++i) {
       var keyValue = keyValues[i];
       setKey(keyValue[0], keyValue[1]);
     }
   } else if (typeof keyValues === 'object') {
     var keys = Object.keys(keyValues);
-    for (i = 0, len = keys.length; i < len; i++) {
+    for (i = 0, len = keys.length; i < len; ++i) {
       var key = keys[i];
       setKey(key, keyValues[key]);
     }
@@ -157,7 +158,7 @@ Dict.prototype.popitem = function() {
 
 Dict.prototype.length = function() {
   var count = 0;
-  this.iterkeys(function(){count++});
+  this.iterkeys(function(){++count});
   return count;
 };
 
@@ -198,7 +199,7 @@ Dict.prototype.setOneNewValue = function(key, fn) {
 };
 
 Dict.prototype.setSomeNewValues = function(keys, fn) {
-  for (var i = 0, len = keys.length; i < len; i++) {
+  for (var i = 0, len = keys.length; i < len; ++i) {
     this.setOneNewValue(keys[i], fn);
   }
 };

@@ -68,7 +68,7 @@ var Dict = function(opt_keyValues) {
 
 Dict.fromKeys = function(keys, opt_valueForAllKeys) {
   var dict = new Dict();
-  for (var i = 0, len = keys.length; i < len; i++) {
+  for (var i = 0, len = keys.length; i < len; ++i) {
     dict.set(keys[i], opt_valueForAllKeys);
   }
   return dict;
@@ -91,6 +91,7 @@ Dict.prototype.copy = function() {
 Dict.prototype.set = function(key, value) {
   Dict.checkKeyIsHashable_(key);
   if (arguments.length < 2) throw Error('Must supply a key and a value.');
+
   return this.dict_[GET_TYPE(key)][key] = value;
 };
 
@@ -99,13 +100,13 @@ Dict.prototype.update = function(keyValues) {
   if (keyValues instanceof Dict) {
     keyValues.iteritems(setKey);
   } else if (Array.isArray(keyValues)) {
-    for (var i = 0, len = keyValues.length; i < len; i++) {
+    for (var i = 0, len = keyValues.length; i < len; ++i) {
       var keyValue = keyValues[i];
       setKey(keyValue[0], keyValue[1]);
     }
   } else if (typeof keyValues === 'object') {
     var keys = Object.keys(keyValues);
-    for (i = 0, len = keys.length; i < len; i++) {
+    for (i = 0, len = keys.length; i < len; ++i) {
       var key = keys[i];
       setKey(key, keyValues[key]);
     }
@@ -198,7 +199,7 @@ Dict.prototype.popitem = function() {
 
 Dict.prototype.length = function() {
   var count = 0;
-  this.iterkeys(function(){count++});
+  this.iterkeys(function(){++count});
   return count;
 };
 
@@ -239,7 +240,7 @@ Dict.prototype.setOneNewValue = function(key, fn) {
 };
 
 Dict.prototype.setSomeNewValues = function(keys, fn) {
-  for (var i = 0, len = keys.length; i < len; i++) {
+  for (var i = 0, len = keys.length; i < len; ++i) {
     this.setOneNewValue(keys[i], fn);
   }
 };
@@ -270,7 +271,7 @@ DefaultDict.prototype.get = function(key /*, defaultValue */) {
 
 DefaultDict.fromKeys = function(defaultFn, keys, opt_valueForAllKeys) {
   var dict = new DefaultDict(defaultFn);
-  for (var i = 0, len = keys.length; i < len; i++) {
+  for (var i = 0, len = keys.length; i < len; ++i) {
     dict.set(keys[i], opt_valueForAllKeys);
   }
   return dict;
@@ -327,7 +328,7 @@ Counter.prototype.update = function(keyValues) {
     // Given an Object/Dict, increments current count
     // of each key in the Dict/Object by its corresponding value.
     var keys = Object.keys(keyValues);
-    for (var i = 0, len = keys.length; i < len; i++) {
+    for (var i = 0, len = keys.length; i < len; ++i) {
       var key = keys[i];
       this.setOneNewValue(key, Counter.getIncrementor(keyValues[key]));
     }
@@ -338,7 +339,7 @@ Counter.prototype.update = function(keyValues) {
 
 Counter.prototype.iterelements = function(callback) {
   this.iteritems(function(key, numberOfElementsWithKey, self) {
-    for (var i = 0; i < numberOfElementsWithKey; i++) {
+    for (var i = 0; i < numberOfElementsWithKey; ++i) {
       callback(key, i, numberOfElementsWithKey, self);
     }
   });
@@ -368,7 +369,7 @@ Counter.prototype.subtract = function(keyValues) {
     // Given an Object/Dict, decrements current count
     // of each key in the Dict/Object by its corresponding value.
     var keys = Object.keys(keyValues);
-    for (var i = 0, len = keys.length; i < len; i++) {
+    for (var i = 0, len = keys.length; i < len; ++i) {
       var key = keys[i];
       this.setOneNewValue(key, Counter.getIncrementor(-keyValues[key]));
     }
@@ -400,7 +401,7 @@ OrderedDict.prototype = Object.create(Dict.prototype);
 
 OrderedDict.fromKeys = function(keys, opt_valueForAllKeys) {
   var dict = new OrderedDict();
-  for (var i = 0, len = keys.length; i < len; i++) {
+  for (var i = 0, len = keys.length; i < len; ++i) {
     dict.set(keys[i], opt_valueForAllKeys);
   }
   return dict;
@@ -433,7 +434,7 @@ OrderedDict.prototype.del = function(key) {
 
   // Shift indexed keys to the right of the key.
   var orderedIndex = this._keyIndices.pop(key);
-  for (var i = orderedIndex+1, len = this.length(); i < len; i++) {
+  for (var i = orderedIndex+1, len = this.length(); i < len; ++i) {
     this._keyIndices.setOneNewValue(this._orderedKeys[i], DECREMENT_VALUE);
   }
   this._orderedKeys.splice(orderedIndex, 1);
@@ -442,7 +443,7 @@ OrderedDict.prototype.del = function(key) {
 };
 
 OrderedDict.prototype.iterkeys = function(cb) {
-  for (var i = 0, len = this.length(); i < len; i++) {
+  for (var i = 0, len = this.length(); i < len; ++i) {
     cb(this._orderedKeys[i], this);
   }
 };
@@ -463,42 +464,42 @@ var VALID_NAME = /^[a-zA-Z\_]+[a-zA-Z0-9\_]*$/;
 // Reserved words in JS as of ES6:
 // https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Lexical_grammar#Keywords
 var RESERVED_WORDS = {
-  'break': 1,
-  'case': 1,
-  'class': 1,
-  'catch': 1,
-  'const': 1,
-  'continue': 1,
-  'debugger': 1,
-  'default': 1,
-  'delete': 1,
-  'do': 1,
-  'else': 1,
-  'export': 1,
-  'extends': 1,
-  'finally': 1,
-  'for': 1,
-  'function': 1,
-  'if': 1,
-  'import': 1,
-  'in': 1,
-  'instanceof': 1,
-  'let': 1,
-  'new': 1,
-  'return': 1,
-  'super': 1,
-  'switch': 1,
-  'this': 1,
-  'throw': 1,
-  'try': 1,
-  'typeof': 1,
-  'var': 1,
-  'void': 1,
-  'while': 1,
-  'with': 1,
-  'yield': 1,
-  'enum': 1,
-  'await': 1
+  'break': true,
+  'case': true,
+  'class': true,
+  'catch': true,
+  'const': true,
+  'continue': true,
+  'debugger': true,
+  'default': true,
+  'delete': true,
+  'do': true,
+  'else': true,
+  'export': true,
+  'extends': true,
+  'finally': true,
+  'for': true,
+  'function': true,
+  'if': true,
+  'import': true,
+  'in': true,
+  'instanceof': true,
+  'let': true,
+  'new': true,
+  'return': true,
+  'super': true,
+  'switch': true,
+  'this': true,
+  'throw': true,
+  'try': true,
+  'typeof': true,
+  'var': true,
+  'void': true,
+  'while': true,
+  'with': true,
+  'yield': true,
+  'enum': true,
+  'await': true
 };
 Object.freeze(RESERVED_WORDS);
 
@@ -506,7 +507,7 @@ Object.freeze(RESERVED_WORDS);
 var NamedTupleToString = function() {
   var fields = this.fields;
   var parts = [name, '('];
-  for (var i = 0, len = this.length; i < len; i++) {
+  for (var i = 0, len = this.length; i < len; ++i) {
     parts.push(fields[i] + '=' + String(this[i]));
     i < len - 1 && parts.push(', ');
   }
@@ -516,13 +517,13 @@ var NamedTupleToString = function() {
 
 var NamedTupleAsDict = function() {
   var dict = new OrderedDict();
-  for (var i = 0; i < this.length; i++) dict.set(this.fields[i], this[i]);
+  for (var i = 0; i < this.length; ++i) dict.set(this.fields[i], this[i]);
   return dict;
 };
 
 
 var NamedTuple = function(name, props) {
-  if (typeof name !== 'string' || !props) throw Error('must include name and properties');
+  if (typeof name !== 'string') throw Error('must include a string name');
   if (!Array.isArray(props)) throw TypeError('props must be an array');
   if (!VALID_NAME.test(name)) throw Error('invalid name');
   if (RESERVED_WORDS[name]) throw Error('cannot use reserved word as name');
@@ -533,7 +534,7 @@ var NamedTuple = function(name, props) {
     'container.myClass = function ' + name + '() {',
       'if (arguments.length !== nargs) throw Error(nargs + " args required");',
 
-      'for (var i = 0; i < nargs; i++) this[props[i]] = this[i] = arguments[i];',
+      'for (var i = 0; i < nargs; ++i) this[props[i]] = this[i] = arguments[i];',
 
       'Object.defineProperty(this, "length", {"enumerable": false, "value": nargs});',
       'Object.defineProperty(this, "fields", {"enumerable": false, "value": props});',

@@ -7,7 +7,7 @@ OrderedDict.prototype = Object.create(Dict.prototype);
 
 OrderedDict.fromKeys = function(keys, opt_valueForAllKeys) {
   var dict = new OrderedDict();
-  for (var i = 0, len = keys.length; i < len; i++) {
+  for (var i = 0, len = keys.length; i < len; ++i) {
     dict.set(keys[i], opt_valueForAllKeys);
   }
   return dict;
@@ -40,7 +40,7 @@ OrderedDict.prototype.del = function(key) {
 
   // Shift indexed keys to the right of the key.
   var orderedIndex = this._keyIndices.pop(key);
-  for (var i = orderedIndex+1, len = this.length(); i < len; i++) {
+  for (var i = orderedIndex+1, len = this.length(); i < len; ++i) {
     this._keyIndices.setOneNewValue(this._orderedKeys[i], DECREMENT_VALUE);
   }
   this._orderedKeys.splice(orderedIndex, 1);
@@ -49,7 +49,7 @@ OrderedDict.prototype.del = function(key) {
 };
 
 OrderedDict.prototype.iterkeys = function(cb) {
-  for (var i = 0, len = this.length(); i < len; i++) {
+  for (var i = 0, len = this.length(); i < len; ++i) {
     cb(this._orderedKeys[i], this);
   }
 };

@@ -18,7 +18,7 @@ DefaultDict.prototype.get = function(key /*, defaultValue */) {
 
 DefaultDict.fromKeys = function(defaultFn, keys, opt_valueForAllKeys) {
   var dict = new DefaultDict(defaultFn);
-  for (var i = 0, len = keys.length; i < len; i++) {
+  for (var i = 0, len = keys.length; i < len; ++i) {
     dict.set(keys[i], opt_valueForAllKeys);
   }
   return dict;

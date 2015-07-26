@@ -45,7 +45,7 @@ Counter.prototype.update = function(keyValues) {
     // Given an Object/Dict, increments current count
     // of each key in the Dict/Object by its corresponding value.
     var keys = Object.keys(keyValues);
-    for (var i = 0, len = keys.length; i < len; i++) {
+    for (var i = 0, len = keys.length; i < len; ++i) {
       var key = keys[i];
       this.setOneNewValue(key, Counter.getIncrementor(keyValues[key]));
     }
@@ -56,7 +56,7 @@ Counter.prototype.update = function(keyValues) {
 
 Counter.prototype.iterelements = function(callback) {
   this.iteritems(function(key, numberOfElementsWithKey, self) {
-    for (var i = 0; i < numberOfElementsWithKey; i++) {
+    for (var i = 0; i < numberOfElementsWithKey; ++i) {
       callback(key, i, numberOfElementsWithKey, self);
     }
   });
@@ -86,7 +86,7 @@ Counter.prototype.subtract = function(keyValues) {
     // Given an Object/Dict, decrements current count
     // of each key in the Dict/Object by its corresponding value.
     var keys = Object.keys(keyValues);
-    for (var i = 0, len = keys.length; i < len; i++) {
+    for (var i = 0, len = keys.length; i < len; ++i) {
       var key = keys[i];
       this.setOneNewValue(key, Counter.getIncrementor(-keyValues[key]));
     }
