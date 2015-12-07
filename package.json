@@ -1,6 +1,6 @@
 {
   "name": "pycollections",
-  "version": "0.1.4",
+  "version": "0.9.0",
   "description": "collections.py for JavaScript",
   "main": "./dist/pycollections.min.js",
   "files": [
