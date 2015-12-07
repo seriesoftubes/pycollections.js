@@ -146,19 +146,14 @@ Dict.prototype.pop = function(key, opt_defaultValue) {
 };
 
 Dict.prototype.iterkeys = function(cb) {
-  var keysByType = this.dict_;
-  var key;
-  for (key in keysByType[TYPE_BOOLEAN]) cb(key === 'true' ? true : false, this);
-  for (key in keysByType[TYPE_NUMBER]) cb(Number(key), this);
-  for (key in keysByType[TYPE_STRING]) cb(key, this);
-  Object.keys(keysByType[TYPE_NAN]).length && cb(NaN, this);
-  Object.keys(keysByType[TYPE_NULL]).length && cb(null, this);
-  Object.keys(keysByType[TYPE_UNDEFINED]).length && cb(undefined, this);
+  this.iteritems(function(key, value, self) {
+    cb(key, self);
+  });
 };
 
 Dict.prototype.keys = function() {
   var results = [];
-  this.iterkeys(function(key) {
+  this.iteritems(function(key) {
     results.push(key);
   });
   return results;
@@ -167,7 +162,7 @@ Dict.prototype.keys = function() {
 Dict.prototype.getFirstKey = function() {
   var firstKey;
   var keyWasFound = false;
-  this.iterkeys(function(key) {
+  this.iteritems(function(key) {
     if (!keyWasFound) {
       firstKey = key;
       keyWasFound = true;
@@ -181,7 +176,7 @@ Dict.prototype.getFirstKey = function() {
 Dict.prototype.getFirstMatchingKey = function(predicate) {
   var firstKey;
   var keyWasFound = false;
-  this.iterkeys(function(key, self) {
+  this.iteritems(function(key, value, self) {
     if (!keyWasFound && predicate(key, self)) {
       firstKey = key;
       keyWasFound = true;
@@ -199,7 +194,7 @@ Dict.prototype.popitem = function() {
 
 Dict.prototype.length = function() {
   var count = 0;
-  this.iterkeys(function(){++count});
+  this.iteritems(function(){++count});
   return count;
 };
 
@@ -208,9 +203,32 @@ Dict.prototype.isEmpty = function() {
 };
 
 Dict.prototype.iteritems = function(cb) {
-  this.iterkeys(function(key, self) {
-    cb(key, self.get(key), self);
-  });
+  var keys = this.dict_;
+  var key;
+
+  for (key in keys[TYPE_BOOLEAN]) {
+    cb(key === 'true' ? true : false, keys[TYPE_BOOLEAN][key], this);
+  }
+
+  for (key in keys[TYPE_NUMBER]) {
+    cb(Number(key), keys[TYPE_NUMBER][key], this);
+  }
+
+  for (key in keys[TYPE_STRING]) {
+    cb(key, keys[TYPE_STRING][key], this);
+  }
+
+  for (key in keys[TYPE_NAN]) {
+    cb(NaN, keys[TYPE_NAN][key], this);
+  }
+
+  for (key in keys[TYPE_NULL]) {
+    cb(null, keys[TYPE_NULL][key], this);
+  }
+
+  for (key in keys[TYPE_UNDEFINED]) {
+    cb(undefined, keys[TYPE_UNDEFINED][key], this);
+  }
 };
 
 Dict.prototype.items = function() {
@@ -222,14 +240,14 @@ Dict.prototype.items = function() {
 };
 
 Dict.prototype.itervalues = function(cb) {
-  this.iterkeys(function(key, self) {
-    cb(self.get(key), self);
+  this.iteritems(function(key, value, self) {
+    cb(value, self);
   });
 };
 
 Dict.prototype.values = function() {
   var results = [];
-  this.itervalues(function(value) {
+  this.iteritems(function(key, value) {
     results.push(value);
   });
   return results;
@@ -246,7 +264,7 @@ Dict.prototype.setSomeNewValues = function(keys, fn) {
 };
 
 Dict.prototype.setAllNewValues = function(fn) {
-  this.iterkeys(function(key, self) {
+  this.iteritems(function(key, value, self) {
     self.setOneNewValue(key, fn);
   });
 };
@@ -442,9 +460,10 @@ OrderedDict.prototype.del = function(key) {
   return result;
 };
 
-OrderedDict.prototype.iterkeys = function(cb) {
+OrderedDict.prototype.iteritems = function(cb) {
   for (var i = 0, len = this.length(); i < len; ++i) {
-    cb(this._orderedKeys[i], this);
+    var key = this._orderedKeys[i];
+    cb(key, this.get(key), this);
   }
 };
 

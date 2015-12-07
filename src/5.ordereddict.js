@@ -48,9 +48,10 @@ OrderedDict.prototype.del = function(key) {
   return result;
 };
 
-OrderedDict.prototype.iterkeys = function(cb) {
+OrderedDict.prototype.iteritems = function(cb) {
   for (var i = 0, len = this.length(); i < len; ++i) {
-    cb(this._orderedKeys[i], this);
+    var key = this._orderedKeys[i];
+    cb(key, this.get(key), this);
   }
 };
 
