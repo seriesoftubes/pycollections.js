@@ -47,15 +47,11 @@ module.exports = function (grunt) {
       }
     },
 
-    jasmine_node: {
+    jasmine: {
+      src: 'dist/pycollections.js',
       options: {
-        forceExit: true,
-        match: '.',
-        matchall: false,
-        extensions: 'js',
-        specNameMatcher: 'spec'
+        specs: 'test/*.js'
       },
-      all: []
     },
 
     karma: {
@@ -80,7 +76,7 @@ module.exports = function (grunt) {
   grunt.loadNpmTasks('grunt-karma');
   grunt.loadNpmTasks('grunt-contrib-watch');
 
-  grunt.registerTask('test', ['jasmine_node', 'karma']);
+  grunt.registerTask('test', ['jasmine', 'karma']);
   grunt.registerTask('default', ['clean', 'concat', 'uglify', 'test']);
   grunt.registerTask('livereload', ['default', 'watch']);
 };
