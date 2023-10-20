@@ -34,7 +34,7 @@
     "grunt-jasmine-node": "~0.3.1",
     "grunt-karma": "^4.0.2",
     "jasmine-core": "^5.1.1",
-    "jasmine-node": "~3.0.0",
+    "jasmine-node": "^1.16.0",
     "karma": "^6.4.2",
     "karma-chrome-launcher": "^3.2.0",
     "karma-firefox-launcher": "^2.1.2",
