@@ -3,7 +3,7 @@
 
 pycollections.js contains class definitions for Dict, DefaultDict, Counter, OrderedDict, and NamedTuple, stocked with functionality that (mostly) mirrors their collections.py counterparts and exceeds that of the ES6 Map class.
 
-It has been tested on NodeJS v0.12.7, and the latest Chrome, Firefox, and Safari browsers.
+It has been tested on NodeJS v20.8.1, and the latest Chrome, Firefox, and Safari browsers.
 
 ----
 # Contents

@@ -18,7 +18,6 @@ module.exports = function (grunt) {
       dist: {
         src: [
           'src/header',
-
           'src/0.polyfills.js',
           'src/1.errors.js',
           'src/2.dict.js',
@@ -26,7 +25,6 @@ module.exports = function (grunt) {
           'src/4.counter.js',
           'src/5.ordereddict.js',
           'src/6.namedtuple.js',
-
           'src/footer'
         ],
         dest: CONCAT_FILE
@@ -49,13 +47,13 @@ module.exports = function (grunt) {
 
     jasmine: {
       full: {
-        src: 'dist/pycollections.js',
+        src: CONCAT_FILE,
         options: {
           specs: 'test/*.js'
         },
       },
       minified: {
-        src: 'dist/pycollections.min.js',
+        src: MINIFIED_FILE,
         options: {
           specs: 'test/*.js'
         },
