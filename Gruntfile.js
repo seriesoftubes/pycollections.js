@@ -48,9 +48,17 @@ module.exports = function (grunt) {
     },
 
     jasmine: {
-      src: 'dist/pycollections.js',
-      options: {
-        specs: 'test/*.js'
+      full: {
+        src: 'dist/pycollections.js',
+        options: {
+          specs: 'test/*.js'
+        },
+      },
+      minified: {
+        src: 'dist/pycollections.min.js',
+        options: {
+          specs: 'test/*.js'
+        },
       },
     },
 
