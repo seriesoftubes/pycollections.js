@@ -1,9 +1,56 @@
+
 # pycollections.js
-## collections.py for JavaScript
+## collections.py for JavaScript - DEPRECATED!
 
 pycollections.js contains class definitions for Dict, DefaultDict, Counter, OrderedDict, and NamedTuple, stocked with functionality that (mostly) mirrors their collections.py counterparts and exceeds that of the ES6 Map class.
 
 It has been tested on NodeJS v20.8.1, and the latest Chrome, Firefox, and Safari browsers.
+
+# This module is deprecated and unmaintained. It may have critical security vulnerabilities!
+
+## Please use TypeScript built-ins instead.
+
+TypeScript built-ins have better test coverage, and they use the TS compiler.
+
+### Python `dict` in TypeScript
+
+The TypeScript `Map` class is very close to Python's `dict` class.
+
+### collections.defaultdict in TypeScript
+
+This TS code turns a native `Map` into a defaultdict:
+```ts
+class DefaultDict<K, V> {
+    constructor(
+        private readonly map: Map<K, V>,
+        private readonly defaultFn: (key: K) => V
+    ) {}
+
+    get(key: K): V {
+        if (this.map.has(key)) {
+            return this.map.get(key)!;
+        }
+        const val = this.defaultFn(key);
+        this.map.set(key, val);
+        return val;
+    }
+}
+```
+
+### collections.Counter in TypeScript
+
+A `collections.Counter` is basically a `DefaultDict` with a default function
+that returns 0, plus some extras for getting the most common elements. The
+pycollections.js library never did anything fancy like the heap queue algorithm
+anyway.
+
+### collections.OrderedDict in TypeScript
+
+The built-in `Map` [preserves the insertion order](https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map) of its entries.
+
+### collections.namedtuple in TypeScript
+
+TypeScript's [type aliases](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#type-aliases) or [interfaces](https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#interfaces) are good substitutes for namedtuples.
 
 ----
 # Contents
